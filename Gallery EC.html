@@ -441,8 +441,80 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                display: block;
+                padding: 0.85rem 4%;
+            }
+
+            .logo {
+                display: block;
+                margin-bottom: 0.75rem;
+                font-size: 1.25rem;
+            }
+
             .nav-list {
+                display: flex;
+                gap: 0.65rem;
+                overflow-x: auto;
+                padding-bottom: 0.15rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-list > li {
+                flex: 0 0 auto;
+                padding: 0;
+            }
+
+            .nav-list > li > a {
+                display: inline-flex;
+                align-items: center;
+                min-height: 34px;
+                padding: 0 0.85rem;
+                border: 1px solid var(--border-color);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 0.76rem;
+            }
+
+            .nav-list > li > a::after {
                 display: none;
+            }
+
+            .nav-list > li > a.active {
+                border-color: var(--accent-color);
+            }
+
+            .dropdown {
+                position: static;
+                display: flex;
+                gap: 0.5rem;
+                min-width: 0;
+                padding: 0;
+                margin-top: 0.5rem;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .dropdown::before {
+                display: none;
+            }
+
+            .dropdown a {
+                padding: 0.45rem 0.75rem;
+                border: 1px solid var(--border-color);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 0.74rem;
+            }
+
+            .dropdown a:hover,
+            .dropdown a.active {
+                padding-left: 0.75rem;
+                border-color: var(--accent-color);
             }
 
             .grid {
@@ -450,8 +522,43 @@
                 gap: 1.5rem 1rem;
             }
 
+            .hero {
+                margin-top: 118px;
+                min-height: auto;
+                padding: 3rem 4%;
+            }
+
             .hero h1 {
-                font-size: 2rem;
+                font-size: clamp(2rem, 12vw, 3rem);
+                letter-spacing: 4px;
+            }
+
+            .brand-intro-section {
+                margin-top: 2.2rem;
+                padding: 0;
+            }
+
+            .brand-intro-img {
+                max-height: 110px;
+                margin-bottom: 1.5rem;
+            }
+
+            .brand-intro-desc {
+                font-size: 0.86rem;
+                line-height: 1.85;
+            }
+
+            .gallery-container {
+                margin: 3rem auto;
+                padding: 0 4%;
+            }
+
+            .card-title {
+                font-size: 0.9rem;
+            }
+
+            .card-price {
+                font-size: 0.84rem;
             }
         }
     </style>

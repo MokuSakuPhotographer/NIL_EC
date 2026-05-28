@@ -472,10 +472,23 @@ header {
 }
 
 @media (max-width: 900px) {
+    header {
+        padding: 0.85rem 4%;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+    }
+
+    .nav-back {
+        font-size: 0.76rem;
+    }
+
     .product-container {
         grid-template-columns: 1fr;
         gap: 2rem;
         margin-top: 100px;
+        padding: 0 4%;
     }
 
     .product-image-wrapper {
@@ -483,14 +496,75 @@ header {
         top: auto;
     }
 
+    .product-info {
+        padding-top: 0;
+    }
+
+    .title {
+        font-size: clamp(2rem, 12vw, 3.2rem);
+    }
+
+    .price-tax-ex {
+        font-size: clamp(2.2rem, 11vw, 3.1rem);
+    }
+
+    .size-options {
+        gap: 8px;
+    }
+
+    .size-btn {
+        min-width: 48px;
+        padding: 0.58rem 0.82rem;
+    }
+
+    .size-table {
+        min-width: 520px;
+    }
+
+    .acc-content {
+        overflow-x: auto;
+    }
+
+    .recommend-section {
+        margin: 4rem auto 3rem;
+        padding: 3rem 0 0 4%;
+        overflow: hidden;
+    }
+
+    .recommend-title {
+        padding-right: 4%;
+        text-align: left;
+    }
+
     .recommend-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.2rem;
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding: 0 4% 1rem 0;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .recommend-card {
+        flex: 0 0 min(72vw, 320px);
+        scroll-snap-align: start;
     }
 }
 
 @media (max-width: 560px) {
-    .recommend-grid {
-        grid-template-columns: 1fr;
+    .product-container {
+        margin-top: 88px;
+    }
+
+    .product-image-wrapper {
+        aspect-ratio: 4 / 5;
+    }
+
+    .description {
+        font-size: 0.92rem;
+    }
+
+    .recommend-card {
+        flex-basis: 76vw;
     }
 }
