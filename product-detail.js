@@ -414,3 +414,19 @@ function renderProduct() {
 }
 
 renderProduct();
+
+let lastScrollY = window.scrollY;
+const pageHeader = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+    const currentY = window.scrollY;
+    if (!pageHeader) return;
+
+    if (currentY > lastScrollY && currentY > 80) {
+        pageHeader.classList.add('header-hidden');
+    } else {
+        pageHeader.classList.remove('header-hidden');
+    }
+
+    lastScrollY = currentY;
+}, { passive: true });

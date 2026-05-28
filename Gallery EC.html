@@ -52,7 +52,12 @@
             background: rgba(255,255,255,0.95);
             border-bottom: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
-            transition: padding var(--transition-speed), box-shadow var(--transition-speed);
+            transform: translateY(0);
+            transition: transform var(--transition-speed), padding var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        header.header-hidden {
+            transform: translateY(-110%);
         }
 
         .logo {
@@ -486,7 +491,7 @@
 
             .dropdown {
                 position: static;
-                display: flex;
+                display: none;
                 gap: 0.5rem;
                 min-width: 0;
                 padding: 0;
@@ -497,6 +502,10 @@
                 opacity: 1;
                 visibility: visible;
                 transform: none;
+            }
+
+            .has-dropdown.open > .dropdown {
+                display: flex;
             }
 
             .dropdown::before {
@@ -725,19 +734,44 @@
         navLinks.forEach((link) => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
+                const parentDropdown = link.closest('.has-dropdown');
+                const isTopBrand = parentDropdown && parentDropdown.querySelector(':scope > .nav-link') === link;
+
+                if (isTopBrand && window.matchMedia('(max-width: 768px)').matches) {
+                    document.querySelectorAll('.has-dropdown.open').forEach((item) => {
+                        if (item !== parentDropdown) item.classList.remove('open');
+                    });
+                    parentDropdown.classList.toggle('open');
+                }
+
                 applyFilter(link.dataset.filter, link);
             });
         });
 
+        let lastScrollY = window.scrollY;
+
         window.addEventListener('scroll', () => {
+            const currentY = window.scrollY;
             const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.padding = '0.5rem 5%';
+            const mobileHeader = window.matchMedia('(max-width: 768px)').matches;
+            const compactPadding = mobileHeader ? '0.65rem 4%' : '0.5rem 5%';
+            const normalPadding = mobileHeader ? '0.85rem 4%' : '1rem 5%';
+
+            if (currentY > lastScrollY && currentY > 90) {
+                header.classList.add('header-hidden');
+            } else {
+                header.classList.remove('header-hidden');
+            }
+
+            if (currentY > 50) {
+                header.style.padding = compactPadding;
                 header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
             } else {
-                header.style.padding = '1rem 5%';
+                header.style.padding = normalPadding;
                 header.style.boxShadow = 'none';
             }
+
+            lastScrollY = currentY;
         });
     </script>
 </body>

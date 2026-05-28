@@ -55,7 +55,12 @@
             background: rgba(255, 255, 255, 0.9);
             border-bottom: 1px solid var(--line);
             backdrop-filter: blur(14px);
-            transition: padding 0.35s ease, box-shadow 0.35s ease;
+            transform: translateY(0);
+            transition: transform 0.35s ease, padding 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        header.header-hidden {
+            transform: translateY(-110%);
         }
 
         .logo {
@@ -106,13 +111,15 @@
 
         .mobile-gallery {
             display: none;
-            width: 38px;
+            min-width: 92px;
             height: 38px;
             place-items: center;
             border: 1px solid var(--line);
-            border-radius: 50%;
+            border-radius: 999px;
             color: var(--blue);
+            font-size: 0.76rem;
             font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .hero {
@@ -701,7 +708,7 @@
                 <li><a href="#featured">Featured</a></li>
                 <li><a href="Gallery EC.html">Gallery EC</a></li>
             </ul>
-            <a class="mobile-gallery" href="Gallery EC.html" aria-label="Gallery EC">G</a>
+            <a class="mobile-gallery" href="Gallery EC.html" aria-label="Products">PRODUCT</a>
         </nav>
     </header>
 
@@ -820,7 +827,7 @@
                         <div class="product-image">
                             <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
                         </div>
-                        <div class="product-brand">GALLERY</div>
+                        <div class="product-brand">EOLE</div>
                         <h3 class="product-title">EOLE Shoe</h3>
                         <div class="product-price">¥62,000</div>
                     </a>
@@ -842,6 +849,7 @@
         const stories = document.querySelectorAll('[data-story]');
         const productCards = document.querySelectorAll('.product-card');
         let ticking = false;
+        let lastScrollY = window.scrollY;
 
         function clamp(value, min, max) {
             return Math.min(Math.max(value, min), max);
@@ -853,13 +861,25 @@
         }
 
         function setHeaderState() {
+            const mobileHeader = window.matchMedia('(max-width: 768px)').matches;
+            const compactPadding = mobileHeader ? '0.65rem 4%' : '0.55rem 5%';
+            const normalPadding = mobileHeader ? '0.85rem 4%' : '1rem 5%';
+
+            if (window.scrollY > lastScrollY && window.scrollY > 90) {
+                header.classList.add('header-hidden');
+            } else {
+                header.classList.remove('header-hidden');
+            }
+
             if (window.scrollY > 50) {
-                header.style.padding = '0.55rem 5%';
+                header.style.padding = compactPadding;
                 header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
             } else {
-                header.style.padding = '1rem 5%';
+                header.style.padding = normalPadding;
                 header.style.boxShadow = 'none';
             }
+
+            lastScrollY = window.scrollY;
         }
 
         function updateHero() {
