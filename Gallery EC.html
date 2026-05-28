@@ -10,7 +10,7 @@
             --primary-bg: #ffffff;
             --primary-text: #1a1a1a;
             --secondary-text: #666666;
-            --accent-color: #2563eb; /* Blue accent */
+            --accent-color: #2563eb;
             --border-color: #e5e5e5;
             --image-bg: #f3f4f6;
             --transition-speed: 0.4s;
@@ -24,42 +24,41 @@
 
         body {
             font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            background-color: var(--primary-bg);
+            background: var(--primary-bg);
             color: var(--primary-text);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
         a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
         }
 
         ul {
             list-style: none;
         }
 
-        /* --- Header & Navigation --- */
         header {
             position: fixed;
             top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
+            left: 0;
             z-index: 1000;
+            width: 100%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             padding: 1rem 5%;
-            transition: all var(--transition-speed);
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transition: padding var(--transition-speed), box-shadow var(--transition-speed);
         }
 
         .logo {
             font-size: 1.5rem;
             font-weight: 600;
             letter-spacing: 2px;
-            position: relative;
         }
 
         .logo span {
@@ -76,30 +75,28 @@
             padding: 1rem 0;
         }
 
+        .nav-list a {
+            cursor: pointer;
+        }
+
         .nav-list > li > a {
+            position: relative;
             font-size: 0.9rem;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            position: relative;
             transition: color var(--transition-speed);
-            cursor: pointer;
         }
 
         .nav-list > li > a::after {
             content: '';
             position: absolute;
+            left: 0;
+            bottom: -5px;
             width: 0;
             height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent-color);
-            transition: width var(--transition-speed) ease;
-        }
-
-        .nav-list > li:hover > a::after,
-        .nav-list > li > a.active::after {
-            width: 100%;
+            background: var(--accent-color);
+            transition: width var(--transition-speed);
         }
 
         .nav-list > li:hover > a,
@@ -107,21 +104,25 @@
             color: var(--accent-color);
         }
 
-        /* Dropdown Menu */
+        .nav-list > li:hover > a::after,
+        .nav-list > li > a.active::after {
+            width: 100%;
+        }
+
         .dropdown {
             position: absolute;
             top: 100%;
             left: 50%;
-            transform: translateX(-50%) translateY(15px);
+            min-width: 170px;
+            padding: 0.5rem 0;
             background: #ffffff;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 0.5rem 0;
-            min-width: 160px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             opacity: 0;
             visibility: hidden;
-            transition: all var(--transition-speed) ease;
-            border-radius: 4px;
+            transform: translateX(-50%) translateY(14px);
+            transition: opacity var(--transition-speed), visibility var(--transition-speed), transform var(--transition-speed);
         }
 
         .dropdown::before {
@@ -129,90 +130,91 @@
             position: absolute;
             top: -6px;
             left: 50%;
-            transform: translateX(-50%) rotate(45deg);
             width: 10px;
             height: 10px;
             background: #ffffff;
             border-top: 1px solid var(--border-color);
             border-left: 1px solid var(--border-color);
+            transform: translateX(-50%) rotate(45deg);
         }
 
-        .has-dropdown:hover .dropdown {
+        .has-dropdown:hover > .dropdown,
+        .has-dropdown:focus-within > .dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateX(-50%) translateY(0);
         }
 
-        .dropdown li a {
-            display: block;
-            padding: 0.8rem 1.5rem;
-            font-size: 0.85rem;
-            color: var(--secondary-text);
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .dropdown li a:hover,
-        .dropdown li a.active {
-            background-color: #f8fafc;
-            color: var(--accent-color);
-            padding-left: 1.8rem;
-        }
-
-        /* Sub Dropdown Menu */
-        .has-sub-dropdown {
+        .dropdown li {
             position: relative;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.78rem 1.4rem;
+            color: var(--secondary-text);
+            font-size: 0.85rem;
+            transition: color 0.2s, background 0.2s, padding-left 0.2s;
+            white-space: nowrap;
+        }
+
+        .dropdown a:hover,
+        .dropdown a.active {
+            color: var(--accent-color);
+            background: #f8fafc;
+            padding-left: 1.7rem;
+        }
+
+        .has-sub-dropdown > a::before {
+            content: '<';
+            float: left;
+            margin-right: 10px;
+            color: #c7c7c7;
+            font-size: 0.8rem;
         }
 
         .sub-dropdown {
             position: absolute;
             top: 0;
             right: 100%;
+            min-width: 170px;
+            margin-right: 2px;
+            padding: 0.5rem 0;
             background: #ffffff;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 0.5rem 0;
-            min-width: 160px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             opacity: 0;
             visibility: hidden;
-            transition: all var(--transition-speed) ease;
-            border-radius: 4px;
-            transform: translateX(15px);
-            z-index: 10;
-            margin-right: 2px;
+            transform: translateX(14px);
+            transition: opacity var(--transition-speed), visibility var(--transition-speed), transform var(--transition-speed);
         }
 
-        .has-sub-dropdown:hover > .sub-dropdown {
+        .has-sub-dropdown:hover > .sub-dropdown,
+        .has-sub-dropdown:focus-within > .sub-dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateX(0);
         }
 
-        .has-sub-dropdown > a::before {
-            content: '◂';
-            float: left;
-            margin-right: 10px;
-            font-size: 0.8rem;
-            color: #ccc;
-        }
-
-        /* --- Hero Section --- */
         .hero {
             min-height: 50vh;
+            margin-top: 80px;
+            padding: 4rem 5%;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
             text-align: center;
-            margin-top: 80px;
-            padding: 4rem 0;
             background: linear-gradient(135deg, #fdfdfd 0%, #f0f4f8 100%);
             position: relative;
-            overflow: hidden;
-            transition: background-image 0.5s ease, background-color 0.5s ease;
+            transition: background 0.45s ease;
         }
 
-        .hero.eole-bg {
-            background: url('images/EOLE_Marble.webp') center/cover no-repeat;
+        .hero.eole-marble {
+            background:
+                linear-gradient(rgba(255,255,255,0.36), rgba(255,255,255,0.46)),
+                url('images/EOLE_Marble.webp') center / cover no-repeat;
         }
 
         .hero::after {
@@ -222,78 +224,55 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(37,99,235,0.03) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(37,99,235,0.035) 0%, transparent 60%);
             animation: rotateBg 20s linear infinite;
-            transition: opacity 0.5s ease;
         }
 
-        .hero.eole-bg::after {
-            opacity: 0.1;
-        }
-
-        @keyframes rotateBg {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .hero.eole-marble::after {
+            opacity: 0.25;
         }
 
         .hero-content {
             position: relative;
             z-index: 1;
             width: 100%;
-            animation: fadeUp 1s ease-out;
+            animation: fadeUp 0.8s ease-out;
         }
 
         .hero h1 {
+            margin-bottom: 1rem;
             font-size: 3rem;
             font-weight: 300;
-            letter-spacing: 4px;
-            margin-bottom: 1rem;
+            letter-spacing: 6px;
         }
 
-        .hero p {
-            color: var(--secondary-text);
-            font-size: 1rem;
-            letter-spacing: 1px;
+        #current-category {
+            display: none;
         }
 
-        /* --- Brand Intro --- */
         .brand-intro-section {
             max-width: 1000px;
-            margin: 0 auto;
+            margin: 3rem auto 1rem;
             padding: 0 5%;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            max-height: 0;
-            overflow: hidden;
-            transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), margin 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .brand-intro-section.show {
-            max-height: 500px;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .brand-intro-section.visible {
             opacity: 1;
             transform: translateY(0);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .brand-intro-section.is-changing {
+            opacity: 0;
+            transform: translateY(16px);
         }
 
         .brand-intro-img {
             max-width: 100%;
-            height: auto;
             max-height: 140px;
+            margin: 0 auto 2rem;
             object-fit: contain;
-            margin-bottom: 2rem;
         }
 
         .brand-intro-title {
-            font-size: 1.6rem;
-            font-weight: 300;
-            letter-spacing: 6px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
+            display: none;
         }
 
         .brand-intro-desc {
@@ -303,24 +282,13 @@
             letter-spacing: 1px;
         }
 
-        /* Styling for text over EOLE marble background to ensure perfect readability */
-        .hero.eole-bg h1,
-        .hero.eole-bg p#current-category,
-        .hero.eole-bg .brand-intro-title,
-        .hero.eole-bg .brand-intro-desc {
-            color: #000000;
-            font-weight: 600;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 255, 255, 0.95), 0 0 5px rgba(255, 255, 255, 0.95);
-        }
-
         .brand-intro-line {
             width: 40px;
             height: 1px;
-            background: #000;
             margin: 3rem auto 0;
+            background: #000000;
         }
 
-        /* --- Gallery Grid --- */
         .gallery-container {
             max-width: 1400px;
             margin: 4rem auto;
@@ -333,14 +301,11 @@
             gap: 3rem 2rem;
         }
 
-        /* Product Card */
         .card {
-            position: relative;
-            cursor: pointer;
+            display: none;
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            display: none; /* Hidden by default for filtering */
+            transition: opacity 0.55s ease, transform 0.55s ease;
         }
 
         .card.show {
@@ -353,64 +318,53 @@
         }
 
         .card-image {
-            background-color: var(--image-bg);
-            aspect-ratio: 3 / 4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
-            overflow: hidden;
-            border-radius: 2px;
+            aspect-ratio: 3 / 4;
             margin-bottom: 1.2rem;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 2px;
         }
 
-        .card-image::before {
-            content: 'No Image';
-            color: #a0aec0;
-            font-weight: 300;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            z-index: 1;
-        }
-
-        /* Abstract patterns for dummy images */
-        .card-image::after {
-            content: '';
+        .card-image img {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent 40%, rgba(0,0,0,0.02) 45%, rgba(0,0,0,0.02) 55%, transparent 60%);
-            background-size: 20px 20px;
-            transition: transform 0.8s ease;
+            inset: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .overlay {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(2px);
+            inset: 0;
+            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: all 0.4s ease;
-            z-index: 2;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(2px);
+            transition: opacity 0.35s ease;
         }
 
         .btn-view {
+            display: inline-block;
             padding: 0.8rem 2rem;
-            background: var(--primary-text);
-            color: var(--primary-bg);
-            border: none;
-            font-size: 0.8rem;
+            border-radius: 999px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
-            transform: translateY(20px);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border-radius: 30px;
+            transform: translateY(18px);
+            transition: transform 0.35s ease, background 0.35s ease;
         }
 
-        .card:hover .card-image::after {
-            transform: scale(1.1);
+        .card:hover .card-image img {
+            transform: scale(1.06);
         }
 
         .card:hover .overlay {
@@ -422,22 +376,36 @@
             background: var(--accent-color);
         }
 
+        .sold-out-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 3;
+            padding: 0.4rem 1rem;
+            border-radius: 2px;
+            background: rgba(0,0,0,0.86);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
         .card-info {
             text-align: center;
         }
 
         .card-brand {
-            font-size: 0.75rem;
-            color: var(--secondary-text);
-            text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 0.3rem;
+            color: var(--secondary-text);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .card-title {
+            margin-bottom: 0.5rem;
             font-size: 1rem;
             font-weight: 400;
-            margin-bottom: 0.5rem;
             transition: color 0.3s;
         }
 
@@ -450,35 +418,38 @@
             font-weight: 600;
         }
 
-        /* Animations */
+        .empty-message {
+            display: none;
+            padding: 4rem 0;
+            color: var(--secondary-text);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .empty-message.show {
+            display: block;
+        }
+
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .sold-out-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.85);
-            color: #ffffff;
-            font-size: 0.65rem;
-            padding: 0.4rem 1rem;
-            letter-spacing: 2px;
-            font-weight: 600;
-            z-index: 3;
-            border-radius: 2px;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .nav-list {
-                display: none; /* In a real app, implement hamburger menu */
+                display: none;
             }
+
             .grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem 1rem;
             }
+
             .hero h1 {
                 font-size: 2rem;
             }
@@ -486,147 +457,94 @@
     </style>
 </head>
 <body>
-
-    <!-- Header & Navigation -->
     <header>
-        <div class="logo">GALLERY<span>.</span></div>
+        <a class="logo" href="index.html">GALLERY<span>.</span></a>
         <nav>
             <ul class="nav-list">
                 <li class="has-dropdown">
-                    <a class="nav-link active" data-filter="brand-eole">EOLE</a>
+                    <a class="nav-link active" href="#" data-filter="brand-eole">EOLE</a>
                     <ul class="dropdown">
-                        <li><a class="nav-link" data-filter="eole-tops">Tops</a></li>
-                        <li><a class="nav-link" data-filter="eole-outerwear">Outerwear</a></li>
-                        <li><a class="nav-link" data-filter="eole-shoes">Shoes</a></li>
-                        <li class="has-sub-dropdown">
-                            <a class="nav-link" data-filter="eole-accessories">Accessories</a>
-                            <ul class="sub-dropdown">
-                                <li><a class="nav-link" data-filter="eole-acc-tie">Tie</a></li>
-                                <li><a class="nav-link" data-filter="eole-acc-glasses">Glasses</a></li>
-                                <li><a class="nav-link" data-filter="eole-acc-wallet">Wallet & Case</a></li>
-                                <li><a class="nav-link" data-filter="eole-acc-bags">Bags</a></li>
-                                <li><a class="nav-link" data-filter="eole-acc-fragrance">Fragrance</a></li>
-                            </ul>
-                        </li>
+                        <li><a class="nav-link" href="#" data-filter="eole-tops">Tops</a></li>
+                        <li><a class="nav-link" href="#" data-filter="eole-shoes">Shoes</a></li>
                     </ul>
                 </li>
                 <li class="has-dropdown">
-                    <a class="nav-link" data-filter="brand-okurih">OKURIH</a>
+                    <a class="nav-link" href="#" data-filter="brand-okurih">OKURIH</a>
                     <ul class="dropdown">
-                        <li><a class="nav-link" data-filter="okurih-tops">Tops</a></li>
-                        <li><a class="nav-link" data-filter="okurih-shoes">Shoes</a></li>
-                        <li class="has-sub-dropdown">
-                            <a class="nav-link" data-filter="okurih-accessories">Accessories</a>
-                            <ul class="sub-dropdown">
-                                <li><a class="nav-link" data-filter="okurih-acc-glasses">Glasses</a></li>
-                                <li><a class="nav-link" data-filter="okurih-acc-wallet">Wallet</a></li>
-                                <li><a class="nav-link" data-filter="okurih-acc-bags">Bags</a></li>
-                                <li><a class="nav-link" data-filter="okurih-acc-fragrance">Fragrance</a></li>
-                            </ul>
-                        </li>
+                        <li><a class="nav-link" href="#" data-filter="okurih-tops">Tops</a></li>
+                        <li><a class="nav-link" href="#" data-filter="okurih-acc-bags">Bags</a></li>
                     </ul>
                 </li>
-
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero eole-bg">
+    <section class="hero eole-marble">
         <div class="hero-content">
             <h1>COLLECTION</h1>
             <p id="current-category">EOLE</p>
-            
-            <!-- Brand Intro -->
-            <div id="brand-intro" class="brand-intro-section show visible">
-                <img id="brand-intro-img" class="brand-intro-img" src="images/EC/LOGO/EOLE 1.png" alt="Brand Logo">
+            <div id="brand-intro" class="brand-intro-section">
+                <img id="brand-intro-img" class="brand-intro-img" src="images/logo/EOLE 1.png" alt="EOLE logo">
                 <div class="brand-intro-text">
-                    <h2 id="brand-intro-title" class="brand-intro-title">EOLE</h2>
-                    <p id="brand-intro-desc" class="brand-intro-desc">洗練されたシルエットと最上級の素材が織りなす、<br>現代のエレガンスを体現するハイエンド・コレクション。</p>
+                    <h2 id="brand-intro-title" class="brand-intro-title" aria-hidden="true">EOLE</h2>
+                    <p id="brand-intro-desc" class="brand-intro-desc">洗練されたシルエットと上質な素材感が引き立つ、<br>現代的なエレガンスをまとうEOLEのコレクション。</p>
                 </div>
                 <div class="brand-intro-line"></div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Grid -->
     <main class="gallery-container">
-        <div class="grid" id="product-grid">
-            <!-- Items will be generated by JS -->
-        </div>
+        <div class="grid" id="product-grid"></div>
+        <p id="empty-message" class="empty-message">該当する商品はありません。</p>
     </main>
 
     <script>
-        // Product Data
         const products = [
-            // EOLE (High Brand)
-            { id: 1, brand: 'EOLE', name: 'Premium Collared Shirt', price: '¥32,000', filterClass: 'brand-eole eole-tops' },
-            { id: 2, brand: 'EOLE', name: 'Silk Blend Shirt', price: '¥38,000', filterClass: 'brand-eole eole-tops' },
-            { id: 3, brand: 'EOLE', name: 'Lightweight Parka', price: '¥45,000', filterClass: 'brand-eole eole-tops' },
-            { id: 4, brand: 'EOLE', name: 'Cashmere Long Coat', price: '¥180,000', filterClass: 'brand-eole eole-outerwear' },
-            { id: 5, brand: 'EOLE', name: 'Classic Trench Coat', price: '¥120,000', filterClass: 'brand-eole eole-outerwear' },
-            { id: 6, brand: 'EOLE', name: 'Leather Oxford Shoes', price: '¥75,000', filterClass: 'brand-eole eole-shoes' },
-            { id: 7, brand: 'EOLE', name: 'Silk Patterned Tie', price: '¥18,000', filterClass: 'brand-eole eole-accessories eole-acc-tie' },
-            { id: 8, brand: 'EOLE', name: 'Titanium Frame Glasses', price: '¥42,000', filterClass: 'brand-eole eole-accessories eole-acc-glasses' },
-            { id: 9, brand: 'EOLE', name: 'Calf Leather Wallet', price: '¥65,000', filterClass: 'brand-eole eole-accessories eole-acc-wallet' },
-            { id: 10, brand: 'EOLE', name: 'Slim Pass Case', price: '¥22,000', filterClass: 'brand-eole eole-accessories eole-acc-wallet' },
-            { id: 11, brand: 'EOLE', name: 'Leather Key Case', price: '¥28,000', filterClass: 'brand-eole eole-accessories eole-acc-wallet' },
-
-            // OKURIH (Street)
-            { id: 12, brand: 'OKURIH', name: 'Heavyweight Logo Parka', price: '¥24,000', filterClass: 'brand-okurih okurih-tops' },
-            { id: 13, brand: 'OKURIH', name: 'Oversized Zip Parka', price: '¥26,000', filterClass: 'brand-okurih okurih-tops' },
-            { id: 14, brand: 'OKURIH', name: 'Tech Sportswear Top', price: '¥18,000', filterClass: 'brand-okurih okurih-tops' },
-            { id: 15, brand: 'OKURIH', name: 'Graphic Trainer', price: '¥16,000', filterClass: 'brand-okurih okurih-tops' },
-            { id: 16, brand: 'OKURIH', name: 'Canvas Slip-on', price: '¥14,000', filterClass: 'brand-okurih okurih-shoes' },
-            { id: 17, brand: 'OKURIH', name: 'Suede Slip-on', price: '¥18,000', filterClass: 'brand-okurih okurih-shoes' },
-            { id: 18, brand: 'OKURIH', name: 'Square Sunglasses', price: '¥12,000', filterClass: 'brand-okurih okurih-accessories okurih-acc-glasses' },
-            { id: 19, brand: 'OKURIH', name: 'Nylon Zip Wallet', price: '¥9,000', filterClass: 'brand-okurih okurih-accessories okurih-acc-wallet' },
-
-            // COMMON (共通) -> Distributed to EOLE & OKURIH
-            { id: 20, brand: 'COMMON', name: 'Basic V-Neck T-Shirt', price: '¥5,000', filterClass: 'brand-eole brand-okurih eole-tops okurih-tops' },
-            { id: 21, brand: 'COMMON', name: 'Heavy Cotton T-Shirt', price: '¥6,500', filterClass: 'brand-eole brand-okurih eole-tops okurih-tops' },
-            { id: 22, brand: 'COMMON', name: 'Oversized Pocket Tee', price: '¥7,000', filterClass: 'brand-eole brand-okurih eole-tops okurih-tops' },
-            { id: 23, brand: 'COMMON', name: 'Low-Top Canvas Sneaker', price: '¥12,000', filterClass: 'brand-eole brand-okurih eole-shoes okurih-shoes' },
-            { id: 24, brand: 'COMMON', name: 'Chunky Running Sneaker', price: '¥16,000', filterClass: 'brand-eole brand-okurih eole-shoes okurih-shoes' },
-            { id: 25, brand: 'COMMON', name: 'High-Top Leather Sneaker', price: '¥19,000', filterClass: 'brand-eole brand-okurih eole-shoes okurih-shoes' },
-            { id: 26, brand: 'COMMON', name: 'Everyday Tote Bag', price: '¥15,000', filterClass: 'brand-eole brand-okurih eole-accessories okurih-accessories eole-acc-bags okurih-acc-bags' },
-            { id: 27, brand: 'COMMON', name: 'Nylon Backpack', price: '¥22,000', filterClass: 'brand-eole brand-okurih eole-accessories okurih-accessories eole-acc-bags okurih-acc-bags' },
-            { id: 28, brand: 'COMMON', name: 'Eau de Parfum - Citrus', price: '¥11,000', filterClass: 'brand-eole brand-okurih eole-accessories okurih-accessories eole-acc-fragrance okurih-acc-fragrance' },
-            { id: 29, brand: 'COMMON', name: 'Eau de Toilette - Wood', price: '¥9,500', filterClass: 'brand-eole brand-okurih eole-accessories okurih-accessories eole-acc-fragrance okurih-acc-fragrance' },
-            { id: 30, brand: 'COMMON', name: 'Solid Perfume - Floral', price: '¥6,000', filterClass: 'brand-eole brand-okurih eole-accessories okurih-accessories eole-acc-fragrance okurih-acc-fragrance' },
-            
-            // NEW ITEMS (GALLERY)
-            { id: 31, brand: 'GALLERY', name: 'Original Logo T-Shirt', price: '¥8,800', filterClass: 'brand-eole brand-okurih eole-tops okurih-tops', soldOut: true, link: 'product-tshirt.html' },
-            { id: 32, brand: 'GALLERY', name: 'Classic Leather Shoes', price: '¥24,000', filterClass: 'brand-eole brand-okurih eole-shoes okurih-shoes', soldOut: true, link: 'product-shoes.html' },
-            { id: 33, brand: 'EOLE', name: 'EOLE GraphicsT α', price: '¥14,000', filterClass: 'brand-eole eole-tops', link: 'product-tshirt-alpha.html', img: 'images/EOLE GraphicsT.webp' },
-            { id: 34, brand: 'EOLE', name: 'EOLE GraphicsT β', price: '¥14,000', filterClass: 'brand-eole eole-tops', link: 'product-tshirt-beta.html', img: 'images/EOLE GraphicsT_2.webp' }
+            { id: 1, brand: 'EOLE', name: 'Geometry T-Shirt', price: '¥36,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-geometry.html', img: 'images/product/shirt/tshirt-geometry.webp' },
+            { id: 2, brand: 'EOLE', name: 'Geometry Marble T-Shirt', price: '¥42,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-geometry-marble.html', img: 'images/product/shirt/tshirt-geometry-marble.webp' },
+            { id: 3, brand: 'EOLE', name: 'Logo Collage T-Shirt', price: '¥39,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-logo-collage.html', img: 'images/product/shirt/tshirt-logo-collage.webp' },
+            { id: 4, brand: 'EOLE', name: 'Logo Collage 2 T-Shirt', price: '¥41,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-logo-collage2.html', img: 'images/product/shirt/tshirt-logo-collage2.webp' },
+            { id: 5, brand: 'EOLE', name: 'Luna Logo T-Shirt', price: '¥38,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-luna-logo.html', img: 'images/product/shirt/tshirt-luna-logo.webp' },
+            { id: 6, brand: 'EOLE', name: 'Luna Logo 2 T-Shirt', price: '¥40,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-luna-logo2.html', img: 'images/product/shirt/tshirt-luna-logo2.webp' },
+            { id: 7, brand: 'EOLE', name: 'Marble T-Shirt', price: '¥46,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-marble.html', img: 'images/product/shirt/tshirt-marble.webp' },
+            { id: 8, brand: 'EOLE', name: 'Polo T-Shirt', price: '¥44,000', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-polo.html', img: 'images/product/shirt/tshirt-polo.webp' },
+            { id: 9, brand: 'EOLE', name: 'EOLE Shoe', price: '¥62,000', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-shoe-eole.html', img: 'images/product/shoe/shoe-eole.webp' },
+            { id: 10, brand: 'OKURIH', name: 'Heart Hoodie', price: '¥9,800', filterClass: 'brand-okurih okurih-tops', soldOut: true, link: 'product-hoodie-heart.html', img: 'images/product/hoodie/hoodie-Heart.webp' },
+            { id: 11, brand: 'OKURIH', name: 'Geometry Bag', price: '¥8,800', filterClass: 'brand-okurih okurih-accessories okurih-acc-bags', soldOut: true, link: 'product-bag-geometry.html', img: 'images/product/bag/bag-geometry.webp' }
         ];
 
+        const brandCopy = {
+            eole: {
+                logo: 'images/logo/EOLE 1.png',
+                title: 'EOLE',
+                desc: '洗練されたシルエットと上質な素材感が引き立つ、<br>現代的なエレガンスをまとうEOLEのコレクション。'
+            },
+            okurih: {
+                logo: 'images/logo/Okurih.png',
+                title: 'OKURIH',
+                desc: 'ストリートの軽さとモードの空気を重ねた、<br>自由でエッジのあるOKURIHのスタイル。'
+            }
+        };
+
         const grid = document.getElementById('product-grid');
+        const emptyMessage = document.getElementById('empty-message');
         const currentCategoryLabel = document.getElementById('current-category');
         const navLinks = document.querySelectorAll('.nav-link');
+        const brandIntro = document.getElementById('brand-intro');
+        const brandImg = document.getElementById('brand-intro-img');
+        const brandTitle = document.getElementById('brand-intro-title');
+        const brandDesc = document.getElementById('brand-intro-desc');
+        const hero = document.querySelector('.hero');
 
-        // Render Cards
         function renderCards() {
-            products.forEach(product => {
-                const card = document.createElement('div');
-                const isEole = product.filterClass.includes('brand-eole');
-                card.className = `card ${isEole ? 'show' : ''} ${product.filterClass}`;
-                card.setAttribute('data-id', product.id);
-                
-                const href = product.link ? product.link : 'javascript:void(0)';
-                const btnText = product.soldOut ? 'SOLD OUT' : 'View Details';
-                const badge = product.soldOut ? '<div class="sold-out-badge">SOLD OUT</div>' : '';
-                const imgHtml = product.img ? `<img src="${product.img}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">` : '';
-                
-                card.innerHTML = `
-                    <a href="${href}" style="display: block; width: 100%; height: 100%;">
+            grid.innerHTML = products.map((product) => `
+                <article class="card ${product.filterClass}" data-id="${product.id}">
+                    <a href="${product.link}" aria-label="${product.name}">
                         <div class="card-image">
-                            ${imgHtml}
-                            ${badge}
-                            <div class="overlay">
-                                <span class="btn-view" style="display: inline-block; text-align: center; ${product.soldOut ? 'background: #000; color: #fff;' : ''}">${btnText}</span>
-                            </div>
+                            <img src="${product.img}" alt="${product.name}">
+                            <div class="sold-out-badge">SOLD OUT</div>
+                            <div class="overlay"><span class="btn-view">MORE</span></div>
                         </div>
                         <div class="card-info">
                             <div class="card-brand">${product.brand}</div>
@@ -634,125 +552,76 @@
                             <div class="card-price">${product.price}</div>
                         </div>
                     </a>
-                `;
-                grid.appendChild(card);
+                </article>
+            `).join('');
+        }
+
+        function updateBrandIntro(filterValue) {
+            const brand = filterValue.startsWith('okurih') || filterValue === 'brand-okurih' ? brandCopy.okurih : brandCopy.eole;
+            hero.classList.toggle('eole-marble', brand === brandCopy.eole);
+            brandIntro.classList.add('is-changing');
+
+            window.setTimeout(() => {
+                brandImg.src = brand.logo;
+                brandImg.alt = `${brand.title} logo`;
+                brandTitle.textContent = brand.title;
+                brandDesc.innerHTML = brand.desc;
+                brandIntro.classList.remove('is-changing');
+            }, 180);
+        }
+
+        function labelFor(link, filterValue) {
+            if (filterValue === 'brand-eole') return 'EOLE';
+            if (filterValue === 'brand-okurih') return 'OKURIH';
+
+            const parent = link.closest('.has-dropdown')?.querySelector(':scope > .nav-link')?.textContent.trim();
+            return parent ? `${parent} / ${link.textContent.trim()}` : link.textContent.trim();
+        }
+
+        function observeVisibleCards() {
+            const cards = [...document.querySelectorAll('.card.show')];
+            cards.forEach((card, index) => {
+                card.classList.remove('visible');
+                card.style.transitionDelay = `${(index % 4) * 0.08}s`;
+                window.setTimeout(() => card.classList.add('visible'), 40);
             });
+        }
+
+        function applyFilter(filterValue, sourceLink) {
+            navLinks.forEach((link) => link.classList.remove('active'));
+            sourceLink.classList.add('active');
+            sourceLink.closest('.has-dropdown')?.querySelector(':scope > .nav-link')?.classList.add('active');
+
+            currentCategoryLabel.textContent = labelFor(sourceLink, filterValue);
+            updateBrandIntro(filterValue);
+
+            const cards = [...document.querySelectorAll('.card')];
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                card.classList.remove('visible');
+                if (card.classList.contains(filterValue)) {
+                    card.classList.add('show');
+                    visibleCount += 1;
+                } else {
+                    card.classList.remove('show');
+                }
+            });
+
+            emptyMessage.classList.toggle('show', visibleCount === 0);
+            observeVisibleCards();
         }
 
         renderCards();
+        applyFilter('brand-eole', document.querySelector('[data-filter="brand-eole"]'));
 
-        // Intersection Observer for scroll animation
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        function observeCards() {
-            const cards = document.querySelectorAll('.card.show');
-            cards.forEach((card, index) => {
-                card.classList.remove('visible');
-                // Staggered animation effect
-                card.style.transitionDelay = `${(index % 4) * 0.1}s`;
-                observer.observe(card);
-            });
-        }
-
-        observeCards();
-
-        // Filtering Logic
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // Remove active class from all
-                navLinks.forEach(nav => nav.classList.remove('active'));
-                
-                // Add active class to clicked (and its parent if in dropdown)
-                e.target.classList.add('active');
-                if(e.target.closest('.sub-dropdown')) {
-                    e.target.closest('.has-sub-dropdown').querySelector('a').classList.add('active');
-                    e.target.closest('.has-dropdown').querySelector('a').classList.add('active');
-                } else if(e.target.closest('.dropdown')) {
-                    e.target.closest('.has-dropdown').querySelector('a').classList.add('active');
-                }
-
-                const filterValue = e.target.getAttribute('data-filter');
-                
-                // Update Label text
-                if (filterValue === 'all') {
-                    currentCategoryLabel.textContent = 'All Items';
-                } else {
-                    let text = e.target.textContent;
-                    if (e.target.closest('.sub-dropdown')) {
-                        const mainTab = e.target.closest('.has-dropdown').querySelector('a').textContent;
-                        const subTab = e.target.closest('.has-sub-dropdown').querySelector('a').textContent;
-                        text = mainTab + ' / ' + subTab + ' / ' + text;
-                    } else if (e.target.closest('.dropdown')) {
-                        text = e.target.closest('.has-dropdown').querySelector('a').textContent + ' / ' + text;
-                    }
-                    currentCategoryLabel.textContent = text;
-                }
-
-                const brandIntro = document.getElementById('brand-intro');
-                const brandImg = document.getElementById('brand-intro-img');
-                const brandTitle = document.getElementById('brand-intro-title');
-                const brandDesc = document.getElementById('brand-intro-desc');
-                const heroSection = document.querySelector('.hero');
-
-                const cards = document.querySelectorAll('.card');
-                
-                // Hide all cards and brand intro first with animation
-                cards.forEach(card => {
-                    card.classList.remove('visible');
-                    card.style.transitionDelay = '0s'; // Reset delay for hiding
-                });
-                brandIntro.classList.remove('visible');
-
-                // Wait for hide animation then show filtered
-                setTimeout(() => {
-                    if (filterValue === 'brand-eole' || filterValue.startsWith('eole-')) {
-                        brandImg.src = 'images/EC/LOGO/EOLE 1.png';
-                        brandTitle.textContent = 'EOLE';
-                        brandDesc.innerHTML = '洗練されたシルエットと最上級の素材が織りなす、<br>現代のエレガンスを体現するハイエンド・コレクション。';
-                        brandIntro.classList.add('show');
-                        heroSection.classList.add('eole-bg');
-                        setTimeout(() => brandIntro.classList.add('visible'), 50);
-                    } else if (filterValue === 'brand-okurih' || filterValue.startsWith('okurih-')) {
-                        brandImg.src = 'images/EC/LOGO/Okurih.png';
-                        brandTitle.textContent = 'OKURIH';
-                        brandDesc.innerHTML = 'ストリートカルチャーとモードの融合。<br>既成概念にとらわれない、自由でエッジの効いたスタイル。';
-                        brandIntro.classList.add('show');
-                        heroSection.classList.remove('eole-bg');
-                        setTimeout(() => brandIntro.classList.add('visible'), 50);
-                    } else {
-                        brandIntro.classList.remove('show');
-                        heroSection.classList.remove('eole-bg');
-                    }
-
-                    cards.forEach(card => {
-                        if (filterValue === 'all' || card.classList.contains(filterValue)) {
-                            card.classList.add('show');
-                        } else {
-                            card.classList.remove('show');
-                        }
-                    });
-                    // Re-observe newly shown cards for entrance animation
-                    observeCards();
-                }, 400); // Wait for CSS opacity transition
+        navLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                applyFilter(link.dataset.filter, link);
             });
         });
 
-        // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             if (window.scrollY > 50) {

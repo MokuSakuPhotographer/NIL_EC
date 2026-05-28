@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALLERY EC | Curated Fashion Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --line: #e5e5e5;
+            --blue: #2563eb;
+            --soft: #f4f7fb;
+            --image-bg: #f3f4f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        header {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+            transition: padding 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2.4rem;
+            list-style: none;
+        }
+
+        .nav-list a {
+            position: relative;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.35s ease;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            transition: width 0.35s ease;
+        }
+
+        .nav-list a:hover,
+        .nav-list a.active {
+            color: var(--blue);
+        }
+
+        .nav-list a:hover::after,
+        .nav-list a.active::after {
+            width: 100%;
+        }
+
+        .mobile-gallery {
+            display: none;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .hero {
+            min-height: 100vh;
+            padding: 116px 5% 48px;
+            display: grid;
+            grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+            align-items: center;
+            gap: 5vw;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.96), rgba(244,247,251,0.86)),
+                radial-gradient(circle at 84% 18%, rgba(37,99,235,0.11), transparent 30%);
+            overflow: hidden;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.35rem;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--text);
+        }
+
+        h1 {
+            max-width: 760px;
+            font-size: clamp(2.8rem, 7vw, 7.4rem);
+            font-weight: 300;
+            line-height: 0.96;
+            letter-spacing: 0;
+        }
+
+        .hero-lead {
+            max-width: 560px;
+            margin-top: 1.55rem;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 2;
+            letter-spacing: 0.4px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2.2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 1.45rem;
+            border: 1px solid var(--text);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--blue);
+            background: var(--blue);
+            color: var(--bg);
+        }
+
+        .hero-stage {
+            position: relative;
+            z-index: 2;
+            min-height: 650px;
+            animation: fadeUp 0.9s 0.15s ease both;
+        }
+
+        .hero-card {
+            position: absolute;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 4px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.09);
+            transform: translate3d(0, var(--hero-y, 0px), 0) scale(var(--hero-scale, 1));
+            will-change: transform;
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .hero-card:hover img {
+            transform: scale(1.055);
+        }
+
+        .hero-main {
+            top: 0;
+            right: 0;
+            width: min(76%, 540px);
+            aspect-ratio: 3 / 4;
+        }
+
+        .hero-side {
+            left: 0;
+            bottom: 42px;
+            width: min(42%, 290px);
+            aspect-ratio: 1 / 1.24;
+        }
+
+        .hero-shoe {
+            right: 10%;
+            bottom: 0;
+            width: min(38%, 270px);
+            aspect-ratio: 1.22 / 1;
+        }
+
+        .brand-orbit {
+            position: absolute;
+            left: 10%;
+            top: 74px;
+            z-index: 4;
+            width: 146px;
+            height: 146px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,0.86);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(12px);
+            transform: translate3d(0, var(--hero-logo-y, 0px), 0);
+            will-change: transform;
+        }
+
+        .brand-orbit img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+
+        .story {
+            position: relative;
+            min-height: 165vh;
+            background: var(--bg);
+        }
+
+        .story.alt {
+            background: var(--soft);
+        }
+
+        .story-frame {
+            position: sticky;
+            top: 0;
+            min-height: 100vh;
+            padding: 96px 5% 58px;
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+            align-items: center;
+            gap: 5vw;
+            overflow: hidden;
+        }
+
+        .story-copy {
+            position: relative;
+            z-index: 3;
+            opacity: var(--copy-opacity, 0);
+            transform: translate3d(var(--copy-x, 0px), var(--copy-y, 88px), 0) scale(var(--copy-scale, 0.94));
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-kicker {
+            margin-bottom: 1rem;
+            color: var(--blue);
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: var(--kicker-opacity, 0);
+            transform: translate3d(0, var(--kicker-y, 42px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-title {
+            max-width: 680px;
+            font-size: clamp(2.4rem, 5.6vw, 6.2rem);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 0;
+            opacity: var(--title-opacity, 0);
+            transform: translate3d(0, var(--title-y, 110px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-text {
+            max-width: 520px;
+            margin-top: 1.4rem;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 2;
+            letter-spacing: 0.4px;
+            opacity: var(--text-opacity, 0);
+            transform: translate3d(0, var(--text-y, 70px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-copy .hero-actions {
+            opacity: var(--button-opacity, 0);
+            transform: translate3d(0, var(--button-y, 46px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-media {
+            position: relative;
+            min-height: 72vh;
+            display: grid;
+            place-items: center;
+            perspective: 1200px;
+        }
+
+        .story-product {
+            width: min(82vw, 760px);
+            max-height: 86vh;
+            object-fit: contain;
+            filter: drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
+            opacity: var(--product-opacity, 0);
+            transform:
+                translate3d(var(--product-x, 120px), var(--product-y, 110px), 0)
+                scale(var(--product-scale, 0.68))
+                rotate(var(--product-rotate, 0deg));
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-badge {
+            position: absolute;
+            right: 6%;
+            bottom: 12%;
+            width: clamp(108px, 13vw, 168px);
+            height: clamp(108px, 13vw, 168px);
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,0.82);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
+            opacity: var(--badge-opacity, 0);
+            transform: translate3d(0, var(--badge-y, 40px), 0) scale(var(--badge-scale, 0.88));
+            backdrop-filter: blur(12px);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-badge img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+
+        .product-stage {
+            padding: 7rem 5%;
+            background: #fff;
+        }
+
+        .product-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 2rem;
+            margin-bottom: 2.6rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4.2vw, 4.4rem);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .section-text {
+            max-width: 450px;
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        .product-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            opacity: 0;
+            transform: translateY(38px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-image {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            margin-bottom: 1.15rem;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 3px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.055);
+        }
+
+        .product-image::after {
+            content: 'View Details';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, calc(-50% + 16px));
+            padding: 0.8rem 1.7rem;
+            border-radius: 999px;
+            background: var(--text);
+            color: var(--bg);
+            opacity: 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: opacity 0.35s ease, transform 0.35s ease, background 0.35s ease;
+        }
+
+        .product-card:hover .product-image::after {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            background: var(--blue);
+        }
+
+        .product-brand {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            margin-top: 0.25rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .product-price {
+            margin-top: 0.35rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 2rem 5%;
+            border-top: 1px solid var(--line);
+            color: #8a8a8a;
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .story-frame {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 112px;
+            }
+
+            .hero-stage {
+                min-height: 520px;
+            }
+
+            .story {
+                min-height: 155vh;
+            }
+
+            .story-frame {
+                padding-top: 100px;
+                align-content: center;
+                gap: 2rem;
+            }
+
+            .story-media {
+                min-height: 48vh;
+            }
+
+            .story-product {
+                width: min(94vw, 620px);
+                max-height: 58vh;
+            }
+
+            .section-head {
+                display: block;
+            }
+
+            .section-text {
+                margin-top: 1rem;
+            }
+
+            .product-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-list {
+                display: none;
+            }
+
+            .mobile-gallery {
+                display: grid;
+            }
+
+            .hero-stage {
+                min-height: 430px;
+            }
+
+            .hero-main {
+                width: 78%;
+            }
+
+            .hero-side {
+                width: 44%;
+                bottom: 18px;
+            }
+
+            .hero-shoe {
+                width: 42%;
+                right: 5%;
+            }
+
+            .brand-orbit {
+                width: 112px;
+                height: 112px;
+                left: 4%;
+                top: 36px;
+            }
+
+            .story {
+                min-height: 145vh;
+            }
+
+            .story-title {
+                font-size: clamp(2.1rem, 12vw, 4.6rem);
+            }
+
+            .product-row {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a class="logo" href="index.html">GALLERY<span>.</span></a>
+        <nav aria-label="Main navigation">
+            <ul class="nav-list">
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="#brands">Brands</a></li>
+                <li><a href="#featured">Featured</a></li>
+                <li><a href="Gallery EC.html">Gallery EC</a></li>
+            </ul>
+            <a class="mobile-gallery" href="Gallery EC.html" aria-label="Gallery EC">G</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">Curated Fashion Store</div>
+                <h1>Quiet edge, sharp selection.</h1>
+                <p class="hero-lead">EOLEの上質なムードと、OKURIHの軽やかなストリート感をひとつのギャラリーで。余白を効かせながら、アイテムの存在感を大きく見せるトップページです。</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="Gallery EC.html">Enter Gallery</a>
+                    <a class="btn" href="#featured">View Picks</a>
+                </div>
+            </div>
+
+            <div class="hero-stage" aria-label="Featured collection images">
+                <div class="brand-orbit">
+                    <img src="images/logo/EOLE 1.png" alt="EOLE logo">
+                </div>
+                <a class="hero-card hero-main" href="product-tshirt-marble.html" data-hero-speed="-0.2">
+                    <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
+                </a>
+                <a class="hero-card hero-side" href="product-tshirt-logo-collage.html" data-hero-speed="0.14">
+                    <img src="images/product/shirt/tshirt-logo-collage.webp" alt="Logo Collage T-Shirt">
+                </a>
+                <a class="hero-card hero-shoe" href="product-shoe-eole.html" data-hero-speed="-0.1">
+                    <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                </a>
+            </div>
+        </section>
+
+        <section id="brands" class="story" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">EOLE</div>
+                    <h2 class="story-title">A clean silhouette comes forward.</h2>
+                    <p class="story-text">スクロールに合わせて、商品が大きく立ち上がり、文章が遅れて現れます。Appleの製品紹介ページに近い、固定画面で進行する見せ方です。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="product-tshirt-geometry-marble.html">Explore EOLE</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/shirt/tshirt-geometry-marble.webp" alt="Geometry Marble T-Shirt">
+                    <div class="story-badge">
+                        <img src="images/logo/EOLE 1.png" alt="EOLE logo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="story alt" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">OKURIH</div>
+                    <h2 class="story-title">Street detail, gallery calm.</h2>
+                    <p class="story-text">背景は静かに、アイテムは奥から手前へ。ブランドごとの空気を保ちながら、スクロールで自然に次のシーンへ移ります。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="Gallery EC.html">Explore OKURIH</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/bag/bag-geometry.webp" alt="Geometry Bag">
+                    <div class="story-badge">
+                        <img src="images/logo/Okurih.png" alt="OKURIH logo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="story" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">GALLERY PICK</div>
+                    <h2 class="story-title">Finish with a grounded accent.</h2>
+                    <p class="story-text">最後はシューズを大きく見せ、ECページへつながる導線を残します。派手すぎず、でもスクロールで変化が伝わる深さにしています。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="product-shoe-eole.html">View Shoes</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                    <div class="story-badge">
+                        <img src="images/logo/EOLE 1.png" alt="GALLERY logo mark">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured" class="product-stage">
+            <div class="product-inner">
+                <div class="section-head">
+                    <h2 class="section-title">Featured Picks</h2>
+                    <p class="section-text">ストーリー演出の後に、既存ECページへ自然につながる商品カードを配置しています。</p>
+                </div>
+
+                <div class="product-row">
+                    <a class="product-card" href="product-tshirt-marble.html">
+                        <div class="product-image">
+                            <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
+                        </div>
+                        <div class="product-brand">EOLE</div>
+                        <h3 class="product-title">Marble T-Shirt</h3>
+                        <div class="product-price">¥46,000</div>
+                    </a>
+
+                    <a class="product-card" href="product-hoodie-heart.html">
+                        <div class="product-image">
+                            <img src="images/product/hoodie/hoodie-Heart.webp" alt="Heart Hoodie">
+                        </div>
+                        <div class="product-brand">OKURIH</div>
+                        <h3 class="product-title">Heart Hoodie</h3>
+                        <div class="product-price">¥9,800</div>
+                    </a>
+
+                    <a class="product-card" href="product-shoe-eole.html">
+                        <div class="product-image">
+                            <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                        </div>
+                        <div class="product-brand">GALLERY</div>
+                        <h3 class="product-title">EOLE Shoe</h3>
+                        <div class="product-price">¥62,000</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script>
+        const header = document.querySelector('header');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const heroCards = document.querySelectorAll('[data-hero-speed]');
+        const brandOrbit = document.querySelector('.brand-orbit');
+        const stories = document.querySelectorAll('[data-story]');
+        const productCards = document.querySelectorAll('.product-card');
+        let ticking = false;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function smoothstep(value) {
+            const x = clamp(value, 0, 1);
+            return x * x * (3 - 2 * x);
+        }
+
+        function setHeaderState() {
+            if (window.scrollY > 50) {
+                header.style.padding = '0.55rem 5%';
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
+            } else {
+                header.style.padding = '1rem 5%';
+                header.style.boxShadow = 'none';
+            }
+        }
+
+        function updateHero() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+
+            const rect = hero.getBoundingClientRect();
+            const progress = clamp(-rect.top / rect.height, 0, 1);
+
+            heroCards.forEach((card) => {
+                const speed = Number(card.dataset.heroSpeed) || 0;
+                card.style.setProperty('--hero-y', `${progress * speed * 520}px`);
+                card.style.setProperty('--hero-scale', `${1 + progress * 0.08}`);
+            });
+
+            if (brandOrbit) {
+                brandOrbit.style.setProperty('--hero-logo-y', `${progress * -120}px`);
+            }
+        }
+
+        function updateStories() {
+            stories.forEach((story, index) => {
+                const rect = story.getBoundingClientRect();
+                const travel = Math.max(rect.height - window.innerHeight, 1);
+                const progress = clamp(-rect.top / travel, 0, 1);
+                const mediaProgress = smoothstep(progress);
+
+                const copy = story.querySelector('.story-copy');
+                const product = story.querySelector('.story-product');
+                const badge = story.querySelector('.story-badge');
+                const direction = index % 2 === 0 ? 1 : -1;
+                const imageIn = smoothstep((progress + 0.02) / 0.16);
+                const imageOut = 1 - smoothstep((progress - 0.78) / 0.18);
+                const imageVisible = clamp(imageIn * imageOut, 0, 1);
+                const titleIn = smoothstep((progress + 0.04) / 0.16);
+                const titleOut = 1 - smoothstep((progress - 0.72) / 0.22);
+                const bodyIn = smoothstep((progress - 0.06) / 0.18);
+                const bodyOut = 1 - smoothstep((progress - 0.78) / 0.18);
+                const buttonIn = smoothstep((progress - 0.18) / 0.18);
+                const buttonOut = 1 - smoothstep((progress - 0.8) / 0.16);
+
+                if (copy) {
+                    copy.style.setProperty('--copy-opacity', clamp(titleIn * titleOut, 0, 1));
+                    copy.style.setProperty('--copy-x', `${direction * (1 - mediaProgress) * -34}px`);
+                    copy.style.setProperty('--copy-y', `${(1 - titleIn) * 118 - (1 - titleOut) * 96}px`);
+                    copy.style.setProperty('--copy-scale', `${0.92 + titleIn * 0.08}`);
+                    copy.style.setProperty('--kicker-opacity', clamp(smoothstep(progress / 0.12) * titleOut, 0, 1));
+                    copy.style.setProperty('--kicker-y', `${(1 - smoothstep(progress / 0.12)) * 72 - (1 - titleOut) * 64}px`);
+                    copy.style.setProperty('--title-opacity', clamp(titleIn * titleOut, 0, 1));
+                    copy.style.setProperty('--title-y', `${(1 - titleIn) * 150 - (1 - titleOut) * 170}px`);
+                    copy.style.setProperty('--text-opacity', clamp(bodyIn * bodyOut, 0, 1));
+                    copy.style.setProperty('--text-y', `${(1 - bodyIn) * 110 - (1 - bodyOut) * 120}px`);
+                    copy.style.setProperty('--button-opacity', clamp(buttonIn * buttonOut, 0, 1));
+                    copy.style.setProperty('--button-y', `${(1 - buttonIn) * 82 - (1 - buttonOut) * 88}px`);
+                }
+
+                if (product) {
+                    product.style.setProperty('--product-opacity', imageVisible);
+                    product.style.setProperty('--product-x', `${direction * (150 - mediaProgress * 230)}px`);
+                    product.style.setProperty('--product-y', `${126 - mediaProgress * 210}px`);
+                    product.style.setProperty('--product-scale', `${0.66 + mediaProgress * 0.54}`);
+                    product.style.setProperty('--product-rotate', `${direction * (8 - mediaProgress * 13)}deg`);
+                }
+
+                if (badge) {
+                    const badgeIn = smoothstep((progress - 0.14) / 0.18);
+                    const badgeOut = 1 - smoothstep((progress - 0.76) / 0.18);
+                    badge.style.setProperty('--badge-opacity', clamp(badgeIn * badgeOut, 0, 1));
+                    badge.style.setProperty('--badge-y', `${(1 - badgeIn) * 58}px`);
+                    badge.style.setProperty('--badge-scale', `${0.82 + badgeIn * 0.18}`);
+                }
+            });
+        }
+
+        function updatePage() {
+            setHeaderState();
+            if (!reduceMotion) {
+                updateHero();
+                updateStories();
+            }
+        }
+
+        function requestUpdate() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                updatePage();
+                ticking = false;
+            });
+        }
+
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate);
+        updatePage();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.16 });
+
+        productCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.08}s`;
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
