@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | GALLERY EC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --line: #e5e5e5;
+            --blue: #2563eb;
+            --soft: #f4f7fb;
+            --image-bg: #f3f4f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+            transition: padding 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2.4rem;
+            list-style: none;
+        }
+
+        .nav-list a {
+            position: relative;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.35s ease;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            transition: width 0.35s ease;
+        }
+
+        .nav-list a:hover,
+        .nav-list a.active {
+            color: var(--blue);
+        }
+
+        .nav-list a:hover::after,
+        .nav-list a.active::after {
+            width: 100%;
+        }
+
+        .mobile-gallery {
+            display: none;
+            min-width: 92px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--blue);
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        main {
+            flex: 1;
+            padding-top: 130px;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .about-hero {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem 5% 4rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.35rem;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--text);
+        }
+
+        h1 {
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .lead {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 2;
+            letter-spacing: 0.5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Card Section Styles */
+        .cards-container {
+            display: flex;
+            gap: 3rem;
+            width: 100%;
+            max-width: 900px;
+            padding: 0 5%;
+            margin-bottom: 4rem;
+            justify-content: center;
+            animation: fadeUp 0.8s 0.15s ease both;
+        }
+
+        .brand-card {
+            flex: 1;
+            max-width: 380px;
+            aspect-ratio: 4 / 3;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .brand-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--blue);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        .brand-card.active {
+            border-color: var(--blue);
+            box-shadow: 0 20px 45px rgba(37, 99, 235, 0.08);
+        }
+
+        .brand-card.active::after {
+            transform: scaleX(1);
+        }
+
+        .brand-card img {
+            max-width: 80%;
+            max-height: 96px;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+
+        .brand-card:hover img,
+        .brand-card.active img {
+            transform: scale(1.05);
+            filter: grayscale(0);
+            opacity: 1;
+        }
+
+
+
+        /* Detail Panel Styles */
+        .details-wrapper {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 5%;
+            position: relative;
+            min-height: 320px;
+        }
+
+        .brand-detail {
+            position: absolute;
+            top: 0;
+            left: 5%;
+            right: 5%;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+        }
+
+        .brand-detail.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            position: relative;
+            left: 0;
+            right: 0;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-brand-title {
+            font-size: 1.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .detail-logo {
+            max-height: 40px;
+            max-width: 150px;
+            object-fit: contain;
+        }
+
+        .detail-tagline {
+            font-size: 1.15rem;
+            color: var(--blue);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-desc {
+            color: var(--muted);
+            font-size: 0.96rem;
+            line-height: 2;
+            letter-spacing: 0.8px;
+            margin-bottom: 2rem;
+        }
+
+        .detail-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .keyword-tag {
+            background: var(--soft);
+            color: var(--muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(26, 26, 26, 0.05);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 2rem;
+            border: 1px solid var(--text);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: var(--text);
+            color: var(--bg);
+            transition: all 0.35s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--blue);
+            background: var(--blue);
+            color: var(--bg);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 1.5rem 5%;
+            border-top: 1px solid var(--line);
+            color: #8a8a8a;
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+            background: #ffffff;
+            margin-top: auto;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.85rem 4%;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .nav-list {
+                display: none;
+            }
+
+            .mobile-gallery {
+                display: grid;
+            }
+
+            main {
+                padding-top: 100px;
+                padding-bottom: 60px;
+            }
+
+            .about-hero {
+                padding-bottom: 2.5rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .lead {
+                font-size: 0.94rem;
+            }
+
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                margin-bottom: 2.5rem;
+            }
+
+            .brand-card {
+                width: 100%;
+                max-width: 320px;
+                aspect-ratio: 16 / 9;
+                padding: 1.5rem;
+            }
+
+            .brand-detail {
+                padding: 2rem 1.5rem;
+            }
+
+            .detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding-bottom: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .detail-brand-title {
+                font-size: 1.5rem;
+            }
+
+            .detail-logo {
+                max-height: 32px;
+            }
+
+            .detail-tagline {
+                font-size: 1rem;
+            }
+
+            .detail-desc {
+                font-size: 0.88rem;
+                line-height: 1.8;
+                margin-bottom: 1.5rem;
+            }
+
+            .detail-keywords {
+                margin-bottom: 2rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a class="logo" href="index.html">GALLERY<span>.</span></a>
+        <nav aria-label="Main navigation">
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="about.html">About Us</a></li>
+                <li><a href="Gallery EC.html">Gallery EC</a></li>
+            </ul>
+            <a class="mobile-gallery" href="Gallery EC.html" aria-label="Products">PRODUCT</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <div class="about-hero-content">
+                <span class="eyebrow">Identity & Philosophy</span>
+                <h1>ABOUT US</h1>
+                <p class="lead">GALLERY. は、洗練された静寂を纏う「EOLE」と、夜のストリートの鼓動を伝える「OKURIH」の2つのブランドを展開するコンセプトストアです。それぞれ異なる表現でありながら、妥協のないクラフトマンシップと本質的な美しさにおいて深く結びついています。</p>
+            </div>
+        </section>
+
+        <section class="cards-container" aria-label="Brand selectors">
+            <div class="brand-card" data-brand="eole" tabindex="0" role="button" aria-pressed="false">
+                <img src="images/logo/EOLE 1.png" alt="EOLE Logo">
+            </div>
+            <div class="brand-card" data-brand="okurih" tabindex="0" role="button" aria-pressed="false">
+                <img src="images/logo/Okurih.png" alt="OKURIH Logo">
+            </div>
+        </section>
+
+        <div class="details-wrapper">
+            <!-- EOLE Detail Panel -->
+            <article class="brand-detail" id="detail-eole" aria-hidden="true">
+                <div class="detail-header">
+                    <h2 class="detail-brand-title">EOLE</h2>
+                    <img class="detail-logo" src="images/logo/EOLE 1.png" alt="EOLE Brand Logo">
+                </div>
+                <h3 class="detail-tagline">Silence becomes a statement.</h3>
+                <p class="detail-desc">
+                    EOLE（エオール）が追求するのは、過度な装飾を排した引き算の美学です。<br>
+                    余計なものを削ぎ落とし、本質だけを残す。洗練された上質な素材と、普遍的なシルエット。<br>
+                    袖を通した瞬間に静かな気品をもたらし、流行に左右されず長く愛用できる、現代的なエレガンスを提案します。
+                </p>
+                <div class="detail-keywords">
+                    <span class="keyword-tag">Minimalism</span>
+                    <span class="keyword-tag">Refined Silhouette</span>
+                    <span class="keyword-tag">Premium Materials</span>
+                    <span class="keyword-tag">Silent Elegance</span>
+                </div>
+                <a href="Gallery EC.html?brand=eole" class="btn">Explore Collection</a>
+            </article>
+
+            <!-- OKURIH Detail Panel -->
+            <article class="brand-detail" id="detail-okurih" aria-hidden="true">
+                <div class="detail-header">
+                    <h2 class="detail-brand-title">OKURIH</h2>
+                    <img class="detail-logo" src="images/logo/Okurih.png" alt="OKURIH Brand Logo">
+                </div>
+                <h3 class="detail-tagline">Built for the city after dark.</h3>
+                <p class="detail-desc">
+                    OKURIH（オクリ）は、音楽やストリートカルチャーから生まれた自由で力強い表現です。<br>
+                    ルーズでありながらも計算された絶妙なシルエットと、夜の街に映えるエッジの効いたストリートディテール。<br>
+                    力を抜きながらも確かな存在感を放ち、ルールに縛られない個性を引き出すスタイルを提案します。
+                </p>
+                <div class="detail-keywords">
+                    <span class="keyword-tag">Street Vibe</span>
+                    <span class="keyword-tag">Music Culture</span>
+                    <span class="keyword-tag">Relaxed Design</span>
+                    <span class="keyword-tag">City After Dark</span>
+                </div>
+                <a href="Gallery EC.html?brand=okurih" class="btn">Explore Collection</a>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.brand-card');
+        const details = document.querySelectorAll('.brand-detail');
+
+        function showBrand(brandId) {
+            cards.forEach(card => {
+                const isActive = card.dataset.brand === brandId;
+                card.classList.toggle('active', isActive);
+                card.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            details.forEach(detail => {
+                const isMatch = detail.id === `detail-${brandId}`;
+                detail.classList.toggle('show', isMatch);
+                detail.setAttribute('aria-hidden', isMatch ? 'false' : 'true');
+            });
+        }
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                showBrand(card.dataset.brand);
+            });
+
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    showBrand(card.dataset.brand);
+                }
+            });
+        });
+
+        // Initialize with EOLE detail shown
+        showBrand('eole');
+
+        // Simple header show/hide scroll behavior
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const currentY = window.scrollY;
+            const header = document.querySelector('header');
+            const mobileHeader = window.matchMedia('(max-width: 768px)').matches;
+            const compactPadding = mobileHeader ? '0.65rem 4%' : '0.5rem 5%';
+            const normalPadding = mobileHeader ? '0.85rem 4%' : '1rem 5%';
+
+            if (currentY > lastScrollY && currentY > 90) {
+                header.style.transform = 'translateY(-110%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+
+            if (currentY > 50) {
+                header.style.padding = compactPadding;
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
+            } else {
+                header.style.padding = normalPadding;
+                header.style.boxShadow = 'none';
+            }
+
+            lastScrollY = currentY;
+        });
+    </script>
+</body>
+</html>

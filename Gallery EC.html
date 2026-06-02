@@ -729,7 +729,19 @@
         }
 
         renderCards();
-        applyFilter('brand-eole', document.querySelector('[data-filter="brand-eole"]'));
+        
+        // Parse URL query parameter for initial filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const brandParam = urlParams.get('brand');
+        let initialFilter = 'brand-eole';
+        let initialLink = document.querySelector('[data-filter="brand-eole"]');
+        
+        if (brandParam === 'okurih') {
+            initialFilter = 'brand-okurih';
+            initialLink = document.querySelector('[data-filter="brand-okurih"]');
+        }
+        
+        applyFilter(initialFilter, initialLink);
 
         navLinks.forEach((link) => {
             link.addEventListener('click', (event) => {

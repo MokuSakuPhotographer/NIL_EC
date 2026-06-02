@@ -6,6 +6,15 @@ const PRODUCTS = {
         priceEx: 8800,
         white: 'images/product/bag/bag-geometry.webp',
         black: '',
+        gallery: {
+            White: [
+                'images/product/bag/bag-geometry.webp',
+                'images/product/bag/bag-geometry-Model1.webp',
+                'images/product/bag/bag-geometry-Model2.webp',
+                'images/product/bag/bag-geometry-Model3.webp'
+            ]
+        },
+        hideColorOptions: true,
         sizes: ['One Size'],
         activeSize: 'One Size',
         material: 'High-density polyester canvas / synthetic leather trim',
@@ -486,10 +495,15 @@ function renderProduct() {
     setGalleryImages(imagesForColor(product, 'White'), 'White', false);
 
     const colorOptions = document.getElementById('color-options');
+    const colorGroup = colorOptions.closest('.options-group');
     colorOptions.innerHTML = '';
     const variants = [{ color: 'White', image: product.white, swatch: '#ffffff' }];
     if (product.black) {
         variants.push({ color: 'Black', image: product.black, swatch: '#000000' });
+    }
+
+    if (colorGroup) {
+        colorGroup.hidden = Boolean(product.hideColorOptions);
     }
 
     variants.forEach((variant, index) => {
