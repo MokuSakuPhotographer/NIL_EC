@@ -23,6 +23,20 @@ const PRODUCTS = {
         priceEx: 9800,
         white: 'images/product/hoodie/hoodie-Heart.webp',
         black: 'images/product/hoodie/hoodie-heart-B.webp',
+        gallery: {
+            White: [
+                'images/product/hoodie/hoodie-Heart.webp',
+                'images/product/hoodie/hoodie-Heart-Model1.webp',
+                'images/product/hoodie/hoodie-Heart-Model2.webp',
+                'images/product/hoodie/hoodie-Heart-Model3.webp'
+            ],
+            Black: [
+                'images/product/hoodie/hoodie-heart-B.webp',
+                'images/product/hoodie/hoodie-Heart-B-Model1.webp',
+                'images/product/hoodie/hoodie-Heart-B-Model2.webp',
+                'images/product/hoodie/hoodie-Heart-B-Model3.webp'
+            ]
+        },
         sizes: ['S', 'M', 'L', 'XL'],
         activeSize: 'M',
         material: 'Heavy cotton fleece blend',
@@ -232,26 +246,121 @@ function getProduct() {
     return PRODUCTS[key] || PRODUCTS['tshirt-geometry'];
 }
 
-function setImage(src, color) {
-    const image = document.getElementById('product-image');
-    const colorLabel = document.getElementById('selected-color');
+let activeGalleryImages = [];
+let activeGalleryIndex = 0;
+let activeGalleryColor = 'White';
+let galleryTouchStartX = 0;
 
-    image.style.opacity = '0';
-    window.setTimeout(() => {
-        image.src = src;
-        image.alt = `${getProduct().name} ${color}`;
+function ensureGalleryControls() {
+    const wrapper = document.querySelector('.product-image-wrapper');
+    if (!wrapper || wrapper.querySelector('.gallery-arrow')) return;
+
+    const prev = document.createElement('button');
+    prev.className = 'gallery-arrow gallery-prev';
+    prev.type = 'button';
+    prev.setAttribute('aria-label', 'Previous image');
+    prev.textContent = '\u2039';
+    prev.addEventListener('click', () => moveGallery(-1));
+
+    const next = document.createElement('button');
+    next.className = 'gallery-arrow gallery-next';
+    next.type = 'button';
+    next.setAttribute('aria-label', 'Next image');
+    next.textContent = '\u203a';
+    next.addEventListener('click', () => moveGallery(1));
+
+    const dots = document.createElement('div');
+    dots.className = 'gallery-dots';
+    dots.setAttribute('aria-label', 'Image position');
+
+    wrapper.append(prev, next, dots);
+    wrapper.addEventListener('touchstart', (event) => {
+        galleryTouchStartX = event.touches[0]?.clientX || 0;
+    }, { passive: true });
+    wrapper.addEventListener('touchend', (event) => {
+        const endX = event.changedTouches[0]?.clientX || 0;
+        const diff = endX - galleryTouchStartX;
+        if (Math.abs(diff) > 42) {
+            moveGallery(diff > 0 ? -1 : 1);
+        }
+    }, { passive: true });
+}
+
+function imagesForColor(product, color) {
+    if (product.gallery?.[color]) return product.gallery[color];
+    if (color === 'Black') return [product.black].filter(Boolean);
+    return [product.white].filter(Boolean);
+}
+
+function updateGalleryDots() {
+    const dots = document.querySelector('.gallery-dots');
+    if (!dots) return;
+
+    dots.innerHTML = activeGalleryImages.map((_, index) => `
+        <button class="gallery-dot${index === activeGalleryIndex ? ' active' : ''}" type="button" aria-label="${index + 1}枚目"></button>
+    `).join('');
+
+    dots.querySelectorAll('.gallery-dot').forEach((dot, index) => {
+        dot.addEventListener('click', () => showGalleryImage(index));
+    });
+}
+
+function updateGalleryControls() {
+    const hasMultipleImages = activeGalleryImages.length > 1;
+    document.querySelectorAll('.gallery-arrow').forEach((button) => {
+        button.hidden = !hasMultipleImages;
+    });
+
+    const dots = document.querySelector('.gallery-dots');
+    if (dots) {
+        dots.hidden = !hasMultipleImages;
+    }
+}
+
+function showGalleryImage(index, animate = true) {
+    const image = document.getElementById('product-image');
+    if (!image || !activeGalleryImages.length) return;
+
+    activeGalleryIndex = (index + activeGalleryImages.length) % activeGalleryImages.length;
+
+    const applyImage = () => {
+        image.src = activeGalleryImages[activeGalleryIndex];
+        image.alt = `${getProduct().name} ${activeGalleryColor} ${activeGalleryIndex + 1}`;
         image.style.opacity = '1';
-    }, 160);
+        updateGalleryDots();
+        updateGalleryControls();
+    };
+
+    if (animate) {
+        image.style.opacity = '0';
+        window.setTimeout(applyImage, 160);
+    } else {
+        applyImage();
+    }
+}
+
+function setGalleryImages(images, color, animate = true) {
+    const colorLabel = document.getElementById('selected-color');
+    activeGalleryImages = images;
+    activeGalleryIndex = 0;
+    activeGalleryColor = color;
 
     if (colorLabel) {
         colorLabel.textContent = color;
     }
+
+    showGalleryImage(0, animate);
+}
+
+function moveGallery(direction) {
+    if (activeGalleryImages.length <= 1) return;
+    showGalleryImage(activeGalleryIndex + direction);
 }
 
 function selectColor(button) {
     document.querySelectorAll('.color-btn').forEach((btn) => btn.classList.remove('active'));
     button.classList.add('active');
-    setImage(button.dataset.image, button.dataset.color);
+    setGalleryImages(imagesForColor(getProduct(), button.dataset.color), button.dataset.color);
 }
 
 function selectSize(button) {
@@ -281,7 +390,7 @@ function sizeTableHtml(product) {
                 ${rows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('')}
             </tbody>
         </table>
-        <p class="table-note">単位: cm。製品の特性上、多少の個体差が生じる場合があります。</p>
+        <p class="table-note">単位: cm。商品の特性上、多少の個体差が生じる場合があります。</p>
     `;
 }
 
@@ -373,9 +482,8 @@ function renderProduct() {
         caption.textContent = 'この商品は現在売り切れです。再入荷までお待ちください。';
     }
 
-    const image = document.getElementById('product-image');
-    image.src = product.white;
-    image.alt = `${product.name} White`;
+    ensureGalleryControls();
+    setGalleryImages(imagesForColor(product, 'White'), 'White', false);
 
     const colorOptions = document.getElementById('color-options');
     colorOptions.innerHTML = '';
