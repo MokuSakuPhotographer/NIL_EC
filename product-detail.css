@@ -282,20 +282,6 @@ header.header-hidden {
     transform: scale(1.25);
 }
 
-.sold-out-ribbon {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    z-index: 3;
-    padding: 0.52rem 1.1rem;
-    background: rgba(0,0,0,0.86);
-    color: #ffffff;
-    border-radius: 2px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
-
 .product-info {
     padding-top: 2rem;
     min-width: 0;

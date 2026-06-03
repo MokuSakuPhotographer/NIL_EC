@@ -237,7 +237,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: border-color 0.6s ease, box-shadow 0.6s ease, transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .brand-card::after {
@@ -249,7 +249,7 @@
             height: 3px;
             background: var(--blue);
             transform: scaleX(0);
-            transition: transform 0.4s ease;
+            transition: transform 0.6s ease;
         }
 
         .brand-card:hover {
@@ -271,7 +271,7 @@
             max-width: 80%;
             max-height: 96px;
             object-fit: contain;
-            transition: transform 0.4s ease;
+            transition: transform 0.6s ease, filter 0.6s ease, opacity 0.6s ease;
             filter: grayscale(100%);
             opacity: 0.6;
         }
@@ -290,15 +290,11 @@
             width: 100%;
             max-width: 900px;
             padding: 0 5%;
-            position: relative;
-            min-height: 320px;
+            display: grid;
         }
 
         .brand-detail {
-            position: absolute;
-            top: 0;
-            left: 5%;
-            right: 5%;
+            grid-area: 1 / 1;
             background: #ffffff;
             border: 1px solid var(--line);
             border-radius: 6px;
@@ -306,17 +302,17 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+            pointer-events: none;
+            transform: translateY(18px);
+            transition: opacity 0.85s ease, transform 0.85s ease, visibility 0s linear 0.85s;
         }
 
         .brand-detail.show {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
             transform: translateY(0);
-            position: relative;
-            left: 0;
-            right: 0;
+            transition: opacity 0.85s ease, transform 0.85s ease, visibility 0s;
         }
 
         .detail-header {
@@ -354,25 +350,6 @@
             line-height: 2;
             letter-spacing: 0.8px;
             margin-bottom: 2rem;
-        }
-
-        .detail-keywords {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .keyword-tag {
-            background: var(--soft);
-            color: var(--muted);
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 0.4rem 1rem;
-            border-radius: 999px;
-            border: 1px solid rgba(26, 26, 26, 0.05);
         }
 
         .btn {
@@ -505,10 +482,6 @@
                 margin-bottom: 1.5rem;
             }
 
-            .detail-keywords {
-                margin-bottom: 2rem;
-            }
-
             footer {
                 flex-direction: column;
                 gap: 1rem;
@@ -589,6 +562,7 @@
                     <ul class="dropdown">
                         <li><a href="Gallery EC.html?filter=eole-tops">Tops</a></li>
                         <li><a href="Gallery EC.html?filter=eole-shoes">Shoes</a></li>
+                        <li><a href="Gallery EC.html?filter=eole-bags">Bags</a></li>
                     </ul>
                 </li>
                 <li class="has-dropdown">
@@ -640,12 +614,6 @@
                     余計なものを削ぎ落とし、本質だけを残す。洗練された上質な素材と、普遍的なシルエット。<br>
                     袖を通した瞬間に静かな気品をもたらし、流行に左右されず長く愛用できる、現代的なエレガンスを提案します。
                 </p>
-                <div class="detail-keywords">
-                    <span class="keyword-tag">Minimalism</span>
-                    <span class="keyword-tag">Refined Silhouette</span>
-                    <span class="keyword-tag">Premium Materials</span>
-                    <span class="keyword-tag">Silent Elegance</span>
-                </div>
                 <a href="Gallery EC.html?brand=eole" class="btn">Explore Collection</a>
             </article>
 
@@ -661,12 +629,6 @@
                     ルーズでありながらも計算された絶妙なシルエットと、夜の街に映えるエッジの効いたストリートディテール。<br>
                     力を抜きながらも確かな存在感を放ち、ルールに縛られない個性を引き出すスタイルを提案します。
                 </p>
-                <div class="detail-keywords">
-                    <span class="keyword-tag">Street Vibe</span>
-                    <span class="keyword-tag">Music Culture</span>
-                    <span class="keyword-tag">Relaxed Design</span>
-                    <span class="keyword-tag">City After Dark</span>
-                </div>
                 <a href="Gallery EC.html?brand=okurih" class="btn">Explore Collection</a>
             </article>
         </div>

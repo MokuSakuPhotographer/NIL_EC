@@ -29,7 +29,7 @@ const PRODUCTS = {
         brand: 'OKURIH',
         name: 'Heart Hoodie',
         category: 'Hoodie',
-        priceEx: 9800,
+        priceEx: 6800,
         white: 'images/product/hoodie/hoodie-Heart.webp',
         black: 'images/product/hoodie/hoodie-heart-B.webp',
         gallery: {
@@ -60,7 +60,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Geometry T-Shirt',
         category: 'T-Shirt',
-        priceEx: 36000,
+        priceEx: 11500,
         white: 'images/product/shirt/tshirt-geometry.webp',
         black: 'images/product/shirt/tshirt-geometry-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -75,7 +75,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Geometry Marble T-Shirt',
         category: 'T-Shirt',
-        priceEx: 42000,
+        priceEx: 12000,
         white: 'images/product/shirt/tshirt-geometry-marble.webp',
         black: 'images/product/shirt/tshirt-geometry-marble-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -90,7 +90,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Logo Collage T-Shirt',
         category: 'T-Shirt',
-        priceEx: 39000,
+        priceEx: 11500,
         white: 'images/product/shirt/tshirt-logo-collage.webp',
         black: 'images/product/shirt/tshirt-logo-collage-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -103,9 +103,9 @@ const PRODUCTS = {
     },
     'tshirt-logo-collage2': {
         brand: 'EOLE',
-        name: 'Logo Collage 2 T-Shirt',
+        name: 'Logo Collage Due T-Shirt',
         category: 'T-Shirt',
-        priceEx: 41000,
+        priceEx: 11500,
         white: 'images/product/shirt/tshirt-logo-collage2.webp',
         black: 'images/product/shirt/tshirt-logo-collage2-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -120,7 +120,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Luna Logo T-Shirt',
         category: 'T-Shirt',
-        priceEx: 38000,
+        priceEx: 12000,
         white: 'images/product/shirt/tshirt-luna-logo.webp',
         black: 'images/product/shirt/tshirt-luna-logo-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -133,9 +133,9 @@ const PRODUCTS = {
     },
     'tshirt-luna-logo2': {
         brand: 'EOLE',
-        name: 'Luna Logo 2 T-Shirt',
+        name: 'Luna Logo Due T-Shirt',
         category: 'T-Shirt',
-        priceEx: 40000,
+        priceEx: 12000,
         white: 'images/product/shirt/tshirt-luna-logo2.webp',
         black: 'images/product/shirt/tshirt-luna-logo2-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -150,7 +150,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Marble T-Shirt',
         category: 'T-Shirt',
-        priceEx: 46000,
+        priceEx: 12000,
         white: 'images/product/shirt/tshirt-marble.webp',
         black: 'images/product/shirt/tshirt-marble-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -165,7 +165,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'Polo T-Shirt',
         category: 'T-Shirt',
-        priceEx: 44000,
+        priceEx: 13800,
         white: 'images/product/shirt/tshirt-polo.webp',
         black: 'images/product/shirt/tshirt-polo-B.webp',
         sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -180,7 +180,7 @@ const PRODUCTS = {
         brand: 'EOLE',
         name: 'EOLE Shoe',
         category: 'Shoe',
-        priceEx: 62000,
+        priceEx: 26500,
         white: 'images/product/shoe/shoe-eole.webp',
         black: 'images/product/shoe/shoe-eole-B.webp',
         sizes: ['24', '24.5', '25', '25.5', '26', '26.5', '27', '27.5', '28'],
@@ -192,6 +192,64 @@ const PRODUCTS = {
         description: 'EOLEのミニマルな世界観を足元へ落とし込んだシューズ。上質なレザーの表面感と抑制されたフォルムが、スタイル全体を引き締めます。',
         points: ['装飾を抑えたクリーンなフォルムです。', '白黒どちらも上品なスタイリングに馴染む落ち着いた表情です。', '重く見えすぎないバランスで、足元に存在感を持たせています。'],
         care: ['柔らかい布で汚れを拭き取ってください。', '濡れた場合は風通しの良い日陰で乾かしてください。', '保管時は形を整え、直射日光を避けてください。']
+    },
+    'bag-tote': {
+        brand: 'EOLE',
+        name: 'Tote Bag',
+        category: 'Bag',
+        priceEx: 24000,
+        white: 'images/product/bag/Tote Bag.webp',
+        black: '',
+        gallery: {
+            White: [
+                'images/product/bag/Tote Bag.webp',
+                'images/product/bag/Tote Bag-Model1.webp',
+                'images/product/bag/Tote Bag-Model2.webp',
+                'images/product/bag/Tote Bag-Model3.webp',
+                'images/product/bag/Tote Bag-Model4.webp'
+            ]
+        },
+        hideColorOptions: true,
+        sizes: ['One Size'],
+        activeSize: 'One Size',
+        sizeRows: [['One Size', '36', '42', '14', '58']],
+        sizeHeaders: ['Size', 'Height', 'Width', 'Depth', 'Handle'],
+        material: 'Water-repellent nylon twill / recycled leather trim',
+        origin: 'Japan',
+        materialNote: '軽さと上品な表面感を両立したナイロンツイルを使用。荷物を入れても形が崩れにくいよう、底まわりとハンドルに適度な張りを持たせています。',
+        link: 'product-bag-tote.html',
+        description: 'EOLEのミニマルなムードを日常使いの容量に落とし込んだトートバッグ。ノートPCや羽織りものまで収まり、装いをすっきり見せる縦横のバランスに仕上げています。',
+        points: ['A4サイズや薄型ノートPCが収まりやすい、デイリーに使える容量です。', '開口部は荷物を出し入れしやすく、内側には小物用ポケットを備えています。', '肩掛けでも手持ちでも使いやすい長さのハンドルに設定しています。'],
+        care: ['汚れは柔らかい布で軽く拭き取ってください。', '水濡れした場合は形を整え、風通しの良い日陰で乾かしてください。', '保管時は中に詰め物を入れ、直射日光と高温多湿を避けてください。']
+    },
+    'bag-hobo': {
+        brand: 'EOLE',
+        name: 'Hobo Bag',
+        category: 'Bag',
+        priceEx: 19800,
+        white: 'images/product/bag/Hobo Bag.webp',
+        black: '',
+        gallery: {
+            White: [
+                'images/product/bag/Hobo Bag.webp',
+                'images/product/bag/Hobo Bag-Model1.webp',
+                'images/product/bag/Hobo Bag-Model2.webp',
+                'images/product/bag/Hobo Bag-Model3.webp',
+                'images/product/bag/Hobo Bag-Model4.webp'
+            ]
+        },
+        hideColorOptions: true,
+        sizes: ['One Size'],
+        activeSize: 'One Size',
+        sizeRows: [['One Size', '28', '34', '10', '72']],
+        sizeHeaders: ['Size', 'Height', 'Width', 'Depth', 'Strap'],
+        material: 'Soft vegan leather / cotton blend lining',
+        origin: 'Japan',
+        materialNote: 'しなやかなヴィーガンレザーを使い、体に沿う柔らかな落ち感を出しています。内装は荷物を傷つけにくいコットンブレンドのライニングです。',
+        link: 'product-bag-hobo.html',
+        description: '肩に自然になじむカーブラインが特徴のEOLE Hobo Bag。コンパクトに見えながら財布、スマートフォン、ポーチまで収まる、外出にちょうどよいサイズです。',
+        points: ['肩掛けしたときに体へ沿う、柔らかなワンショルダー形状です。', 'メイン収納は日常の必需品をまとめやすいマチ付き仕様です。', '装飾を抑えたデザインで、カジュアルにもドレス寄りにも合わせやすくしています。'],
+        care: ['使用後は乾いた柔らかい布で表面を整えてください。', '強い摩擦や長時間の水濡れは色移りや風合い変化の原因になります。', '保管時はストラップに負荷がかからないよう、平らな場所で形を整えてください。']
     }
 };
 
@@ -390,8 +448,8 @@ function listHtml(items) {
 }
 
 function sizeTableHtml(product) {
-    const headers = SIZE_HEADERS[product.category] || SIZE_HEADERS['T-Shirt'];
-    const rows = SIZE_TABLES[product.category] || SIZE_TABLES['T-Shirt'];
+    const headers = product.sizeHeaders || SIZE_HEADERS[product.category] || SIZE_HEADERS['T-Shirt'];
+    const rows = product.sizeRows || SIZE_TABLES[product.category] || SIZE_TABLES['T-Shirt'];
     return `
         <table class="size-table">
             <thead><tr>${headers.map((head) => `<th>${head}</th>`).join('')}</tr></thead>
@@ -468,7 +526,7 @@ function renderRecommendations(product) {
                     </div>
                     <div class="recommend-brand">${item.brand}</div>
                     <h3 class="recommend-name">${item.name}</h3>
-                    <div class="recommend-price">${yen(item.priceEx)} <span class="tax-label">+\u7a0e</span></div>
+                    <div class="recommend-price">${yen(item.priceEx)} <span class="tax-label">(税込)</span></div>
                 </a>
             `).join('')}
         </div>
@@ -482,7 +540,7 @@ function renderProduct() {
     document.title = `${product.name} | GALLERY EC`;
     document.getElementById('brand').textContent = product.brand;
     document.getElementById('title').textContent = product.name;
-    document.getElementById('price-ex').innerHTML = `${yen(product.priceEx)} <span class="tax-label">+\u7a0e</span>`;
+    document.getElementById('price-ex').innerHTML = `${yen(product.priceEx)} <span class="tax-label">(税込)</span>`;
     document.getElementById('price-in').textContent = '';
     document.getElementById('description').textContent = product.description;
 
