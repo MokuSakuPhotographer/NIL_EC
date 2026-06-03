@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +47,7 @@
             width: 100%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 1rem 5%;
             background: rgba(255,255,255,0.95);
             border-bottom: 1px solid var(--border-color);
@@ -72,6 +72,8 @@
 
         .nav-list {
             display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 2.5rem;
         }
 
@@ -447,12 +449,13 @@
 
         @media (max-width: 768px) {
             header {
-                display: block;
+                display: flex;
+                justify-content: center;
                 padding: 0.85rem 4%;
             }
 
             .logo {
-                display: block;
+                display: none;
                 margin-bottom: 0.75rem;
                 font-size: 1.25rem;
             }
@@ -461,6 +464,8 @@
                 display: flex;
                 gap: 0.65rem;
                 overflow-x: auto;
+                justify-content: flex-start;
+                max-width: 100%;
                 padding-bottom: 0.15rem;
                 -webkit-overflow-scrolling: touch;
             }
@@ -570,13 +575,75 @@
                 font-size: 0.84rem;
             }
         }
+        .cart-link {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-width: 44px;
+            height: 42px;
+            padding: 0 0.78rem;
+            border: 1px solid var(--line, var(--border-color, #e5e5e5));
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            color: var(--blue, var(--accent-color, #2563eb));
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(-50%);
+            transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
+        .cart-link svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-link:hover {
+            border-color: var(--blue, var(--accent-color, #2563eb));
+            background: var(--blue, var(--accent-color, #2563eb));
+            color: #ffffff;
+        }
+
+        .cart-link::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .cart-link {
+                right: 4%;
+                width: 38px;
+                min-width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .cart-link span {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <a class="logo" href="index.html">GALLERY<span>.</span></a>
         <nav>
             <ul class="nav-list">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
                 <li class="has-dropdown">
                     <a class="nav-link active" href="#" data-filter="brand-eole">EOLE</a>
                     <ul class="dropdown">
@@ -593,6 +660,13 @@
                 </li>
             </ul>
         </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
     </header>
 
     <section class="hero eole-marble">
@@ -733,10 +807,15 @@
         // Parse URL query parameter for initial filter
         const urlParams = new URLSearchParams(window.location.search);
         const brandParam = urlParams.get('brand');
+        const filterParam = urlParams.get('filter');
+        const validFilters = ['brand-eole', 'eole-tops', 'eole-shoes', 'brand-okurih', 'okurih-tops', 'okurih-acc-bags'];
         let initialFilter = 'brand-eole';
         let initialLink = document.querySelector('[data-filter="brand-eole"]');
         
-        if (brandParam === 'okurih') {
+        if (filterParam && validFilters.includes(filterParam)) {
+            initialFilter = filterParam;
+            initialLink = document.querySelector(`[data-filter="${filterParam}"]`);
+        } else if (brandParam === 'okurih') {
             initialFilter = 'brand-okurih';
             initialLink = document.querySelector('[data-filter="brand-okurih"]');
         }

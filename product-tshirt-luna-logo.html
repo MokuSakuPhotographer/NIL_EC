@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -8,8 +8,31 @@
 </head>
 <body data-product="tshirt-luna-logo">
     <header>
-        <a class="logo" href="index.html">GALLERY<span>.</span></a>
-        <a href="Gallery EC.html" class="nav-back">Back to Gallery</a>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">HOME</a>
+            <a href="about.html">ABOUT US</a>
+            <div class="site-dropdown">
+                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=eole">EOLE</a>
+                <div class="site-dropdown-menu">
+                    <a href="Gallery EC.html?filter=eole-tops">Tops</a>
+                    <a href="Gallery EC.html?filter=eole-shoes">Shoes</a>
+                </div>
+            </div>
+            <div class="site-dropdown">
+                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=okurih">OKURIH</a>
+                <div class="site-dropdown-menu">
+                    <a href="Gallery EC.html?filter=okurih-tops">Tops</a>
+                    <a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a>
+                </div>
+            </div>
+        </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
     </header>
     <main class="product-container">
         <div class="product-image-wrapper">
@@ -35,7 +58,7 @@
             </div>
             <div class="action-area anim-item d-5">
                 <button class="btn-add" disabled>SOLD OUT</button>
-                <p class="soldout-caption">???????????????????????????</p>
+                <p class="soldout-caption">この商品は現在売り切れです。再入荷までお待ちください。</p>
             </div>
             <div class="custom-accordion anim-item d-6"></div>
         </section>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -44,7 +44,7 @@
             z-index: 50;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             padding: 1rem 5%;
             background: rgba(255, 255, 255, 0.9);
             border-bottom: 1px solid var(--line);
@@ -64,8 +64,15 @@
 
         .nav-list {
             display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 2.4rem;
             list-style: none;
+        }
+
+        .nav-list > li {
+            position: relative;
+            padding: 1rem 0;
         }
 
         .nav-list a {
@@ -96,6 +103,45 @@
         .nav-list a:hover::after,
         .nav-list a.active::after {
             width: 100%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            min-width: 150px;
+            padding: 0.45rem 0;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(12px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+
+        .has-dropdown:hover .dropdown,
+        .has-dropdown:focus-within .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.68rem 1.15rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .dropdown a::after {
+            display: none;
+        }
+
+        .dropdown a:hover {
+            color: var(--blue);
         }
 
         .mobile-gallery {
@@ -382,11 +428,20 @@
             }
 
             .nav-list {
-                display: none;
+                display: flex;
+                gap: 1rem;
+            }
+
+            .nav-list a {
+                font-size: 0.74rem;
+            }
+
+            .dropdown {
+                min-width: 120px;
             }
 
             .mobile-gallery {
-                display: grid;
+                display: none;
             }
 
             main {
@@ -460,19 +515,98 @@
                 text-align: center;
             }
         }
+        .cart-link {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-width: 44px;
+            height: 42px;
+            padding: 0 0.78rem;
+            border: 1px solid var(--line, var(--border-color, #e5e5e5));
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            color: var(--blue, var(--accent-color, #2563eb));
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(-50%);
+            transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
+        .cart-link svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-link:hover {
+            border-color: var(--blue, var(--accent-color, #2563eb));
+            background: var(--blue, var(--accent-color, #2563eb));
+            color: #ffffff;
+        }
+
+        .cart-link::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .cart-link {
+                right: 4%;
+                width: 38px;
+                min-width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .cart-link span {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <a class="logo" href="index.html">GALLERY<span>.</span></a>
         <nav aria-label="Main navigation">
             <ul class="nav-list">
                 <li><a href="index.html">Home</a></li>
                 <li><a class="active" href="about.html">About Us</a></li>
-                <li><a href="Gallery EC.html">Gallery EC</a></li>
+                <li class="has-dropdown">
+                    <a href="Gallery EC.html?brand=eole">EOLE</a>
+                    <ul class="dropdown">
+                        <li><a href="Gallery EC.html?filter=eole-tops">Tops</a></li>
+                        <li><a href="Gallery EC.html?filter=eole-shoes">Shoes</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="Gallery EC.html?brand=okurih">OKURIH</a>
+                    <ul class="dropdown">
+                        <li><a href="Gallery EC.html?filter=okurih-tops">Tops</a></li>
+                        <li><a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a></li>
+                    </ul>
+                </li>
             </ul>
-            <a class="mobile-gallery" href="Gallery EC.html" aria-label="Products">PRODUCT</a>
         </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
     </header>
 
     <main>

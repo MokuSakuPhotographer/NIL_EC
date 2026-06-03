@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | GALLERY EC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --line: #e5e5e5;
+            --blue: #2563eb;
+            --soft: #f4f7fb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+        }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.4rem;
+            list-style: none;
+        }
+
+        .nav-list > li {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .nav-list a {
+            position: relative;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.35s ease;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            transition: width 0.35s ease;
+        }
+
+        .nav-list a:hover,
+        .nav-list a.active {
+            color: var(--blue);
+        }
+
+        .nav-list a:hover::after,
+        .nav-list a.active::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            min-width: 150px;
+            padding: 0.45rem 0;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(12px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+
+        .has-dropdown:hover .dropdown,
+        .has-dropdown:focus-within .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.68rem 1.15rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .dropdown a::after {
+            display: none;
+        }
+
+        .dropdown a:hover {
+            color: var(--blue);
+        }
+
+        .cart-link {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-width: 44px;
+            height: 42px;
+            padding: 0 0.78rem;
+            border: 1px solid var(--blue);
+            border-radius: 999px;
+            background: var(--blue);
+            color: #ffffff;
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(-50%);
+        }
+
+        .cart-link svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        main {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 140px 5% 80px;
+        }
+
+        .page-title {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 1.5rem;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-top: 0.35rem;
+            font-size: clamp(2.2rem, 6vw, 4.6rem);
+            font-weight: 300;
+            letter-spacing: 0;
+            line-height: 1.05;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .empty-cart {
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: clamp(2rem, 5vw, 4rem);
+            background: #ffffff;
+        }
+
+        .empty-icon {
+            display: grid;
+            place-items: center;
+            width: 72px;
+            height: 72px;
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            color: var(--blue);
+        }
+
+        .empty-icon svg {
+            width: 34px;
+            height: 34px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.55;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .empty-cart h2 {
+            margin-bottom: 0.85rem;
+            font-size: clamp(1.55rem, 3vw, 2.25rem);
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+
+        .empty-cart p {
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 1.25rem;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+        }
+
+        .btn-primary {
+            border-color: var(--blue);
+            background: var(--blue);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .summary {
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            background: var(--soft);
+        }
+
+        .summary-section {
+            padding: 1.4rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .summary-section:last-child {
+            border-bottom: 0;
+        }
+
+        .summary h2 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .line-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 0.75rem;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .line-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .notice {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .coupon-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .coupon-row input {
+            min-width: 0;
+            height: 42px;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 0 0.8rem;
+            background: #ffffff;
+            color: var(--text);
+            font: inherit;
+        }
+
+        .coupon-row button {
+            height: 42px;
+            border: 1px solid var(--text);
+            border-radius: 4px;
+            padding: 0 0.9rem;
+            background: var(--text);
+            color: #ffffff;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            border-top: 1px solid var(--line);
+            padding-top: 1rem;
+        }
+
+        .info-card h3 {
+            margin-bottom: 0.35rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .info-card p {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 900px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+                gap: 1.6rem;
+            }
+
+            .summary {
+                order: -1;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.85rem 4%;
+            }
+
+            .nav-list {
+                gap: 1rem;
+            }
+
+            .nav-list a {
+                font-size: 0.74rem;
+            }
+
+            .dropdown {
+                min-width: 120px;
+            }
+
+            .cart-link {
+                right: 4%;
+                width: 38px;
+                min-width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .cart-link span {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+
+            main {
+                padding: 118px 4% 54px;
+            }
+
+            .coupon-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav aria-label="Main navigation">
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li class="has-dropdown">
+                    <a href="Gallery EC.html?brand=eole">EOLE</a>
+                    <ul class="dropdown">
+                        <li><a href="Gallery EC.html?filter=eole-tops">Tops</a></li>
+                        <li><a href="Gallery EC.html?filter=eole-shoes">Shoes</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="Gallery EC.html?brand=okurih">OKURIH</a>
+                    <ul class="dropdown">
+                        <li><a href="Gallery EC.html?filter=okurih-tops">Tops</a></li>
+                        <li><a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
+    </header>
+
+    <main>
+        <section class="page-title">
+            <p>Shopping Bag</p>
+            <h1>Cart</h1>
+        </section>
+
+        <div class="cart-layout">
+            <section class="empty-cart" aria-labelledby="empty-cart-title">
+                <div class="empty-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+                    </svg>
+                </div>
+                <h2 id="empty-cart-title">現在、カートに商品は入っていません。</h2>
+                <p>気になるアイテムを見つけたら、商品ページからカートに追加してください。販売状況や在庫数は商品ごとに異なり、ご注文確定前に再確認されます。</p>
+                <div class="actions">
+                    <a class="btn btn-primary" href="Gallery EC.html">商品一覧へ戻る</a>
+                    <a class="btn btn-secondary" href="index.html">トップへ戻る</a>
+                </div>
+            </section>
+
+            <aside class="summary" aria-label="ご注文内容">
+                <div class="summary-section">
+                    <h2>Order Summary</h2>
+                    <div class="line-item">
+                        <span>商品点数</span>
+                        <strong>0点</strong>
+                    </div>
+                    <div class="line-item">
+                        <span>商品合計</span>
+                        <strong>¥0</strong>
+                    </div>
+                    <div class="line-item">
+                        <span>送料</span>
+                        <strong>未確定</strong>
+                    </div>
+                    <div class="line-item">
+                        <span>お支払い合計</span>
+                        <strong>¥0</strong>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <h2>Coupon</h2>
+                    <p class="notice">クーポンコードは商品を追加後、ご購入手続き前に適用できます。</p>
+                    <div class="coupon-row">
+                        <input type="text" placeholder="CODE" aria-label="クーポンコード" disabled>
+                        <button type="button" disabled>Apply</button>
+                    </div>
+                </div>
+                <div class="summary-section">
+                    <h2>Checkout</h2>
+                    <p class="notice">カート内に商品がないため、現在ご購入手続きへ進むことはできません。</p>
+                </div>
+            </aside>
+        </div>
+
+        <section class="info-grid" aria-label="ご利用案内">
+            <div class="info-card">
+                <h3>Shipping</h3>
+                <p>配送方法と送料は、お届け先とご注文内容に応じてチェックアウト時に計算されます。</p>
+            </div>
+            <div class="info-card">
+                <h3>Payment</h3>
+                <p>クレジットカード、各種オンライン決済はご購入手続き画面で選択できます。</p>
+            </div>
+            <div class="info-card">
+                <h3>Stock</h3>
+                <p>在庫はご注文確定時点で確保されます。カート投入後も完売となる場合があります。</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

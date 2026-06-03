@@ -41,11 +41,12 @@ button {
 header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding: 1rem 5%;
     transform: translateY(0);
     transition: transform 0.32s ease, padding 0.32s ease, box-shadow 0.32s ease;
@@ -58,17 +59,21 @@ header.header-hidden {
     transform: translateY(-110%);
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 2px;
+.site-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.4rem;
 }
 
-.logo span {
-    color: var(--accent-color);
+.site-dropdown {
+    position: relative;
+    padding: 1rem 0;
 }
 
-.nav-back {
+.site-nav a,
+.site-dropdown-trigger {
+    position: relative;
     font-size: 0.86rem;
     font-weight: 600;
     letter-spacing: 1px;
@@ -76,8 +81,107 @@ header.header-hidden {
     transition: color 0.3s ease;
 }
 
-.nav-back:hover {
+.site-nav a::after,
+.site-dropdown-trigger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.site-nav a:hover,
+.site-nav a.active,
+.site-dropdown:hover .site-dropdown-trigger,
+.site-dropdown:focus-within .site-dropdown-trigger {
     color: var(--accent-color);
+}
+
+.site-nav a:hover::after,
+.site-nav a.active::after,
+.site-dropdown:hover .site-dropdown-trigger::after,
+.site-dropdown:focus-within .site-dropdown-trigger::after {
+    width: 100%;
+}
+
+.site-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    min-width: 150px;
+    padding: 0.45rem 0;
+    background: rgba(255,255,255,0.96);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(12px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.site-dropdown:hover .site-dropdown-menu,
+.site-dropdown:focus-within .site-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.site-dropdown-menu a {
+    display: block;
+    padding: 0.68rem 1.15rem;
+    color: var(--secondary-text);
+    white-space: nowrap;
+}
+
+.site-dropdown-menu a:hover {
+    color: var(--accent-color);
+}
+
+.cart-link {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 44px;
+    height: 42px;
+    padding: 0 0.78rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.82);
+    color: var(--accent-color);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transform: translateY(-50%);
+    transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.cart-link svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cart-link:hover {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+.cart-link::after {
+    display: none;
 }
 
 .product-container {
@@ -550,12 +654,34 @@ header.header-hidden {
         padding: 0.85rem 4%;
     }
 
-    .logo {
-        font-size: 1.25rem;
+    .site-nav {
+        gap: 1rem;
     }
 
-    .nav-back {
+    .site-nav a,
+    .site-dropdown-trigger {
         font-size: 0.76rem;
+    }
+
+    .site-dropdown-menu {
+        min-width: 120px;
+    }
+
+    .cart-link {
+        right: 4%;
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+        padding: 0;
+    }
+
+    .cart-link span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
     }
 
     .product-container {
