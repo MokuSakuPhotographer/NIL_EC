@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail | GALLERY</title>
+    <link rel="stylesheet" href="product-detail.css">
+</head>
+<body data-product="anorak-jacket-khaki">
+    <header>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">HOME</a>
+            <a href="about.html">ABOUT US</a>
+            <div class="site-dropdown">
+                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=eole">EOLE</a>
+                <div class="site-dropdown-menu">
+                    <a href="Gallery EC.html?filter=eole-tops">Tops</a><a href="Gallery EC.html?filter=eole-shirts">Shirt</a>
+                    <a href="Gallery EC.html?filter=eole-shoes">Shoes</a>
+                    <a href="Gallery EC.html?filter=eole-bags">Bags</a>
+                </div>
+            </div>
+            <div class="site-dropdown">
+                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=okurih">OKURIH</a>
+                <div class="site-dropdown-menu">
+                    <a href="Gallery EC.html?filter=okurih-tops">Tops</a>
+                    <a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a>
+                </div>
+            </div>
+        </nav>
+        <a class="cart-link" href="cart.html" aria-label="View cart" title="View cart">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
+    </header>
+    <main class="product-container">
+        <div class="product-image-wrapper"><img id="product-image" alt=""></div>
+        <section class="product-info">
+            <div id="brand" class="brand anim-item d-1"></div>
+            <h1 id="title" class="title anim-item d-1"></h1>
+            <div class="stock-status anim-item d-2"><span class="stock-dot"></span>SOLD OUT</div>
+            <div class="price-block anim-item d-2"><span id="price-ex" class="price-tax-ex"></span><span id="price-in" class="price-note"></span></div>
+            <p id="description" class="description anim-item d-3"></p>
+            <div class="options-group anim-item d-4"><span class="option-label">Color:<span id="selected-color"></span></span><div id="color-options" class="color-options"></div></div>
+            <div class="options-group anim-item d-4"><span class="option-label">Size:<span id="selected-size"></span></span><div id="size-options" class="size-options"></div></div>
+            <div class="action-area anim-item d-5"><button class="btn-add" disabled>SOLD OUT</button><p class="soldout-caption">This item is currently sold out.</p></div>
+            <div class="custom-accordion anim-item d-6"></div>
+        </section>
+    </main>
+    <script src="product-detail.js"></script>
+</body>
+</html>

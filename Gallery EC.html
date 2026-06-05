@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -150,6 +150,13 @@
             opacity: 1;
             visibility: visible;
             transform: translateX(-50%) translateY(0);
+        }
+
+        .has-dropdown.dropdown-suppressed > .dropdown {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(12px);
         }
 
         .dropdown li {
@@ -648,6 +655,7 @@
                     <a class="nav-link active" href="#" data-filter="brand-eole">EOLE</a>
                     <ul class="dropdown">
                         <li><a class="nav-link" href="#" data-filter="eole-tops">Tops</a></li>
+                        <li><a class="nav-link" href="#" data-filter="eole-shirts">Shirt</a></li>
                         <li><a class="nav-link" href="#" data-filter="eole-shoes">Shoes</a></li>
                         <li><a class="nav-link" href="#" data-filter="eole-bags">Bags</a></li>
                     </ul>
@@ -692,19 +700,31 @@
 
     <script>
         const products = [
-            { id: 1, brand: 'EOLE', name: 'Geometry T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-geometry.html', img: 'images/product/shirt/tshirt-geometry.webp' },
-            { id: 2, brand: 'EOLE', name: 'Geometry Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-geometry-marble.html', img: 'images/product/shirt/tshirt-geometry-marble.webp' },
-            { id: 3, brand: 'EOLE', name: 'Logo Collage T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-logo-collage.html', img: 'images/product/shirt/tshirt-logo-collage.webp' },
-            { id: 4, brand: 'EOLE', name: 'Logo Collage Due T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-logo-collage2.html', img: 'images/product/shirt/tshirt-logo-collage2.webp' },
-            { id: 5, brand: 'EOLE', name: 'Luna Logo T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-luna-logo.html', img: 'images/product/shirt/tshirt-luna-logo.webp' },
-            { id: 6, brand: 'EOLE', name: 'Luna Logo Due T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-luna-logo2.html', img: 'images/product/shirt/tshirt-luna-logo2.webp' },
-            { id: 7, brand: 'EOLE', name: 'Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-marble.html', img: 'images/product/shirt/tshirt-marble.webp' },
-            { id: 8, brand: 'EOLE', name: 'Polo T-Shirt', price: '¥13,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-tshirt-polo.html', img: 'images/product/shirt/tshirt-polo.webp' },
+            { id: 1, brand: 'EOLE', name: 'Geometry T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-geometry.html', img: 'images/product/shirt/tshirt-geometry.webp' },
+            { id: 2, brand: 'EOLE', name: 'Geometry Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-geometry-marble.html', img: 'images/product/shirt/tshirt-geometry-marble.webp' },
+            { id: 3, brand: 'EOLE', name: 'Logo Collage T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-logo-collage.html', img: 'images/product/shirt/tshirt-logo-collage.webp' },
+            { id: 4, brand: 'EOLE', name: 'Logo Collage Due T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-logo-collage2.html', img: 'images/product/shirt/tshirt-logo-collage2.webp' },
+            { id: 5, brand: 'EOLE', name: 'Luna Logo T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-luna-logo.html', img: 'images/product/shirt/tshirt-luna-logo.webp' },
+            { id: 6, brand: 'EOLE', name: 'Luna Logo Due T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-luna-logo2.html', img: 'images/product/shirt/tshirt-luna-logo2.webp' },
+            { id: 7, brand: 'EOLE', name: 'Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-marble.html', img: 'images/product/shirt/tshirt-marble.webp' },
+            { id: 8, brand: 'EOLE', name: 'Polo T-Shirt', price: '¥13,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-polo.html', img: 'images/product/shirt/tshirt-polo.webp' },
             { id: 9, brand: 'EOLE', name: 'EOLE Shoe', price: '¥26,500 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-shoe-eole.html', img: 'images/product/shoe/shoe-eole.webp' },
             { id: 10, brand: 'EOLE', name: 'Tote Bag', price: '¥24,000 (税込)', filterClass: 'brand-eole eole-bags', soldOut: true, link: 'product-bag-tote.html', img: 'images/product/bag/Tote Bag.webp' },
             { id: 11, brand: 'EOLE', name: 'Hobo Bag', price: '¥19,800 (税込)', filterClass: 'brand-eole eole-bags', soldOut: true, link: 'product-bag-hobo.html', img: 'images/product/bag/Hobo Bag.webp' },
-            { id: 12, brand: 'OKURIH', name: 'Heart Hoodie', price: '¥6,800 (税込)', filterClass: 'brand-okurih okurih-tops', soldOut: true, link: 'product-hoodie-heart.html', img: 'images/product/hoodie/hoodie-Heart.webp' },
-            { id: 13, brand: 'OKURIH', name: 'Geometry Bag', price: '¥8,800 (税込)', filterClass: 'brand-okurih okurih-accessories okurih-acc-bags', soldOut: true, link: 'product-bag-geometry.html', img: 'images/product/bag/bag-geometry.webp' }
+            { id: 12, brand: 'EOLE', name: 'Anorak Jacket Khaki', price: '¥32,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-anorak-jacket-khaki.html', img: 'images/product/tops/Anorak Jacket-Khaki.webp' },
+            { id: 13, brand: 'EOLE', name: 'Anorak Jacket', price: '¥32,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-anorak-jacket.html', img: 'images/product/tops/Anorak Jacket.webp' },
+            { id: 14, brand: 'EOLE', name: 'Heritage Safari Jacket', price: '¥39,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-heritage-safari-jacket.html', img: 'images/product/tops/Heritage Safari Jacket.webp' },
+            { id: 15, brand: 'EOLE', name: 'Sahara Safari Dress', price: '¥36,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-sahara-safari-dress.html', img: 'images/product/tops/Sahara Safari Dress.webp' },
+            { id: 16, brand: 'EOLE', name: 'Signature Trench Coat', price: '¥39,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-signature-trench-coat.html', img: 'images/product/tops/Signature Trench Coat.webp' },
+            { id: 17, brand: 'EOLE', name: 'Modern Oxford', price: '¥28,200 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-modern-oxford.html', img: 'images/product/shoe/Modern Oxford.webp' },
+            { id: 18, brand: 'EOLE', name: 'Heritage Monk', price: '¥29,800 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-heritage-monk.html', img: 'images/product/shoe/Heritage Monk.webp' },
+            { id: 19, brand: 'EOLE', name: 'Modern Draped Shirt', price: '¥13,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-modern-draped-shirt.html', img: 'images/product/shirt/Modern Draped Shirt.webp' },
+            { id: 20, brand: 'EOLE', name: 'Oversized Shirt', price: '¥11,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-oversized-shirt.html', img: 'images/product/shirt/Oversized Shirt.webp' },
+            { id: 21, brand: 'EOLE', name: 'Relaxed Fit Shirt', price: '¥10,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-relaxed-fit-shirt.html', img: 'images/product/shirt/Relaxed Fit Shirt.webp' },
+            { id: 22, brand: 'EOLE', name: 'Utility Overshirt', price: '¥14,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-utility-overshirt.html', img: 'images/product/shirt/Utility Overshirt.webp' },
+            { id: 23, brand: 'EOLE', name: 'Volume Sleeve Shirt', price: '¥12,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-volume-sleeve-shirt.html', img: 'images/product/shirt/Volume Sleeve Shirt.webp' },
+            { id: 24, brand: 'OKURIH', name: 'Heart Hoodie', price: '¥6,800 (税込)', filterClass: 'brand-okurih okurih-tops', soldOut: true, link: 'product-hoodie-heart.html', img: 'images/product/hoodie/hoodie-Heart.webp' },
+            { id: 25, brand: 'OKURIH', name: 'Geometry Bag', price: '¥8,800 (税込)', filterClass: 'brand-okurih okurih-accessories okurih-acc-bags', soldOut: true, link: 'product-bag-geometry.html', img: 'images/product/bag/bag-geometry.webp' }
         ];
 
         const brandCopy = {
@@ -811,7 +831,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const brandParam = urlParams.get('brand');
         const filterParam = urlParams.get('filter');
-        const validFilters = ['brand-eole', 'eole-tops', 'eole-shoes', 'eole-bags', 'brand-okurih', 'okurih-tops', 'okurih-acc-bags'];
+        const validFilters = ['brand-eole', 'eole-tops', 'eole-shirts', 'eole-shoes', 'eole-bags', 'brand-okurih', 'okurih-tops', 'okurih-acc-bags'];
         let initialFilter = 'brand-eole';
         let initialLink = document.querySelector('[data-filter="brand-eole"]');
         
@@ -831,11 +851,22 @@
                 const parentDropdown = link.closest('.has-dropdown');
                 const isTopBrand = parentDropdown && parentDropdown.querySelector(':scope > .nav-link') === link;
 
+                if (isTopBrand) {
+                    parentDropdown.classList.remove('dropdown-suppressed');
+                }
+
                 if (isTopBrand && window.matchMedia('(max-width: 768px)').matches) {
                     document.querySelectorAll('.has-dropdown.open').forEach((item) => {
                         if (item !== parentDropdown) item.classList.remove('open');
                     });
                     parentDropdown.classList.toggle('open');
+                } else if (parentDropdown && !isTopBrand) {
+                    parentDropdown.classList.remove('open');
+                    parentDropdown.classList.add('dropdown-suppressed');
+                    parentDropdown.addEventListener('mouseleave', () => {
+                        parentDropdown.classList.remove('dropdown-suppressed');
+                    }, { once: true });
+                    link.blur();
                 }
 
                 applyFilter(link.dataset.filter, link);
