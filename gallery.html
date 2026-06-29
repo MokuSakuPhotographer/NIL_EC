@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery EC | Stylish Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --primary-text: #1a1a1a;
+            --secondary-text: #666666;
+            --accent-color: #2563eb;
+            --border-color: #e5e5e5;
+            --image-bg: #f3f4f6;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: var(--primary-bg);
+            color: var(--primary-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 5%;
+            background: rgba(255,255,255,0.95);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: transform var(--transition-speed), padding var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        header.header-hidden {
+            transform: translateY(-110%);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+
+        .nav-list > li {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .nav-list a {
+            cursor: pointer;
+        }
+
+        .nav-list > li > a {
+            position: relative;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color var(--transition-speed);
+        }
+
+        .nav-list > li > a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width var(--transition-speed);
+        }
+
+        .nav-list > li:hover > a,
+        .nav-list > li > a.active {
+            color: var(--accent-color);
+        }
+
+        .nav-list > li:hover > a::after,
+        .nav-list > li > a.active::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            min-width: 170px;
+            padding: 0.5rem 0;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(14px);
+            transition: opacity var(--transition-speed), visibility var(--transition-speed), transform var(--transition-speed);
+        }
+
+        .dropdown::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            border-left: 1px solid var(--border-color);
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .has-dropdown:hover > .dropdown,
+        .has-dropdown:focus-within > .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .has-dropdown.dropdown-suppressed > .dropdown {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(12px);
+        }
+
+        .dropdown li {
+            position: relative;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.78rem 1.4rem;
+            color: var(--secondary-text);
+            font-size: 0.85rem;
+            transition: color 0.2s, background 0.2s, padding-left 0.2s;
+            white-space: nowrap;
+        }
+
+        .dropdown a:hover,
+        .dropdown a.active {
+            color: var(--accent-color);
+            background: #f8fafc;
+            padding-left: 1.7rem;
+        }
+
+        .has-sub-dropdown > a::before {
+            content: '<';
+            float: left;
+            margin-right: 10px;
+            color: #c7c7c7;
+            font-size: 0.8rem;
+        }
+
+        .sub-dropdown {
+            position: absolute;
+            top: 0;
+            right: 100%;
+            min-width: 170px;
+            margin-right: 2px;
+            padding: 0.5rem 0;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(14px);
+            transition: opacity var(--transition-speed), visibility var(--transition-speed), transform var(--transition-speed);
+        }
+
+        .has-sub-dropdown:hover > .sub-dropdown,
+        .has-sub-dropdown:focus-within > .sub-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .hero {
+            min-height: 50vh;
+            margin-top: 80px;
+            padding: 4rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            background: linear-gradient(135deg, #fdfdfd 0%, #f0f4f8 100%);
+            position: relative;
+            transition: background 0.45s ease;
+        }
+
+        .hero.eole-marble {
+            background:
+                linear-gradient(rgba(255,255,255,0.36), rgba(255,255,255,0.46)),
+                url('images/EOLE_Marble.webp') center / cover no-repeat;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37,99,235,0.035) 0%, transparent 60%);
+            animation: rotateBg 20s linear infinite;
+        }
+
+        .hero.eole-marble::after {
+            opacity: 0.25;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .hero h1 {
+            margin-bottom: 1rem;
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+        }
+
+        #current-category {
+            display: none;
+        }
+
+        .brand-intro-section {
+            max-width: 1000px;
+            margin: 3rem auto 1rem;
+            padding: 0 5%;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .brand-intro-section.is-changing {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        .brand-intro-img {
+            max-width: 100%;
+            max-height: 140px;
+            margin: 0 auto 2rem;
+            object-fit: contain;
+        }
+
+        .brand-intro-title {
+            display: none;
+        }
+
+        .brand-intro-desc {
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+            line-height: 2;
+            letter-spacing: 1px;
+        }
+
+        .brand-intro-line {
+            width: 40px;
+            height: 1px;
+            margin: 3rem auto 0;
+            background: #000000;
+        }
+
+        .gallery-container {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 5%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 3rem 2rem;
+        }
+
+        .card {
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .card.show {
+            display: block;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-image {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            margin-bottom: 1.2rem;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 2px;
+        }
+
+        .card-image img {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(2px);
+            transition: opacity 0.35s ease;
+        }
+
+        .btn-view {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 999px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(18px);
+            transition: transform 0.35s ease, background 0.35s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.06);
+        }
+
+        .card:hover .overlay {
+            opacity: 1;
+        }
+
+        .card:hover .btn-view {
+            transform: translateY(0);
+            background: var(--accent-color);
+        }
+
+        .sold-out-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 3;
+            padding: 0.4rem 1rem;
+            border-radius: 2px;
+            background: rgba(0,0,0,0.86);
+            color: #ffffff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .card-info {
+            text-align: center;
+        }
+
+        .card-brand {
+            margin-bottom: 0.3rem;
+            color: var(--secondary-text);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .card:hover .card-title {
+            color: var(--accent-color);
+        }
+
+        .card-price {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .empty-message {
+            display: none;
+            padding: 4rem 0;
+            color: var(--secondary-text);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .empty-message.show {
+            display: block;
+        }
+
+        @keyframes rotateBg {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                display: flex;
+                justify-content: center;
+                padding: 0.85rem 4%;
+            }
+
+            .logo {
+                display: none;
+                margin-bottom: 0.75rem;
+                font-size: 1.25rem;
+            }
+
+            .nav-list {
+                display: flex;
+                gap: 0.65rem;
+                overflow-x: auto;
+                justify-content: flex-start;
+                max-width: 100%;
+                padding-bottom: 0.15rem;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-list > li {
+                flex: 0 0 auto;
+                padding: 0;
+            }
+
+            .nav-list > li > a {
+                display: inline-flex;
+                align-items: center;
+                min-height: 34px;
+                padding: 0 0.85rem;
+                border: 1px solid var(--border-color);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 0.76rem;
+            }
+
+            .nav-list > li > a::after {
+                display: none;
+            }
+
+            .nav-list > li > a.active {
+                border-color: var(--accent-color);
+            }
+
+            .dropdown {
+                position: static;
+                display: none;
+                gap: 0.5rem;
+                min-width: 0;
+                padding: 0;
+                margin-top: 0.5rem;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .has-dropdown.open > .dropdown {
+                display: flex;
+            }
+
+            .dropdown::before {
+                display: none;
+            }
+
+            .dropdown a {
+                padding: 0.45rem 0.75rem;
+                border: 1px solid var(--border-color);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 0.74rem;
+            }
+
+            .dropdown a:hover,
+            .dropdown a.active {
+                padding-left: 0.75rem;
+                border-color: var(--accent-color);
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem 1rem;
+            }
+
+            .hero {
+                margin-top: 118px;
+                min-height: auto;
+                padding: 3rem 4%;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 12vw, 3rem);
+                letter-spacing: 4px;
+            }
+
+            .brand-intro-section {
+                margin-top: 2.2rem;
+                padding: 0;
+            }
+
+            .brand-intro-img {
+                max-height: 110px;
+                margin-bottom: 1.5rem;
+            }
+
+            .brand-intro-desc {
+                font-size: 0.86rem;
+                line-height: 1.85;
+            }
+
+            .gallery-container {
+                margin: 3rem auto;
+                padding: 0 4%;
+            }
+
+            .card-title {
+                font-size: 0.9rem;
+            }
+
+            .card-price {
+                font-size: 0.84rem;
+            }
+        }
+        .cart-link {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-width: 44px;
+            height: 42px;
+            padding: 0 0.78rem;
+            border: 1px solid var(--line, var(--border-color, #e5e5e5));
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            color: var(--blue, var(--accent-color, #2563eb));
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(-50%);
+            transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
+        .cart-link svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-link:hover {
+            border-color: var(--blue, var(--accent-color, #2563eb));
+            background: var(--blue, var(--accent-color, #2563eb));
+            color: #ffffff;
+        }
+
+        .cart-link::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .cart-link {
+                right: 4%;
+                width: 38px;
+                min-width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .cart-link span {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="site-common.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li class="has-dropdown">
+                    <a class="nav-link active" href="gallery.html?brand=eole" data-filter="brand-eole">EOLE</a>
+                    <ul class="dropdown">
+                        <li><a class="nav-link" href="gallery.html?filter=eole-tops" data-filter="eole-tops">Tops</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-shirts" data-filter="eole-shirts">Shirt</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-pants" data-filter="eole-pants">Pants</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-skirts" data-filter="eole-skirts">Skirts</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-shoes" data-filter="eole-shoes">Shoes</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-bags" data-filter="eole-bags">Bags</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-wallets" data-filter="eole-wallets">Wallets</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=eole-handkerchiefs" data-filter="eole-handkerchiefs">Handkerchiefs</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a class="nav-link" href="gallery.html?brand=okurih" data-filter="brand-okurih">OKURIH</a>
+                    <ul class="dropdown">
+                        <li><a class="nav-link" href="gallery.html?filter=okurih-tops" data-filter="okurih-tops">Tops</a></li>
+                        <li><a class="nav-link" href="gallery.html?filter=okurih-acc-bags" data-filter="okurih-acc-bags">Bags</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
+    </header>
+
+    <section class="hero eole-marble">
+        <div class="hero-content">
+            <h1>COLLECTION</h1>
+            <p id="current-category">EOLE</p>
+            <div id="brand-intro" class="brand-intro-section">
+                <img id="brand-intro-img" class="brand-intro-img" src="images/logo/EOLE 1.png" alt="EOLE logo">
+                <div class="brand-intro-text">
+                    <h2 id="brand-intro-title" class="brand-intro-title" aria-hidden="true">EOLE</h2>
+                    <p id="brand-intro-desc" class="brand-intro-desc">洗練されたシルエットと上質な素材感が引き立つ、<br>現代的なエレガンスをまとうEOLEのコレクション。</p>
+                </div>
+                <div class="brand-intro-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <main class="gallery-container">
+        <div class="grid" id="product-grid"></div>
+        <p id="empty-message" class="empty-message">該当する商品はありません。</p>
+    </main>
+
+    <footer class="site-footer">
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, brand: 'EOLE', name: 'Geometry T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-geometry.html', img: 'images/product/shirt/tshirt-geometry.webp' },
+            { id: 2, brand: 'EOLE', name: 'Geometry Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-geometry-marble.html', img: 'images/product/shirt/tshirt-geometry-marble.webp' },
+            { id: 3, brand: 'EOLE', name: 'Logo Collage T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-logo-collage.html', img: 'images/product/shirt/tshirt-logo-collage.webp' },
+            { id: 4, brand: 'EOLE', name: 'Logo Collage Due T-Shirt', price: '¥11,500 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-logo-collage2.html', img: 'images/product/shirt/tshirt-logo-collage2.webp' },
+            { id: 5, brand: 'EOLE', name: 'Luna Logo T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-luna-logo.html', img: 'images/product/shirt/tshirt-luna-logo.webp' },
+            { id: 6, brand: 'EOLE', name: 'Luna Logo Due T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-luna-logo2.html', img: 'images/product/shirt/tshirt-luna-logo2.webp' },
+            { id: 7, brand: 'EOLE', name: 'Marble T-Shirt', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-marble.html', img: 'images/product/shirt/tshirt-marble.webp' },
+            { id: 8, brand: 'EOLE', name: 'Polo T-Shirt', price: '¥13,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-tshirt-polo.html', img: 'images/product/shirt/tshirt-polo.webp' },
+            { id: 9, brand: 'EOLE', name: 'EOLE Shoe', price: '¥26,500 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-shoe-eole.html', img: 'images/product/shoe/shoe-eole.webp' },
+            { id: 10, brand: 'EOLE', name: 'Tote Bag', price: '¥24,000 (税込)', filterClass: 'brand-eole eole-bags', soldOut: true, link: 'product-bag-tote.html', img: 'images/product/bag/Tote Bag.webp' },
+            { id: 11, brand: 'EOLE', name: 'Hobo Bag', price: '¥19,800 (税込)', filterClass: 'brand-eole eole-bags', soldOut: true, link: 'product-bag-hobo.html', img: 'images/product/bag/Hobo Bag.webp' },
+            { id: 12, brand: 'EOLE', name: 'Anorak Jacket Khaki', price: '¥32,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-anorak-jacket-khaki.html', img: 'images/product/tops/Anorak Jacket-Khaki.webp' },
+            { id: 13, brand: 'EOLE', name: 'Anorak Jacket', price: '¥32,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-anorak-jacket.html', img: 'images/product/tops/Anorak Jacket.webp' },
+            { id: 14, brand: 'EOLE', name: 'Heritage Safari Jacket', price: '¥39,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-heritage-safari-jacket.html', img: 'images/product/tops/Heritage Safari Jacket.webp' },
+            { id: 15, brand: 'EOLE', name: 'Sahara Safari Dress', price: '¥36,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-sahara-safari-dress.html', img: 'images/product/tops/Sahara Safari Dress.webp' },
+            { id: 16, brand: 'EOLE', name: 'Signature Trench Coat', price: '¥39,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-signature-trench-coat.html', img: 'images/product/tops/Signature Trench Coat.webp' },
+            { id: 17, brand: 'EOLE', name: 'Modern Oxford', price: '¥28,200 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-modern-oxford.html', img: 'images/product/shoe/Modern Oxford.webp' },
+            { id: 18, brand: 'EOLE', name: 'Heritage Monk', price: '¥29,800 (税込)', filterClass: 'brand-eole eole-shoes', soldOut: true, link: 'product-heritage-monk.html', img: 'images/product/shoe/Heritage Monk.webp' },
+            { id: 19, brand: 'EOLE', name: 'Modern Draped Shirt', price: '¥13,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-modern-draped-shirt.html', img: 'images/product/shirt/Modern Draped Shirt.webp' },
+            { id: 20, brand: 'EOLE', name: 'Oversized Shirt', price: '¥11,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-oversized-shirt.html', img: 'images/product/shirt/Oversized Shirt.webp' },
+            { id: 21, brand: 'EOLE', name: 'Relaxed Fit Shirt', price: '¥10,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-relaxed-fit-shirt.html', img: 'images/product/shirt/Relaxed Fit Shirt.webp' },
+            { id: 22, brand: 'EOLE', name: 'Utility Overshirt', price: '¥14,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-utility-overshirt.html', img: 'images/product/shirt/Utility Overshirt.webp' },
+            { id: 23, brand: 'EOLE', name: 'Volume Sleeve Shirt', price: '¥12,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-volume-sleeve-shirt.html', img: 'images/product/shirt/Volume Sleeve Shirt.webp' },
+            { id: 24, brand: 'OKURIH', name: 'Heart Hoodie', price: '¥6,800 (税込)', filterClass: 'brand-okurih okurih-tops', soldOut: true, link: 'product-hoodie-heart.html', img: 'images/product/hoodie/hoodie-Heart.webp' },
+            { id: 25, brand: 'OKURIH', name: 'Geometry Bag', price: '¥8,800 (税込)', filterClass: 'brand-okurih okurih-accessories okurih-acc-bags', soldOut: true, link: 'product-bag-geometry.html', img: 'images/product/bag/bag-geometry.webp' },
+            { id: 26, brand: 'EOLE', name: 'Royal Oxford Shirt', price: '¥19,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-royal-oxford-shirt.html', img: 'images/product/shirt/shirt_6-1-10.webp' },
+            { id: 27, brand: 'EOLE', name: 'Celeste Stripe Shirt', price: '¥18,800 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-celeste-stripe-shirt.html', img: 'images/product/shirt/shirt_7-1-10.webp' },
+            { id: 28, brand: 'EOLE', name: 'Saint-Germain Trench Coat', price: '¥59,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-saint-germain-trench-coat.html', img: 'images/product/tops/coat1-1-1.webp' },
+            { id: 29, brand: 'EOLE', name: 'Noir Cashmere Chester Coat', price: '¥72,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-noir-cashmere-chester-coat.html', img: 'images/product/tops/coat2-1-5.webp' },
+            { id: 30, brand: 'EOLE', name: 'Lumiere Linen Blazer', price: '¥49,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-lumiere-linen-blazer.html', img: 'images/product/tops/outer&pants1-1-10.webp' },
+            { id: 31, brand: 'EOLE', name: 'Lumiere Tailored Trousers', price: '¥29,800 (税込)', filterClass: 'brand-eole eole-pants', soldOut: true, link: 'product-lumiere-tailored-trousers.html', img: 'images/product/pants/outer&pants1-4-10.webp' },
+            { id: 32, brand: 'EOLE', name: 'Nocturne Wool Blazer', price: '¥52,800 (税込)', filterClass: 'brand-eole eole-tops', soldOut: true, link: 'product-nocturne-wool-blazer.html', img: 'images/product/tops/outer&pants2-1-10.webp' },
+            { id: 33, brand: 'EOLE', name: 'Nocturne Tailored Trousers', price: '¥31,800 (税込)', filterClass: 'brand-eole eole-pants', soldOut: true, link: 'product-nocturne-tailored-trousers.html', img: 'images/product/pants/outer&pants2-4-10.webp' },
+            { id: 34, brand: 'EOLE', name: 'Bleu Botanical Ruffle Skirt', price: '¥27,800 (税込)', filterClass: 'brand-eole eole-skirts', soldOut: true, link: 'product-bleu-botanical-ruffle-skirt.html', img: 'images/product/skirt/skrt1-1-10.webp' },
+            { id: 35, brand: 'EOLE', name: 'Ecru Check Belted Skirt', price: '¥29,800 (税込)', filterClass: 'brand-eole eole-skirts', soldOut: true, link: 'product-ecru-check-belted-skirt.html', img: 'images/product/skirt/skrt2-1-10.webp' },
+            { id: 36, brand: 'EOLE', name: 'Sage Pinstripe Flare Skirt', price: '¥28,800 (税込)', filterClass: 'brand-eole eole-skirts', soldOut: true, link: 'product-sage-pinstripe-flare-skirt.html', img: 'images/product/skirt/skrt3-1-10.webp' },
+            { id: 37, brand: 'EOLE', name: 'Noir Envelope Long Wallet', price: '¥24,800 (税込)', filterClass: 'brand-eole eole-wallets', soldOut: true, link: 'product-noir-envelope-long-wallet.html', img: 'images/product/wallet/saifu1-1-10.webp' },
+            { id: 38, brand: 'EOLE', name: 'Noir Bifold Wallet', price: '¥21,800 (税込)', filterClass: 'brand-eole eole-wallets', soldOut: true, link: 'product-noir-bifold-wallet.html', img: 'images/product/wallet/saifu2-1-10.webp' },
+            { id: 39, brand: 'EOLE', name: 'Ecru Silk Handkerchief', price: '¥8,800 (税込)', filterClass: 'brand-eole eole-handkerchiefs', soldOut: true, link: 'product-ecru-silk-handkerchief.html', img: 'images/product/handkerchief/hankati1-1-9.webp' }
+        ];
+
+        const brandCopy = {
+            eole: {
+                logo: 'images/logo/EOLE 1.png',
+                title: 'EOLE',
+                desc: '洗練されたシルエットと上質な素材感が引き立つ、<br>現代的なエレガンスをまとうEOLEのコレクション。'
+            },
+            okurih: {
+                logo: 'images/logo/Okurih.png',
+                title: 'OKURIH',
+                desc: 'ストリートの軽さとモードの空気を重ねた、<br>自由でエッジのあるOKURIHのスタイル。'
+            }
+        };
+
+        const grid = document.getElementById('product-grid');
+        const emptyMessage = document.getElementById('empty-message');
+        const currentCategoryLabel = document.getElementById('current-category');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const brandIntro = document.getElementById('brand-intro');
+        const brandImg = document.getElementById('brand-intro-img');
+        const brandTitle = document.getElementById('brand-intro-title');
+        const brandDesc = document.getElementById('brand-intro-desc');
+        const hero = document.querySelector('.hero');
+
+        function renderCards() {
+            grid.innerHTML = products.map((product) => `
+                <article class="card ${product.filterClass}" data-id="${product.id}">
+                    <a href="${product.link}" aria-label="${product.name}">
+                        <div class="card-image">
+                            <img src="${product.img}" alt="${product.name}">
+                            <div class="sold-out-badge">SOLD OUT</div>
+                            <div class="overlay"><span class="btn-view">MORE</span></div>
+                        </div>
+                        <div class="card-info">
+                            <div class="card-brand">${product.brand}</div>
+                            <h3 class="card-title">${product.name}</h3>
+                            <div class="card-price">${product.price}</div>
+                        </div>
+                    </a>
+                </article>
+            `).join('');
+        }
+
+        function updateBrandIntro(filterValue) {
+            const brand = filterValue.startsWith('okurih') || filterValue === 'brand-okurih' ? brandCopy.okurih : brandCopy.eole;
+            hero.classList.toggle('eole-marble', brand === brandCopy.eole);
+            brandIntro.classList.add('is-changing');
+
+            window.setTimeout(() => {
+                brandImg.src = brand.logo;
+                brandImg.alt = `${brand.title} logo`;
+                brandTitle.textContent = brand.title;
+                brandDesc.innerHTML = brand.desc;
+                brandIntro.classList.remove('is-changing');
+            }, 180);
+        }
+
+        function labelFor(link, filterValue) {
+            if (filterValue === 'brand-eole') return 'EOLE';
+            if (filterValue === 'brand-okurih') return 'OKURIH';
+
+            const parent = link.closest('.has-dropdown')?.querySelector(':scope > .nav-link')?.textContent.trim();
+            return parent ? `${parent} / ${link.textContent.trim()}` : link.textContent.trim();
+        }
+
+        function observeVisibleCards() {
+            const cards = [...document.querySelectorAll('.card.show')];
+            cards.forEach((card, index) => {
+                card.classList.remove('visible');
+                card.style.transitionDelay = `${(index % 4) * 0.08}s`;
+                window.setTimeout(() => card.classList.add('visible'), 40);
+            });
+        }
+
+        function applyFilter(filterValue, sourceLink) {
+            navLinks.forEach((link) => link.classList.remove('active'));
+            sourceLink.classList.add('active');
+            sourceLink.closest('.has-dropdown')?.querySelector(':scope > .nav-link')?.classList.add('active');
+
+            currentCategoryLabel.textContent = labelFor(sourceLink, filterValue);
+            updateBrandIntro(filterValue);
+
+            const cards = [...document.querySelectorAll('.card')];
+            let visibleCount = 0;
+
+            cards.forEach((card) => {
+                card.classList.remove('visible');
+                if (card.classList.contains(filterValue)) {
+                    card.classList.add('show');
+                    visibleCount += 1;
+                } else {
+                    card.classList.remove('show');
+                }
+            });
+
+            emptyMessage.classList.toggle('show', visibleCount === 0);
+            observeVisibleCards();
+        }
+
+        renderCards();
+        
+        // Parse URL query parameter for initial filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const brandParam = urlParams.get('brand');
+        const filterParam = urlParams.get('filter');
+        const validFilters = ['brand-eole', 'eole-tops', 'eole-shirts', 'eole-pants', 'eole-skirts', 'eole-shoes', 'eole-bags', 'eole-wallets', 'eole-handkerchiefs', 'brand-okurih', 'okurih-tops', 'okurih-acc-bags'];
+        let initialFilter = 'brand-eole';
+        let initialLink = document.querySelector('[data-filter="brand-eole"]');
+        
+        if (filterParam && validFilters.includes(filterParam)) {
+            initialFilter = filterParam;
+            initialLink = document.querySelector(`[data-filter="${filterParam}"]`);
+        } else if (brandParam === 'okurih') {
+            initialFilter = 'brand-okurih';
+            initialLink = document.querySelector('[data-filter="brand-okurih"]');
+        }
+        
+        applyFilter(initialFilter, initialLink);
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const parentDropdown = link.closest('.has-dropdown');
+                const isTopBrand = parentDropdown && parentDropdown.querySelector(':scope > .nav-link') === link;
+
+                if (isTopBrand) {
+                    parentDropdown.classList.remove('dropdown-suppressed');
+                }
+
+                if (isTopBrand && window.matchMedia('(max-width: 768px)').matches) {
+                    document.querySelectorAll('.has-dropdown.open').forEach((item) => {
+                        if (item !== parentDropdown) item.classList.remove('open');
+                    });
+                    parentDropdown.classList.toggle('open');
+                } else if (parentDropdown && !isTopBrand) {
+                    parentDropdown.classList.remove('open');
+                    parentDropdown.classList.add('dropdown-suppressed');
+                    parentDropdown.addEventListener('mouseleave', () => {
+                        parentDropdown.classList.remove('dropdown-suppressed');
+                    }, { once: true });
+                    link.blur();
+                }
+
+                applyFilter(link.dataset.filter, link);
+            });
+        });
+    </script>
+    <script src="site-common.js"></script>
+</body>
+</html>

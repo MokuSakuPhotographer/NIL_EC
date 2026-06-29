@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -550,6 +550,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="site-common.css">
 </head>
 <body>
     <header>
@@ -558,23 +559,23 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a class="active" href="about.html">About Us</a></li>
                 <li class="has-dropdown">
-                    <a href="Gallery EC.html?brand=eole">EOLE</a>
+                    <a href="gallery.html?brand=eole">EOLE</a>
                     <ul class="dropdown">
-                        <li><a href="Gallery EC.html?filter=eole-tops">Tops</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-shirts">Shirt</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-pants">Pants</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-skirts">Skirts</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-shoes">Shoes</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-bags">Bags</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-wallets">Wallets</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-handkerchiefs">Handkerchiefs</a></li>
+                        <li><a href="gallery.html?filter=eole-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=eole-shirts">Shirt</a></li>
+                        <li><a href="gallery.html?filter=eole-pants">Pants</a></li>
+                        <li><a href="gallery.html?filter=eole-skirts">Skirts</a></li>
+                        <li><a href="gallery.html?filter=eole-shoes">Shoes</a></li>
+                        <li><a href="gallery.html?filter=eole-bags">Bags</a></li>
+                        <li><a href="gallery.html?filter=eole-wallets">Wallets</a></li>
+                        <li><a href="gallery.html?filter=eole-handkerchiefs">Handkerchiefs</a></li>
                     </ul>
                 </li>
                 <li class="has-dropdown">
-                    <a href="Gallery EC.html?brand=okurih">OKURIH</a>
+                    <a href="gallery.html?brand=okurih">OKURIH</a>
                     <ul class="dropdown">
-                        <li><a href="Gallery EC.html?filter=okurih-tops">Tops</a></li>
-                        <li><a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a></li>
+                        <li><a href="gallery.html?filter=okurih-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=okurih-acc-bags">Bags</a></li>
                     </ul>
                 </li>
             </ul>
@@ -598,12 +599,12 @@
         </section>
 
         <section class="cards-container" aria-label="Brand selectors">
-            <div class="brand-card" data-brand="eole" tabindex="0" role="button" aria-pressed="false">
+            <button type="button" class="brand-card" data-brand="eole" aria-pressed="false">
                 <img src="images/logo/EOLE 1.png" alt="EOLE Logo">
-            </div>
-            <div class="brand-card" data-brand="okurih" tabindex="0" role="button" aria-pressed="false">
+            </button>
+            <button type="button" class="brand-card" data-brand="okurih" aria-pressed="false">
                 <img src="images/logo/Okurih.png" alt="OKURIH Logo">
-            </div>
+            </button>
         </section>
 
         <div class="details-wrapper">
@@ -619,7 +620,7 @@
                     余計なものを削ぎ落とし、本質だけを残す。洗練された上質な素材と、普遍的なシルエット。<br>
                     袖を通した瞬間に静かな気品をもたらし、流行に左右されず長く愛用できる、現代的なエレガンスを提案します。
                 </p>
-                <a href="Gallery EC.html?brand=eole" class="btn">Explore Collection</a>
+                <a href="gallery.html?brand=eole" class="btn">Explore Collection</a>
             </article>
 
             <!-- OKURIH Detail Panel -->
@@ -634,12 +635,12 @@
                     ルーズでありながらも計算された絶妙なシルエットと、夜の街に映えるエッジの効いたストリートディテール。<br>
                     力を抜きながらも確かな存在感を放ち、ルールに縛られない個性を引き出すスタイルを提案します。
                 </p>
-                <a href="Gallery EC.html?brand=okurih" class="btn">Explore Collection</a>
+                <a href="gallery.html?brand=okurih" class="btn">Explore Collection</a>
             </article>
         </div>
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <span>GALLERY EC</span>
         <span>Curated by EOLE / OKURIH</span>
     </footer>
@@ -677,32 +678,7 @@
 
         // Initialize with EOLE detail shown
         showBrand('eole');
-
-        // Simple header show/hide scroll behavior
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            const currentY = window.scrollY;
-            const header = document.querySelector('header');
-            const mobileHeader = window.matchMedia('(max-width: 768px)').matches;
-            const compactPadding = mobileHeader ? '0.65rem 4%' : '0.5rem 5%';
-            const normalPadding = mobileHeader ? '0.85rem 4%' : '1rem 5%';
-
-            if (currentY > lastScrollY && currentY > 90) {
-                header.style.transform = 'translateY(-110%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
-
-            if (currentY > 50) {
-                header.style.padding = compactPadding;
-                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
-            } else {
-                header.style.padding = normalPadding;
-                header.style.boxShadow = 'none';
-            }
-
-            lastScrollY = currentY;
-        });
     </script>
+    <script src="site-common.js"></script>
 </body>
 </html>

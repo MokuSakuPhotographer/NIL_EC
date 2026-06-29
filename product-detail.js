@@ -1025,7 +1025,11 @@ function yen(value) {
 
 function getProduct() {
     const key = document.body.dataset.product;
-    return PRODUCTS[key] || PRODUCTS['tshirt-geometry'];
+    if (!PRODUCTS[key]) {
+        console.warn(`Unknown product key: ${key}`);
+        return PRODUCTS['tshirt-geometry'];
+    }
+    return PRODUCTS[key];
 }
 
 let activeGalleryImages = [];
@@ -1079,7 +1083,7 @@ function updateGalleryDots() {
     if (!dots) return;
 
     dots.innerHTML = activeGalleryImages.map((_, index) => `
-        <button class="gallery-dot${index === activeGalleryIndex ? ' active' : ''}" type="button" aria-label="${index + 1}枚目"></button>
+        <button class="gallery-dot${index === activeGalleryIndex ? ' active' : ''}" type="button" aria-label="画像${index + 1}を表示" aria-current="${index === activeGalleryIndex ? 'true' : 'false'}"></button>
     `).join('');
 
     dots.querySelectorAll('.gallery-dot').forEach((dot, index) => {
@@ -1156,6 +1160,7 @@ function toggleAcc(button) {
     const wrapper = item.querySelector('.acc-content-wrapper');
     const isOpen = item.classList.toggle('is-open');
     wrapper.style.maxHeight = isOpen ? `${wrapper.scrollHeight}px` : '0px';
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 
 function listHtml(items) {
@@ -1183,7 +1188,7 @@ function renderAccordions(product) {
 
     accordion.innerHTML = `
         <div class="acc-item">
-            <button class="acc-header" type="button" onclick="toggleAcc(this)">Details</button>
+            <button class="acc-header" type="button" aria-expanded="false" onclick="toggleAcc(this)">Details</button>
             <div class="acc-content-wrapper">
                 <div class="acc-content">
                     Material: ${product.material}<br>
@@ -1193,19 +1198,19 @@ function renderAccordions(product) {
             </div>
         </div>
         <div class="acc-item">
-            <button class="acc-header" type="button" onclick="toggleAcc(this)">Material Point</button>
+            <button class="acc-header" type="button" aria-expanded="false" onclick="toggleAcc(this)">Material Point</button>
             <div class="acc-content-wrapper">
                 <div class="acc-content">${listHtml(points)}</div>
             </div>
         </div>
         <div class="acc-item">
-            <button class="acc-header" type="button" onclick="toggleAcc(this)">Size Guide</button>
+            <button class="acc-header" type="button" aria-expanded="false" onclick="toggleAcc(this)">Size Guide</button>
             <div class="acc-content-wrapper">
                 <div class="acc-content">${sizeTableHtml(product)}</div>
             </div>
         </div>
         <div class="acc-item">
-            <button class="acc-header" type="button" onclick="toggleAcc(this)">Care</button>
+            <button class="acc-header" type="button" aria-expanded="false" onclick="toggleAcc(this)">Care</button>
             <div class="acc-content-wrapper">
                 <div class="acc-content">${listHtml(care)}</div>
             </div>
@@ -1310,18 +1315,3 @@ function renderProduct() {
 
 renderProduct();
 
-let lastScrollY = window.scrollY;
-const pageHeader = document.querySelector('header');
-
-window.addEventListener('scroll', () => {
-    const currentY = window.scrollY;
-    if (!pageHeader) return;
-
-    if (currentY > lastScrollY && currentY > 80) {
-        pageHeader.classList.add('header-hidden');
-    } else {
-        pageHeader.classList.remove('header-hidden');
-    }
-
-    lastScrollY = currentY;
-}, { passive: true });

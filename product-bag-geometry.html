@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Detail | GALLERY</title>
+    <title>Product | GALLERY EC</title>
     <link rel="stylesheet" href="product-detail.css">
+    <link rel="stylesheet" href="site-common.css">
 </head>
 <body data-product="bag-geometry">
     <header>
@@ -12,23 +13,23 @@
             <a href="index.html">HOME</a>
             <a href="about.html">ABOUT US</a>
             <div class="site-dropdown">
-                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=eole">EOLE</a>
+                <a class="site-dropdown-trigger" href="gallery.html?brand=eole">EOLE</a>
                 <div class="site-dropdown-menu">
-                    <a href="Gallery EC.html?filter=eole-tops">Tops</a>
-                    <a href="Gallery EC.html?filter=eole-shirts">Shirt</a>
-                    <a href="Gallery EC.html?filter=eole-pants">Pants</a>
-                    <a href="Gallery EC.html?filter=eole-skirts">Skirts</a>
-                    <a href="Gallery EC.html?filter=eole-shoes">Shoes</a>
-                    <a href="Gallery EC.html?filter=eole-bags">Bags</a>
-                    <a href="Gallery EC.html?filter=eole-wallets">Wallets</a>
-                    <a href="Gallery EC.html?filter=eole-handkerchiefs">Handkerchiefs</a>
+                    <a href="gallery.html?filter=eole-tops">Tops</a>
+                    <a href="gallery.html?filter=eole-shirts">Shirt</a>
+                    <a href="gallery.html?filter=eole-pants">Pants</a>
+                    <a href="gallery.html?filter=eole-skirts">Skirts</a>
+                    <a href="gallery.html?filter=eole-shoes">Shoes</a>
+                    <a href="gallery.html?filter=eole-bags">Bags</a>
+                    <a href="gallery.html?filter=eole-wallets">Wallets</a>
+                    <a href="gallery.html?filter=eole-handkerchiefs">Handkerchiefs</a>
                 </div>
             </div>
             <div class="site-dropdown">
-                <a class="site-dropdown-trigger" href="Gallery EC.html?brand=okurih">OKURIH</a>
+                <a class="site-dropdown-trigger" href="gallery.html?brand=okurih">OKURIH</a>
                 <div class="site-dropdown-menu">
-                    <a href="Gallery EC.html?filter=okurih-tops">Tops</a>
-                    <a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a>
+                    <a href="gallery.html?filter=okurih-tops">Tops</a>
+                    <a href="gallery.html?filter=okurih-acc-bags">Bags</a>
                 </div>
             </div>
         </nav>
@@ -62,12 +63,19 @@
                 <div id="size-options" class="size-options"></div>
             </div>
             <div class="action-area anim-item d-5">
-                <button class="btn-add" disabled>SOLD OUT</button>
+                <button class="btn-add" type="button" disabled aria-disabled="true">SOLD OUT</button>
                 <p class="soldout-caption">この商品は現在売り切れです。再入荷までお待ちください。</p>
             </div>
             <div class="custom-accordion anim-item d-6"></div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script src="site-common.js"></script>
     <script src="product-detail.js"></script>
 </body>
 </html>

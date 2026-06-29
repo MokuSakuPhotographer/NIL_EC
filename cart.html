@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -432,6 +432,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="site-common.css">
 </head>
 <body>
     <header>
@@ -440,23 +441,23 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li class="has-dropdown">
-                    <a href="Gallery EC.html?brand=eole">EOLE</a>
+                    <a href="gallery.html?brand=eole">EOLE</a>
                     <ul class="dropdown">
-                        <li><a href="Gallery EC.html?filter=eole-tops">Tops</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-shirts">Shirt</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-pants">Pants</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-skirts">Skirts</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-shoes">Shoes</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-bags">Bags</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-wallets">Wallets</a></li>
-                        <li><a href="Gallery EC.html?filter=eole-handkerchiefs">Handkerchiefs</a></li>
+                        <li><a href="gallery.html?filter=eole-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=eole-shirts">Shirt</a></li>
+                        <li><a href="gallery.html?filter=eole-pants">Pants</a></li>
+                        <li><a href="gallery.html?filter=eole-skirts">Skirts</a></li>
+                        <li><a href="gallery.html?filter=eole-shoes">Shoes</a></li>
+                        <li><a href="gallery.html?filter=eole-bags">Bags</a></li>
+                        <li><a href="gallery.html?filter=eole-wallets">Wallets</a></li>
+                        <li><a href="gallery.html?filter=eole-handkerchiefs">Handkerchiefs</a></li>
                     </ul>
                 </li>
                 <li class="has-dropdown">
-                    <a href="Gallery EC.html?brand=okurih">OKURIH</a>
+                    <a href="gallery.html?brand=okurih">OKURIH</a>
                     <ul class="dropdown">
-                        <li><a href="Gallery EC.html?filter=okurih-tops">Tops</a></li>
-                        <li><a href="Gallery EC.html?filter=okurih-acc-bags">Bags</a></li>
+                        <li><a href="gallery.html?filter=okurih-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=okurih-acc-bags">Bags</a></li>
                     </ul>
                 </li>
             </ul>
@@ -485,9 +486,9 @@
                     </svg>
                 </div>
                 <h2 id="empty-cart-title">現在、カートに商品は入っていません。</h2>
-                <p>気になるアイテムを見つけたら、商品ページからカートに追加してください。販売状況や在庫数は商品ごとに異なり、ご注文確定前に再確認されます。</p>
+                <p>このサイトはデモ用のモックECです。商品はSOLD OUT表示のまま扱い、実際の注文や決済は行いません。</p>
                 <div class="actions">
-                    <a class="btn btn-primary" href="Gallery EC.html">商品一覧へ戻る</a>
+                    <a class="btn btn-primary" href="gallery.html">商品一覧へ戻る</a>
                     <a class="btn btn-secondary" href="index.html">トップへ戻る</a>
                 </div>
             </section>
@@ -514,7 +515,7 @@
                 </div>
                 <div class="summary-section">
                     <h2>Coupon</h2>
-                    <p class="notice">クーポンコードは商品を追加後、ご購入手続き前に適用できます。</p>
+                    <p class="notice">クーポン入力欄はデモ表示です。コードの送信や保存は行いません。</p>
                     <div class="coupon-row">
                         <input type="text" placeholder="CODE" aria-label="クーポンコード" disabled>
                         <button type="button" disabled>Apply</button>
@@ -522,7 +523,7 @@
                 </div>
                 <div class="summary-section">
                     <h2>Checkout</h2>
-                    <p class="notice">カート内に商品がないため、現在ご購入手続きへ進むことはできません。</p>
+                    <p class="notice">このモックサイトでは購入手続きと決済処理は提供していません。</p>
                 </div>
             </aside>
         </div>
@@ -530,17 +531,24 @@
         <section class="info-grid" aria-label="ご利用案内">
             <div class="info-card">
                 <h3>Shipping</h3>
-                <p>配送方法と送料は、お届け先とご注文内容に応じてチェックアウト時に計算されます。</p>
+                <p>配送方法と送料の計算は行いません。表示はデモ用の案内です。</p>
             </div>
             <div class="info-card">
                 <h3>Payment</h3>
-                <p>クレジットカード、各種オンライン決済はご購入手続き画面で選択できます。</p>
+                <p>カード情報入力や外部決済サービス連携はありません。</p>
             </div>
             <div class="info-card">
                 <h3>Stock</h3>
-                <p>在庫はご注文確定時点で確保されます。カート投入後も完売となる場合があります。</p>
+                <p>在庫管理は行っていません。商品表示はすべてモックです。</p>
             </div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script src="site-common.js"></script>
 </body>
 </html>

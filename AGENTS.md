@@ -8,7 +8,7 @@
 - ビルドツール、npm、フレームワークは前提にしません。
 - 商品詳細ページは共通CSS `product-detail.css` と共通JS `product-detail.js` によって描画されます。
 - 商品情報の中心は `product-detail.js` の `PRODUCTS` オブジェクトです。
-- 商品一覧の中心は `Gallery EC.html` 内の `products` 配列です。
+- 商品一覧の中心は `gallery.html` 内の `products` 配列です。
 - 既存デザイン、余白、アニメーション、ヘッダー挙動、SOLD OUT 表示を維持してください。
 
 ## 重要な安全方針
@@ -28,7 +28,7 @@
 ```text
 .
 ├── index.html                    # トップページ
-├── Gallery EC.html               # 商品一覧 / ブランド・ジャンル絞り込み
+├── gallery.html               # 商品一覧 / ブランド・ジャンル絞り込み
 ├── about.html                    # ブランド紹介
 ├── cart.html                     # 空カートページ
 ├── product-detail.css            # 現行の商品詳細共通CSS
@@ -64,7 +64,7 @@
 1. `images/product/<genre>/` に商品画像を配置する
 2. `product-<slug>.html` を作成する
 3. `product-detail.js` の `PRODUCTS` に商品データを追加する
-4. `Gallery EC.html` の `products` 配列に一覧カードを追加する
+4. `gallery.html` の `products` 配列に一覧カードを追加する
 5. 追加ジャンルやブランドが既存ナビに存在しない場合のみ、ナビ、`validFilters`、絞り込みクラスを追加する
 6. リンク切れ、画像パス、`data-product` と `PRODUCTS` キーの一致を確認する
 
@@ -196,9 +196,9 @@ sizeHeaders: ['Size', 'Height', 'Width', 'Depth', 'Strap'],
 | 靴 | `Calf leather / rubber sole`, `Smooth leather / metal buckle` |
 | バッグ | `Nylon twill`, `Vegan leather`, `Canvas / synthetic leather trim` |
 
-## `Gallery EC.html` の一覧カード規則
+## `gallery.html` の一覧カード規則
 
-商品を追加したら、`Gallery EC.html` 内の `products` 配列にカードを追加してください。
+商品を追加したら、`gallery.html` 内の `products` 配列にカードを追加してください。
 
 ```js
 { id: 26, brand: 'EOLE', name: '商品名', price: '¥12,000 (税込)', filterClass: 'brand-eole eole-shirts', soldOut: true, link: 'product-example.html', img: 'images/product/shirt/example.webp' }
@@ -258,7 +258,7 @@ OKURIHのバッグは既存どおり `okurih-accessories` と `okurih-acc-bags` 
 
 既存ブランドは `EOLE` と `OKURIH` です。新ブランド追加は、単に商品データを追加するだけでは不十分です。以下も確認してください。
 
-- `Gallery EC.html` のナビゲーション
+- `gallery.html` のナビゲーション
 - `validFilters`
 - `brandCopy`
 - `about.html` のブランド紹介カードと詳細パネル
@@ -282,8 +282,8 @@ OKURIHのバッグは既存どおり `okurih-accessories` と `okurih-acc-bags` 
 2. メイン画像とギャラリー画像が表示される
 3. 色ボタンが必要な商品だけ表示される
 4. サイズボタンとSize Guideが商品に合っている
-5. `Gallery EC.html` で該当ブランド・ジャンルに表示される
-6. `Gallery EC.html?filter=eole-shirts` などのURL初期フィルターが動く
+5. `gallery.html` で該当ブランド・ジャンルに表示される
+6. `gallery.html?filter=eole-shirts` などのURL初期フィルターが動く
 7. 価格が一覧と詳細で一致している
 8. すべて `SOLD OUT` 表示のままになっている
 9. ブラウザコンソールにエラーがない

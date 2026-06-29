@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALLERY EC | Curated Fashion Store</title>
+    <title>GALLERY EC | Color Bends Test</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -211,20 +211,30 @@
         }
 
         .hero {
+            position: relative;
+            isolation: isolate;
             min-height: 92vh;
             padding: 104px 5% 34px;
             display: grid;
-            grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+            grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1fr);
             align-items: center;
             gap: 5vw;
-            background: var(--bg);
+            background: #ffffff;
             overflow: hidden;
+        }
+
+        .color-bends-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
         .hero-copy {
             position: relative;
             z-index: 2;
-            animation: fadeUp 0.9s ease both;
         }
 
         .eyebrow {
@@ -301,17 +311,18 @@
             position: relative;
             z-index: 2;
             min-height: 590px;
-            animation: fadeUp 0.9s 0.15s ease both;
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            grid-template-rows: repeat(6, minmax(76px, 1fr));
+            gap: 1rem;
         }
 
         .hero-card {
-            position: absolute;
+            position: relative;
             overflow: hidden;
             background: var(--image-bg);
             border-radius: 4px;
             box-shadow: 0 24px 70px rgba(15, 23, 42, 0.09);
-            transform: translate3d(0, var(--hero-y, 0px), 0) scale(var(--hero-scale, 1));
-            will-change: transform;
         }
 
         .hero-card img {
@@ -326,24 +337,18 @@
         }
 
         .hero-main {
-            top: 0;
-            right: 0;
-            width: min(76%, 540px);
-            aspect-ratio: 3 / 4;
+            grid-column: 2 / 7;
+            grid-row: 1 / 5;
         }
 
         .hero-side {
-            left: 0;
-            bottom: 42px;
-            width: min(42%, 290px);
-            aspect-ratio: 1 / 1.24;
+            grid-column: 1 / 4;
+            grid-row: 4 / 7;
         }
 
         .hero-shoe {
-            right: 10%;
-            bottom: 0;
-            width: min(38%, 270px);
-            aspect-ratio: 1.22 / 1;
+            grid-column: 4 / 7;
+            grid-row: 5 / 7;
         }
 
         .brand-orbit {
@@ -360,8 +365,6 @@
             border-radius: 50%;
             box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
             backdrop-filter: blur(12px);
-            transform: translate3d(0, var(--hero-logo-y, 0px), 0);
-            will-change: transform;
         }
 
         .brand-orbit img {
@@ -370,9 +373,31 @@
             object-fit: contain;
         }
 
+        .gradual-blur {
+            --blur-strength: 1.5;
+            opacity: 0;
+            filter: blur(calc(var(--blur-strength) * 10px));
+            transform: translateY(28px);
+            clip-path: inset(0 0 18% 0);
+            transition:
+                opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.82s cubic-bezier(0.22, 1, 0.36, 1),
+                clip-path 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .gradual-blur.is-visible,
+        .gradual-blur.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+            clip-path: inset(0 0 0 0);
+        }
+
         .story {
             position: relative;
-            min-height: 180vh;
+            padding: 6.2rem 5%;
+            min-height: 0;
             background: var(--bg);
         }
 
@@ -381,24 +406,21 @@
         }
 
         .story-frame {
-            position: sticky;
-            top: 0;
-            min-height: 100vh;
-            padding: 82px 5% 42px;
+            position: relative;
+            max-width: 1400px;
+            min-height: 70vh;
+            margin: 0 auto;
+            padding: 0;
             display: grid;
             grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
             align-items: center;
             gap: 5vw;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .story-copy {
             position: relative;
             z-index: 3;
-            opacity: var(--copy-opacity, 0);
-            transform: translate3d(var(--copy-x, 0px), var(--copy-y, 88px), 0) scale(var(--copy-scale, 0.94));
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-kicker {
@@ -408,10 +430,6 @@
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            opacity: var(--kicker-opacity, 0);
-            transform: translate3d(0, var(--kicker-y, 42px), 0);
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-title {
@@ -420,10 +438,6 @@
             font-weight: 300;
             line-height: 1;
             letter-spacing: 0;
-            opacity: var(--title-opacity, 0);
-            transform: translate3d(0, var(--title-y, 110px), 0);
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-text {
@@ -433,39 +447,20 @@
             font-size: 1rem;
             line-height: 2;
             letter-spacing: 0.4px;
-            opacity: var(--text-opacity, 0);
-            transform: translate3d(0, var(--text-y, 70px), 0);
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
-        }
-
-        .story-copy .hero-actions {
-            opacity: var(--button-opacity, 0);
-            transform: translate3d(0, var(--button-y, 46px), 0);
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-media {
             position: relative;
-            min-height: 64vh;
+            min-height: 520px;
             display: grid;
             place-items: center;
-            perspective: 1200px;
         }
 
         .story-product {
             width: min(82vw, 760px);
-            max-height: 86vh;
+            max-height: 72vh;
             object-fit: contain;
             filter: drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
-            opacity: var(--product-opacity, 0);
-            transform:
-                translate3d(var(--product-x, 120px), var(--product-y, 110px), 0)
-                scale(var(--product-scale, 0.68))
-                rotate(var(--product-rotate, 0deg));
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-badge {
@@ -480,11 +475,7 @@
             border: 1px solid var(--line);
             border-radius: 50%;
             box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
-            opacity: var(--badge-opacity, 0);
-            transform: translate3d(0, var(--badge-y, 40px), 0) scale(var(--badge-scale, 0.88));
             backdrop-filter: blur(12px);
-            transition: opacity 0.18s linear, transform 0.18s linear;
-            will-change: opacity, transform;
         }
 
         .story-badge img {
@@ -531,14 +522,7 @@
         }
 
         .product-card {
-            opacity: 0;
-            transform: translateY(38px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .product-card.visible {
-            opacity: 1;
-            transform: translateY(0);
+            transition-delay: var(--reveal-delay, 0s);
         }
 
         .product-image {
@@ -637,17 +621,19 @@
             }
 
             .story {
-                min-height: 165vh;
+                padding: 4.8rem 5%;
+                min-height: 0;
             }
 
             .story-frame {
-                padding-top: 78px;
+                min-height: auto;
+                padding: 0;
                 align-content: center;
-                gap: 1.5rem;
+                gap: 2rem;
             }
 
             .story-media {
-                min-height: 42vh;
+                min-height: 44vh;
             }
 
             .story-product {
@@ -700,20 +686,22 @@
 
             .hero-stage {
                 min-height: 360px;
+                grid-template-rows: repeat(6, minmax(46px, 1fr));
             }
 
             .hero-main {
-                width: 78%;
+                grid-column: 1 / 7;
+                grid-row: 1 / 4;
             }
 
             .hero-side {
-                width: 44%;
-                bottom: 18px;
+                grid-column: 1 / 4;
+                grid-row: 4 / 7;
             }
 
             .hero-shoe {
-                width: 42%;
-                right: 5%;
+                grid-column: 4 / 7;
+                grid-row: 4 / 7;
             }
 
             .brand-orbit {
@@ -725,29 +713,17 @@
 
             .story {
                 min-height: auto;
+                padding: 3.8rem 4%;
             }
 
             .story-frame {
                 position: relative;
                 min-height: auto;
-                padding: 3.1rem 4%;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .story-copy,
-            .story-kicker,
-            .story-title,
-            .story-text,
-            .story-copy .hero-actions,
-            .story-product,
-            .story-badge {
-                opacity: 1 !important;
-                transform: none !important;
+                padding: 0;
+                display: grid;
             }
 
             .story-media {
-                order: -1;
                 min-height: auto;
                 width: 100%;
             }
@@ -793,6 +769,13 @@
                 animation-iteration-count: 1 !important;
                 scroll-behavior: auto !important;
                 transition-duration: 0.01ms !important;
+            }
+
+            .gradual-blur {
+                opacity: 1 !important;
+                filter: none !important;
+                transform: none !important;
+                clip-path: inset(0 0 0 0) !important;
             }
         }
         .cart-link {
@@ -863,7 +846,7 @@
     <header>
         <nav aria-label="Main navigation">
             <ul class="nav-list">
-                <li><a class="active" href="index.html">Home</a></li>
+                <li><a class="active" href="index_test.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li class="has-dropdown">
                     <a href="gallery.html?brand=eole">EOLE</a>
@@ -906,27 +889,28 @@
 
     <main>
         <section class="hero">
+            <canvas id="color-bends-canvas" class="color-bends-canvas" aria-hidden="true"></canvas>
             <div class="hero-copy">
-                <div class="eyebrow">Curated Fashion Store</div>
-                <h1>Curated for the few, not the many.</h1>
-                <p class="hero-lead">すべての人ではなく、選ぶ人のために。</p>
-                <div class="hero-actions">
+                <div class="eyebrow gradual-blur">Curated Fashion Store</div>
+                <h1 class="gradual-blur">Curated for the few, not the many.</h1>
+                <p class="hero-lead gradual-blur">すべての人ではなく、選ぶ人のために。</p>
+                <div class="hero-actions gradual-blur">
                     <a class="btn btn-primary" href="gallery.html">Enter Gallery</a>
                     <a class="btn" href="#featured">View Picks</a>
                 </div>
             </div>
 
             <div class="hero-stage" aria-label="Featured collection images">
-                <div class="brand-orbit">
+                <div class="brand-orbit gradual-blur">
                     <img src="images/logo/EOLE 1.png" alt="EOLE logo">
                 </div>
-                <a class="hero-card hero-main" href="product-tshirt-marble.html" data-hero-speed="-0.2">
+                <a class="hero-card hero-main gradual-blur" href="product-tshirt-marble.html">
                     <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
                 </a>
-                <a class="hero-card hero-side" href="product-tshirt-logo-collage.html" data-hero-speed="0.14">
+                <a class="hero-card hero-side gradual-blur" href="product-tshirt-logo-collage.html">
                     <img src="images/product/shirt/tshirt-logo-collage.webp" alt="Logo Collage T-Shirt">
                 </a>
-                <a class="hero-card hero-shoe" href="product-shoe-eole.html" data-hero-speed="-0.1">
+                <a class="hero-card hero-shoe gradual-blur" href="product-shoe-eole.html">
                     <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
                 </a>
             </div>
@@ -935,16 +919,16 @@
         <section id="about" class="story" data-story>
             <div class="story-frame">
                 <div class="story-copy">
-                    <div class="story-kicker">EOLE</div>
-                    <h2 class="story-title">Silence becomes a statement.</h2>
-                    <p class="story-text">余計なものを削ぎ落とし、本質だけを残す。<br>洗練された素材と普遍的なシルエット。</p>
-                    <div class="hero-actions">
+                    <div class="story-kicker gradual-blur">EOLE</div>
+                    <h2 class="story-title gradual-blur">Silence becomes a statement.</h2>
+                    <p class="story-text gradual-blur">余計なものを削ぎ落とし、本質だけを残す。<br>洗練された素材と普遍的なシルエット。</p>
+                    <div class="hero-actions gradual-blur">
                         <a class="btn btn-primary" href="product-tshirt-geometry-marble.html">Explore EOLE</a>
                     </div>
                 </div>
                 <div class="story-media">
-                    <img class="story-product" src="images/product/shirt/tshirt-geometry-marble.webp" alt="Geometry Marble T-Shirt">
-                    <div class="story-badge">
+                    <img class="story-product gradual-blur" src="images/product/shirt/tshirt-geometry-marble.webp" alt="Geometry Marble T-Shirt">
+                    <div class="story-badge gradual-blur">
                         <img src="images/logo/EOLE 1.png" alt="EOLE logo">
                     </div>
                 </div>
@@ -954,16 +938,16 @@
         <section id="okurih" class="story alt" data-story>
             <div class="story-frame">
                 <div class="story-copy">
-                    <div class="story-kicker">OKURIH</div>
-                    <h2 class="story-title">Built for the city after dark.</h2>
-                    <p class="story-text">音楽とストリートカルチャーから生まれた。<br>力を抜きながらも存在感のあるデザイン。</p>
-                    <div class="hero-actions">
+                    <div class="story-kicker gradual-blur">OKURIH</div>
+                    <h2 class="story-title gradual-blur">Built for the city after dark.</h2>
+                    <p class="story-text gradual-blur">音楽とストリートカルチャーから生まれた。<br>力を抜きながらも存在感のあるデザイン。</p>
+                    <div class="hero-actions gradual-blur">
                         <a class="btn btn-primary" href="gallery.html">Explore OKURIH</a>
                     </div>
                 </div>
                 <div class="story-media">
-                    <img class="story-product" src="images/product/bag/bag-geometry.webp" alt="Geometry Bag">
-                    <div class="story-badge">
+                    <img class="story-product gradual-blur" src="images/product/bag/bag-geometry.webp" alt="Geometry Bag">
+                    <div class="story-badge gradual-blur">
                         <img src="images/logo/Okurih.png" alt="OKURIH logo">
                     </div>
                 </div>
@@ -973,16 +957,16 @@
         <section id="gallery-pick" class="story" data-story>
             <div class="story-frame">
                 <div class="story-copy">
-                    <div class="story-kicker">GALLERY PICK</div>
-                    <h2 class="story-title">The final detail defines everything.</h2>
-                    <p class="story-text">足元はスタイルの完成形。<br>快適性とクラフトマンシップを両立する。</p>
-                    <div class="hero-actions">
+                    <div class="story-kicker gradual-blur">GALLERY PICK</div>
+                    <h2 class="story-title gradual-blur">The final detail defines everything.</h2>
+                    <p class="story-text gradual-blur">足元はスタイルの完成形。<br>快適性とクラフトマンシップを両立する。</p>
+                    <div class="hero-actions gradual-blur">
                         <a class="btn btn-primary" href="product-shoe-eole.html">View Shoes</a>
                     </div>
                 </div>
                 <div class="story-media">
-                    <img class="story-product" src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
-                    <div class="story-badge">
+                    <img class="story-product gradual-blur" src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                    <div class="story-badge gradual-blur">
                         <img src="images/logo/EOLE 1.png" alt="GALLERY logo mark">
                     </div>
                 </div>
@@ -992,12 +976,12 @@
         <section id="featured" class="product-stage">
             <div class="product-inner">
                 <div class="section-head">
-                    <h2 class="section-title">Selected Essentials</h2>
-                    <p class="section-text">流行ではなく、個性で選ばれたアイテム。</p>
+                    <h2 class="section-title gradual-blur">Selected Essentials</h2>
+                    <p class="section-text gradual-blur">流行ではなく、個性で選ばれたアイテム。</p>
                 </div>
 
                 <div class="product-row">
-                    <a class="product-card" href="product-tshirt-marble.html">
+                    <a class="product-card gradual-blur" href="product-tshirt-marble.html">
                         <div class="product-image">
                             <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
                         </div>
@@ -1006,7 +990,7 @@
                         <div class="product-price">¥12,000 (税込)</div>
                     </a>
 
-                    <a class="product-card" href="product-hoodie-heart.html">
+                    <a class="product-card gradual-blur" href="product-hoodie-heart.html">
                         <div class="product-image">
                             <img src="images/product/hoodie/hoodie-Heart.webp" alt="Heart Hoodie">
                         </div>
@@ -1015,7 +999,7 @@
                         <div class="product-price">¥6,800 (税込)</div>
                     </a>
 
-                    <a class="product-card" href="product-shoe-eole.html">
+                    <a class="product-card gradual-blur" href="product-shoe-eole.html">
                         <div class="product-image">
                             <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
                         </div>
@@ -1036,21 +1020,14 @@
     <script>
         const header = document.querySelector('header');
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const heroCards = document.querySelectorAll('[data-hero-speed]');
-        const brandOrbit = document.querySelector('.brand-orbit');
         const stories = document.querySelectorAll('[data-story]');
         const progressLinks = document.querySelectorAll('.page-progress a');
-        const productCards = document.querySelectorAll('.product-card');
+        const revealItems = document.querySelectorAll('.gradual-blur');
         let ticking = false;
         let lastScrollY = window.scrollY;
 
         function clamp(value, min, max) {
             return Math.min(Math.max(value, min), max);
-        }
-
-        function smoothstep(value) {
-            const x = clamp(value, 0, 1);
-            return x * x * (3 - 2 * x);
         }
 
         function setHeaderState() {
@@ -1073,78 +1050,6 @@
             }
 
             lastScrollY = window.scrollY;
-        }
-
-        function updateHero() {
-            const hero = document.querySelector('.hero');
-            if (!hero) return;
-
-            const rect = hero.getBoundingClientRect();
-            const progress = clamp(-rect.top / rect.height, 0, 1);
-
-            heroCards.forEach((card) => {
-                const speed = Number(card.dataset.heroSpeed) || 0;
-                card.style.setProperty('--hero-y', `${progress * speed * 520}px`);
-                card.style.setProperty('--hero-scale', `${1 + progress * 0.08}`);
-            });
-
-            if (brandOrbit) {
-                brandOrbit.style.setProperty('--hero-logo-y', `${progress * -120}px`);
-            }
-        }
-
-        function updateStories() {
-            stories.forEach((story, index) => {
-                const rect = story.getBoundingClientRect();
-                const travel = Math.max(rect.height - window.innerHeight, 1);
-                const progress = clamp(-rect.top / travel, 0, 1);
-                const mediaProgress = smoothstep(progress * 0.86 + 0.07);
-
-                const copy = story.querySelector('.story-copy');
-                const product = story.querySelector('.story-product');
-                const badge = story.querySelector('.story-badge');
-                const direction = index % 2 === 0 ? 1 : -1;
-                const imageIn = smoothstep((progress + 0.03) / 0.24);
-                const imageOut = 1 - smoothstep((progress - 0.72) / 0.24);
-                const imageVisible = clamp(imageIn * imageOut, 0, 1);
-                const titleIn = smoothstep((progress + 0.03) / 0.24);
-                const titleOut = 1 - smoothstep((progress - 0.66) / 0.28);
-                const bodyIn = smoothstep((progress - 0.04) / 0.26);
-                const bodyOut = 1 - smoothstep((progress - 0.72) / 0.24);
-                const buttonIn = smoothstep((progress - 0.14) / 0.26);
-                const buttonOut = 1 - smoothstep((progress - 0.74) / 0.22);
-
-                if (copy) {
-                    copy.style.setProperty('--copy-opacity', clamp(titleIn * titleOut, 0, 1));
-                    copy.style.setProperty('--copy-x', `${direction * (1 - mediaProgress) * -24}px`);
-                    copy.style.setProperty('--copy-y', `${(1 - titleIn) * 82 - (1 - titleOut) * 72}px`);
-                    copy.style.setProperty('--copy-scale', `${0.92 + titleIn * 0.08}`);
-                    copy.style.setProperty('--kicker-opacity', clamp(smoothstep(progress / 0.2) * titleOut, 0, 1));
-                    copy.style.setProperty('--kicker-y', `${(1 - smoothstep(progress / 0.2)) * 48 - (1 - titleOut) * 46}px`);
-                    copy.style.setProperty('--title-opacity', clamp(titleIn * titleOut, 0, 1));
-                    copy.style.setProperty('--title-y', `${(1 - titleIn) * 104 - (1 - titleOut) * 116}px`);
-                    copy.style.setProperty('--text-opacity', clamp(bodyIn * bodyOut, 0, 1));
-                    copy.style.setProperty('--text-y', `${(1 - bodyIn) * 74 - (1 - bodyOut) * 82}px`);
-                    copy.style.setProperty('--button-opacity', clamp(buttonIn * buttonOut, 0, 1));
-                    copy.style.setProperty('--button-y', `${(1 - buttonIn) * 58 - (1 - buttonOut) * 62}px`);
-                }
-
-                if (product) {
-                    product.style.setProperty('--product-opacity', imageVisible);
-                    product.style.setProperty('--product-x', `${direction * (110 - mediaProgress * 170)}px`);
-                    product.style.setProperty('--product-y', `${94 - mediaProgress * 154}px`);
-                    product.style.setProperty('--product-scale', `${0.74 + mediaProgress * 0.4}`);
-                    product.style.setProperty('--product-rotate', `${direction * (5 - mediaProgress * 8)}deg`);
-                }
-
-                if (badge) {
-                    const badgeIn = smoothstep((progress - 0.14) / 0.18);
-                    const badgeOut = 1 - smoothstep((progress - 0.76) / 0.18);
-                    badge.style.setProperty('--badge-opacity', clamp(badgeIn * badgeOut, 0, 1));
-                    badge.style.setProperty('--badge-y', `${(1 - badgeIn) * 58}px`);
-                    badge.style.setProperty('--badge-scale', `${0.82 + badgeIn * 0.18}`);
-                }
-            });
         }
 
         function updatePageProgress() {
@@ -1171,10 +1076,6 @@
 
         function updatePage() {
             setHeaderState();
-            if (!reduceMotion) {
-                updateHero();
-                updateStories();
-            }
             updatePageProgress();
         }
 
@@ -1191,19 +1092,242 @@
         window.addEventListener('resize', requestUpdate);
         updatePage();
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.16 });
+        function initGradualBlur() {
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                revealItems.forEach((item) => item.classList.add('is-visible'));
+                return;
+            }
 
-        productCards.forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.08}s`;
-            observer.observe(card);
-        });
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                });
+            }, {
+                rootMargin: '0px 0px -8% 0px',
+                threshold: 0.18
+            });
+
+            revealItems.forEach((item, index) => {
+                item.style.transitionDelay = `${(index % 4) * 0.08}s`;
+                revealObserver.observe(item);
+            });
+        }
+
+        function initColorBends() {
+            const canvas = document.getElementById('color-bends-canvas');
+            const hero = document.querySelector('.hero');
+            if (!canvas || !hero) return;
+
+            const context = canvas.getContext('2d');
+            if (!context) return;
+
+            const settings = {
+                color: '#000000',
+                rotation: 73,
+                autoRotate: 0,
+                speed: 0.3,
+                scale: 1.2,
+                frequency: 1.5,
+                warpStrength: 1,
+                mouseInfluence: 1,
+                noise: 0.15,
+                iterations: 1,
+                intensity: 1.5,
+                bandWidth: 5
+            };
+
+            const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+            let width = 0;
+            let height = 0;
+            let renderScale = 0.5;
+            let isHeroVisible = true;
+            let frameId = 0;
+            let lastFrameTime = 0;
+            let noiseCanvas = document.createElement('canvas');
+            let noiseContext = noiseCanvas.getContext('2d');
+
+            function resizeCanvas() {
+                const rect = hero.getBoundingClientRect();
+                width = Math.max(rect.width, 1);
+                height = Math.max(rect.height, 1);
+                renderScale = Math.min(0.42, 760 / width);
+                canvas.width = Math.floor(width * renderScale);
+                canvas.height = Math.floor(height * renderScale);
+                canvas.style.width = `${width}px`;
+                canvas.style.height = `${height}px`;
+                buildNoise();
+            }
+
+            function buildNoise() {
+                if (!noiseContext) return;
+
+                noiseCanvas.width = canvas.width;
+                noiseCanvas.height = canvas.height;
+
+                const image = noiseContext.createImageData(noiseCanvas.width, noiseCanvas.height);
+                const data = image.data;
+
+                for (let index = 0; index < data.length; index += 4) {
+                    const shade = 8 + Math.random() * 26;
+                    data[index] = shade;
+                    data[index + 1] = shade;
+                    data[index + 2] = shade;
+                    data[index + 3] = Math.random() * settings.noise * 18;
+                }
+
+                noiseContext.putImageData(image, 0, 0);
+            }
+
+            function updatePointer(event) {
+                const rect = hero.getBoundingClientRect();
+                if (
+                    event.clientX < rect.left ||
+                    event.clientX > rect.right ||
+                    event.clientY < rect.top ||
+                    event.clientY > rect.bottom
+                ) {
+                    pointer.targetX = 0;
+                    pointer.targetY = 0;
+                    return;
+                }
+
+                pointer.targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+                pointer.targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+            }
+
+            function traceBend(offset, time) {
+                const canvasWidth = canvas.width;
+                const canvasHeight = canvas.height;
+                const extent = Math.max(canvasWidth, canvasHeight) * 1.65;
+                const amplitude = canvasHeight * 0.32 * settings.warpStrength;
+                const phase = time * settings.speed + offset * 0.018;
+
+                context.beginPath();
+                for (let x = -extent; x <= extent; x += 18) {
+                    const xNorm = x / extent;
+                    const primary = Math.sin(xNorm * Math.PI * settings.frequency + phase);
+                    const secondary = Math.sin(xNorm * Math.PI * 3.1 - phase * 0.7) * settings.noise * 2.4;
+                    const mouseWarp =
+                        pointer.x * settings.mouseInfluence * 24 +
+                        pointer.y * settings.mouseInfluence * 16 * Math.sin(xNorm * Math.PI * 2 + phase);
+                    const y = offset + (primary + secondary) * amplitude + mouseWarp;
+
+                    if (x === -extent) {
+                        context.moveTo(x, y);
+                    } else {
+                        context.lineTo(x, y);
+                    }
+                }
+            }
+
+            function strokeBend(offset, time) {
+                const softWidth = settings.bandWidth * 28 * settings.scale;
+                const midWidth = settings.bandWidth * 9 * settings.scale;
+                const coreWidth = Math.max(1.6, settings.bandWidth * 0.5);
+
+                context.save();
+                context.filter = `blur(${18 * renderScale}px)`;
+                traceBend(offset, time);
+                context.lineWidth = softWidth;
+                context.strokeStyle = `rgba(0, 0, 0, ${0.026 * settings.intensity})`;
+                context.stroke();
+                context.restore();
+
+                context.save();
+                context.filter = `blur(${5 * renderScale}px)`;
+                traceBend(offset, time + 0.08);
+                context.lineWidth = midWidth;
+                context.strokeStyle = `rgba(0, 0, 0, ${0.058 * settings.intensity})`;
+                context.stroke();
+                context.restore();
+
+                context.save();
+                context.filter = 'none';
+                traceBend(offset, time + 0.12);
+                context.lineWidth = coreWidth;
+                context.strokeStyle = `rgba(0, 0, 0, ${0.2 * settings.intensity})`;
+                context.stroke();
+                context.restore();
+            }
+
+            function drawNoise() {
+                if (!noiseCanvas.width) return;
+                context.drawImage(noiseCanvas, 0, 0);
+            }
+
+            function render(timeStamp) {
+                if (!isHeroVisible && !reduceMotion) {
+                    frameId = 0;
+                    return;
+                }
+
+                if (!reduceMotion && timeStamp - lastFrameTime < 66) {
+                    frameId = window.requestAnimationFrame(render);
+                    return;
+                }
+
+                lastFrameTime = timeStamp;
+                const time = reduceMotion ? 0 : timeStamp * 0.001;
+                pointer.x += (pointer.targetX - pointer.x) * 0.08;
+                pointer.y += (pointer.targetY - pointer.y) * 0.08;
+
+                context.setTransform(1, 0, 0, 1, 0, 0);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.fillStyle = '#ffffff';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+                context.save();
+                context.translate(canvas.width / 2, canvas.height / 2);
+                context.rotate(((settings.rotation + settings.autoRotate * time) * Math.PI) / 180);
+                context.scale(settings.scale, settings.scale);
+                context.lineCap = 'round';
+                context.lineJoin = 'round';
+
+                const spacing = canvas.height / 1.65;
+                const passes = Math.max(1, Math.round(settings.iterations));
+                for (let pass = 0; pass < passes; pass += 1) {
+                    strokeBend(-spacing * 0.42 + pass * 26, time);
+                    strokeBend(spacing * 0.48 + pass * 18, time + 1.55);
+                }
+
+                context.restore();
+                context.globalCompositeOperation = 'multiply';
+                drawNoise();
+                context.globalCompositeOperation = 'source-over';
+
+                if (!reduceMotion) {
+                    frameId = window.requestAnimationFrame(render);
+                }
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                render(0);
+            });
+            window.addEventListener('pointermove', updatePointer, { passive: true });
+
+            if ('IntersectionObserver' in window) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    isHeroVisible = entries.some((entry) => entry.isIntersecting);
+                    if (isHeroVisible && !frameId && !reduceMotion) {
+                        frameId = window.requestAnimationFrame(render);
+                    }
+                }, { threshold: 0.02 });
+                heroObserver.observe(hero);
+            }
+
+            render(0);
+
+            if (reduceMotion && frameId) {
+                window.cancelAnimationFrame(frameId);
+            }
+        }
+
+        initGradualBlur();
+        initColorBends();
     </script>
     <script src="site-common.js"></script>
 </body>

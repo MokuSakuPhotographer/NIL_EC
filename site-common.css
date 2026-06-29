@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap');
+
+:root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666666;
+    --line: #e5e5e5;
+    --blue: #2563eb;
+    --soft: #f4f7fb;
+    --image-bg: #f3f4f6;
+    --primary-bg: var(--bg);
+    --primary-text: var(--text);
+    --secondary-text: var(--muted);
+    --accent-color: var(--blue);
+    --border-color: var(--line);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+header {
+    transform: translateY(0);
+}
+
+header.header-hidden {
+    transform: translateY(-110%);
+}
+
+header.header-compact {
+    padding: 0.5rem 5%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.has-dropdown.open > .dropdown,
+.site-dropdown.open > .site-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown,
+.site-dropdown-menu {
+    min-width: 170px;
+    padding: 0.5rem 0;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(14px);
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+}
+
+.dropdown::before,
+.site-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.has-dropdown:hover > .dropdown,
+.has-dropdown:focus-within > .dropdown,
+.site-dropdown:hover > .site-dropdown-menu,
+.site-dropdown:focus-within > .site-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.has-dropdown.dropdown-suppressed > .dropdown,
+.site-dropdown.dropdown-suppressed > .site-dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(12px);
+}
+
+.dropdown a,
+.site-dropdown-menu a {
+    display: block;
+    padding: 0.78rem 1.4rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    transition: color 0.2s ease, background 0.2s ease, padding-left 0.2s ease;
+    white-space: nowrap;
+}
+
+.dropdown a::after,
+.site-dropdown-menu a::after {
+    display: none !important;
+}
+
+.dropdown a:hover,
+.dropdown a.active,
+.site-dropdown-menu a:hover,
+.site-dropdown-menu a.active {
+    color: var(--blue);
+    background: #f8fafc;
+    padding-left: 1.7rem;
+}
+
+.card-image img,
+.recommend-image img,
+.product-image-wrapper img {
+    object-position: center;
+}
+
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2rem 5%;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--bg);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+footer:not(.site-footer) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 2rem 5%;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--bg);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.85rem 4%;
+    }
+
+    header.header-compact {
+        padding: 0.65rem 4%;
+    }
+
+    .nav-list,
+    .site-nav {
+        max-width: calc(100vw - 96px);
+        overflow-x: auto;
+        overflow-y: visible;
+        justify-content: flex-start;
+        gap: 1.3rem;
+        scrollbar-width: none;
+    }
+
+    .site-dropdown {
+        flex: 0 0 auto;
+        padding: 0;
+    }
+
+    .site-nav a,
+    .site-dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 0 0.85rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #ffffff;
+        font-size: 0.76rem;
+    }
+
+    .site-nav a::after,
+    .site-dropdown-trigger::after {
+        display: none;
+    }
+
+    .site-nav a.active,
+    .site-dropdown.open .site-dropdown-trigger {
+        border-color: var(--blue);
+    }
+
+    .site-dropdown-menu {
+        position: static;
+        display: none;
+        gap: 0.5rem;
+        min-width: 0;
+        padding: 0;
+        margin-top: 0.5rem;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .site-dropdown.open .site-dropdown-menu {
+        display: flex;
+    }
+
+    .site-dropdown-menu::before {
+        display: none;
+    }
+
+    .site-dropdown-menu a {
+        padding: 0.45rem 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #ffffff;
+        font-size: 0.74rem;
+    }
+
+    .site-dropdown-menu a:hover,
+    .site-dropdown-menu a.active {
+        padding-left: 0.75rem;
+        border-color: var(--blue);
+    }
+
+    .nav-list::-webkit-scrollbar,
+    .site-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cart-link {
+        right: 4%;
+        z-index: 2;
+    }
+
+    .site-footer,
+    footer:not(.site-footer) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.6rem 4%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
