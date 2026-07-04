@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALLERY EC | Curated Fashion Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #666666;
+            --line: #e5e5e5;
+            --blue: #2563eb;
+            --soft: #f4f7fb;
+            --image-bg: #f3f4f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        header {
+            position: fixed;
+            inset: 0 0 auto;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(14px);
+            transform: translateY(0);
+            transition: transform 0.35s ease, padding 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        header.header-hidden {
+            transform: translateY(-110%);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.4rem;
+            list-style: none;
+        }
+
+        .nav-list > li {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .nav-list a {
+            position: relative;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.35s ease;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            transition: width 0.35s ease;
+        }
+
+        .nav-list a:hover,
+        .nav-list a.active {
+            color: var(--blue);
+        }
+
+        .nav-list a:hover::after,
+        .nav-list a.active::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            min-width: 150px;
+            padding: 0.45rem 0;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(12px);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+
+        .has-dropdown:hover .dropdown,
+        .has-dropdown:focus-within .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.68rem 1.15rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .dropdown a::after {
+            display: none;
+        }
+
+        .dropdown a:hover {
+            color: var(--blue);
+        }
+
+        .mobile-gallery {
+            display: none;
+            min-width: 92px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--blue);
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .page-progress {
+            position: fixed;
+            right: 18px;
+            top: 50%;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transform: translateY(-50%);
+        }
+
+        .page-progress a {
+            display: grid;
+            place-items: center;
+            width: 18px;
+            height: 18px;
+        }
+
+        .page-progress a::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border: 1px solid rgba(26, 26, 26, 0.55);
+            border-radius: 50%;
+            background: var(--bg);
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .page-progress a.active::before,
+        .page-progress a:hover::before {
+            border-color: var(--blue);
+            background: var(--blue);
+            transform: scale(1.18);
+        }
+
+        .page-progress-line {
+            width: 1px;
+            height: 34px;
+            background: rgba(26, 26, 26, 0.28);
+        }
+
+        .hero {
+            min-height: 92vh;
+            padding: 104px 5% 34px;
+            display: grid;
+            grid-template-columns: minmax(0, 0.88fr) minmax(340px, 1.12fr);
+            align-items: center;
+            gap: 5vw;
+            background: var(--bg);
+            overflow: hidden;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.35rem;
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--text);
+        }
+
+        h1 {
+            max-width: 760px;
+            font-size: clamp(2.8rem, 7vw, 7.4rem);
+            font-weight: 300;
+            line-height: 0.96;
+            letter-spacing: 0;
+        }
+
+        .hero-lead {
+            max-width: 560px;
+            margin-top: 1.25rem;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 2;
+            letter-spacing: 0.4px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.65rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 1.45rem;
+            border: 1px solid var(--text);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.35s ease, background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+        }
+
+        .btn-primary {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--blue);
+            background: var(--blue);
+            color: var(--bg);
+        }
+
+        .hero-stage {
+            position: relative;
+            z-index: 2;
+            min-height: 590px;
+            animation: fadeUp 0.9s 0.15s ease both;
+        }
+
+        .hero-card {
+            position: absolute;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 4px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.09);
+            transform: translate3d(0, var(--hero-y, 0px), 0) scale(var(--hero-scale, 1));
+            will-change: transform;
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .hero-card:hover img {
+            transform: scale(1.055);
+        }
+
+        .hero-main {
+            top: 0;
+            right: 0;
+            width: min(76%, 540px);
+            aspect-ratio: 3 / 4;
+        }
+
+        .hero-side {
+            left: 0;
+            bottom: 42px;
+            width: min(42%, 290px);
+            aspect-ratio: 1 / 1.24;
+        }
+
+        .hero-shoe {
+            right: 10%;
+            bottom: 0;
+            width: min(38%, 270px);
+            aspect-ratio: 1.22 / 1;
+        }
+
+        .brand-orbit {
+            position: absolute;
+            left: 10%;
+            top: 74px;
+            z-index: 4;
+            width: 146px;
+            height: 146px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,0.86);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(12px);
+            transform: translate3d(0, var(--hero-logo-y, 0px), 0);
+            will-change: transform;
+        }
+
+        .brand-orbit img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+
+        .story {
+            position: relative;
+            min-height: 180vh;
+            background: var(--bg);
+        }
+
+        .story.alt {
+            background: var(--bg);
+        }
+
+        .story-frame {
+            position: sticky;
+            top: 0;
+            min-height: 100vh;
+            padding: 82px 5% 42px;
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+            align-items: center;
+            gap: 5vw;
+            overflow: hidden;
+        }
+
+        .story-copy {
+            position: relative;
+            z-index: 3;
+            opacity: var(--copy-opacity, 0);
+            transform: translate3d(var(--copy-x, 0px), var(--copy-y, 88px), 0) scale(var(--copy-scale, 0.94));
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-kicker {
+            margin-bottom: 0.75rem;
+            color: var(--blue);
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: var(--kicker-opacity, 0);
+            transform: translate3d(0, var(--kicker-y, 42px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-title {
+            max-width: 680px;
+            font-size: clamp(2.4rem, 5.6vw, 6.2rem);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 0;
+            opacity: var(--title-opacity, 0);
+            transform: translate3d(0, var(--title-y, 110px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-text {
+            max-width: 520px;
+            margin-top: 1rem;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 2;
+            letter-spacing: 0.4px;
+            opacity: var(--text-opacity, 0);
+            transform: translate3d(0, var(--text-y, 70px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-copy .hero-actions {
+            opacity: var(--button-opacity, 0);
+            transform: translate3d(0, var(--button-y, 46px), 0);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-media {
+            position: relative;
+            min-height: 64vh;
+            display: grid;
+            place-items: center;
+            perspective: 1200px;
+        }
+
+        .story-product {
+            width: min(82vw, 760px);
+            max-height: 86vh;
+            object-fit: contain;
+            filter: drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
+            opacity: var(--product-opacity, 0);
+            transform:
+                translate3d(var(--product-x, 120px), var(--product-y, 110px), 0)
+                scale(var(--product-scale, 0.68))
+                rotate(var(--product-rotate, 0deg));
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-badge {
+            position: absolute;
+            right: 6%;
+            bottom: 12%;
+            width: clamp(108px, 13vw, 168px);
+            height: clamp(108px, 13vw, 168px);
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,0.82);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
+            opacity: var(--badge-opacity, 0);
+            transform: translate3d(0, var(--badge-y, 40px), 0) scale(var(--badge-scale, 0.88));
+            backdrop-filter: blur(12px);
+            transition: opacity 0.18s linear, transform 0.18s linear;
+            will-change: opacity, transform;
+        }
+
+        .story-badge img {
+            width: 72%;
+            height: 72%;
+            object-fit: contain;
+        }
+
+        .product-stage {
+            padding: 4.8rem 5%;
+            background: var(--bg);
+        }
+
+        .product-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 2rem;
+            margin-bottom: 2.6rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4.2vw, 4.4rem);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: 0;
+        }
+
+        .section-text {
+            max-width: 450px;
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        .product-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            opacity: 0;
+            transform: translateY(38px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-image {
+            position: relative;
+            aspect-ratio: 3 / 4;
+            margin-bottom: 1.15rem;
+            overflow: hidden;
+            background: var(--image-bg);
+            border-radius: 3px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.055);
+        }
+
+        .product-image::after {
+            content: 'View Details';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, calc(-50% + 16px));
+            padding: 0.8rem 1.7rem;
+            border-radius: 999px;
+            background: var(--text);
+            color: var(--bg);
+            opacity: 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: opacity 0.35s ease, transform 0.35s ease, background 0.35s ease;
+        }
+
+        .product-card:hover .product-image::after {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            background: var(--blue);
+        }
+
+        .product-brand {
+            color: var(--muted);
+            font-size: 0.74rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            margin-top: 0.25rem;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .product-price {
+            margin-top: 0.35rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 1.5rem 5%;
+            border-top: 1px solid var(--line);
+            color: #8a8a8a;
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 980px) {
+            .hero,
+            .story-frame {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 96px;
+            }
+
+            .hero-stage {
+                min-height: 460px;
+            }
+
+            .story {
+                min-height: 165vh;
+            }
+
+            .story-frame {
+                padding-top: 78px;
+                align-content: center;
+                gap: 1.5rem;
+            }
+
+            .story-media {
+                min-height: 42vh;
+            }
+
+            .story-product {
+                width: min(94vw, 620px);
+                max-height: 58vh;
+            }
+
+            .section-head {
+                display: block;
+            }
+
+            .section-text {
+                margin-top: 1rem;
+            }
+
+            .product-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0.85rem 4%;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .nav-list {
+                display: flex;
+                gap: 1rem;
+            }
+
+            .nav-list a {
+                font-size: 0.74rem;
+            }
+
+            .dropdown {
+                min-width: 120px;
+            }
+
+            .mobile-gallery {
+                display: none;
+            }
+
+            .page-progress {
+                display: none;
+            }
+
+            .hero-stage {
+                min-height: 360px;
+            }
+
+            .hero-main {
+                width: 78%;
+            }
+
+            .hero-side {
+                width: 44%;
+                bottom: 18px;
+            }
+
+            .hero-shoe {
+                width: 42%;
+                right: 5%;
+            }
+
+            .brand-orbit {
+                width: 112px;
+                height: 112px;
+                left: 4%;
+                top: 36px;
+            }
+
+            .story {
+                min-height: auto;
+            }
+
+            .story-frame {
+                position: relative;
+                min-height: auto;
+                padding: 3.1rem 4%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .story-copy,
+            .story-kicker,
+            .story-title,
+            .story-text,
+            .story-copy .hero-actions,
+            .story-product,
+            .story-badge {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .story-media {
+                order: -1;
+                min-height: auto;
+                width: 100%;
+            }
+
+            .story-product {
+                width: min(92vw, 420px);
+                max-height: none;
+            }
+
+            .story-badge {
+                right: 0;
+                bottom: 0;
+                width: 92px;
+                height: 92px;
+            }
+
+            .story-title {
+                font-size: clamp(2.1rem, 12vw, 4.6rem);
+            }
+
+            .story-text {
+                font-size: 0.94rem;
+            }
+
+            .product-stage {
+                padding: 3.2rem 4%;
+            }
+
+            .product-row {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        .cart-link {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            min-width: 44px;
+            height: 42px;
+            padding: 0 0.78rem;
+            border: 1px solid var(--line, var(--border-color, #e5e5e5));
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            color: var(--blue, var(--accent-color, #2563eb));
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transform: translateY(-50%);
+            transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+        }
+
+        .cart-link svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cart-link:hover {
+            border-color: var(--blue, var(--accent-color, #2563eb));
+            background: var(--blue, var(--accent-color, #2563eb));
+            color: #ffffff;
+        }
+
+        .cart-link::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .cart-link {
+                right: 4%;
+                width: 38px;
+                min-width: 38px;
+                height: 38px;
+                padding: 0;
+            }
+
+            .cart-link span {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="site-common.css">
+</head>
+<body>
+    <header>
+        <nav aria-label="Main navigation">
+            <ul class="nav-list">
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li class="has-dropdown">
+                    <a href="gallery.html?brand=eole">EOLE</a>
+                    <ul class="dropdown">
+                        <li><a href="gallery.html?filter=eole-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=eole-shirts">Shirt</a></li>
+                        <li><a href="gallery.html?filter=eole-pants">Pants</a></li>
+                        <li><a href="gallery.html?filter=eole-skirts">Skirts</a></li>
+                        <li><a href="gallery.html?filter=eole-shoes">Shoes</a></li>
+                        <li><a href="gallery.html?filter=eole-bags">Bags</a></li>
+                        <li><a href="gallery.html?filter=eole-wallets">Wallets</a></li>
+                        <li><a href="gallery.html?filter=eole-handkerchiefs">Handkerchiefs</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="gallery.html?brand=okurih">OKURIH</a>
+                    <ul class="dropdown">
+                        <li><a href="gallery.html?filter=okurih-tops">Tops</a></li>
+                        <li><a href="gallery.html?filter=okurih-acc-bags">Bags</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <a class="cart-link" href="cart.html" aria-label="カートを見る" title="カートを見る">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 8h10l-.72 8.65A2 2 0 0 1 14.29 18H9.71a2 2 0 0 1-1.99-1.35L7 8Z" />
+                <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            <span>Cart</span>
+        </a>
+    </header>
+
+    <nav class="page-progress" aria-label="Story navigation">
+        <a class="active" href="#about" aria-label="EOLE section"></a>
+        <span class="page-progress-line" aria-hidden="true"></span>
+        <a href="#okurih" aria-label="OKURIH section"></a>
+        <span class="page-progress-line" aria-hidden="true"></span>
+        <a href="#gallery-pick" aria-label="Gallery Pick section"></a>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">Curated Fashion Store</div>
+                <h1>Curated for the few, not the many.</h1>
+                <p class="hero-lead">すべての人ではなく、選ぶ人のために。</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="gallery.html">Enter Gallery</a>
+                    <a class="btn" href="#featured">View Picks</a>
+                </div>
+            </div>
+
+            <div class="hero-stage" aria-label="Featured collection images">
+                <div class="brand-orbit">
+                    <img src="images/logo/EOLE 1.png" alt="EOLE logo">
+                </div>
+                <a class="hero-card hero-main" href="product-tshirt-marble.html" data-hero-speed="-0.2">
+                    <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
+                </a>
+                <a class="hero-card hero-side" href="product-tshirt-logo-collage.html" data-hero-speed="0.14">
+                    <img src="images/product/shirt/tshirt-logo-collage.webp" alt="Logo Collage T-Shirt">
+                </a>
+                <a class="hero-card hero-shoe" href="product-shoe-eole.html" data-hero-speed="-0.1">
+                    <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                </a>
+            </div>
+        </section>
+
+        <section id="about" class="story" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">EOLE</div>
+                    <h2 class="story-title">Silence becomes a statement.</h2>
+                    <p class="story-text">余計なものを削ぎ落とし、本質だけを残す。<br>洗練された素材と普遍的なシルエット。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="product-tshirt-geometry-marble.html">Explore EOLE</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/shirt/tshirt-geometry-marble.webp" alt="Geometry Marble T-Shirt">
+                    <div class="story-badge">
+                        <img src="images/logo/EOLE 1.png" alt="EOLE logo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="okurih" class="story alt" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">OKURIH</div>
+                    <h2 class="story-title">Built for the city after dark.</h2>
+                    <p class="story-text">音楽とストリートカルチャーから生まれた。<br>力を抜きながらも存在感のあるデザイン。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="gallery.html">Explore OKURIH</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/bag/bag-geometry.webp" alt="Geometry Bag">
+                    <div class="story-badge">
+                        <img src="images/logo/Okurih.png" alt="OKURIH logo">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery-pick" class="story" data-story>
+            <div class="story-frame">
+                <div class="story-copy">
+                    <div class="story-kicker">GALLERY PICK</div>
+                    <h2 class="story-title">The final detail defines everything.</h2>
+                    <p class="story-text">足元はスタイルの完成形。<br>快適性とクラフトマンシップを両立する。</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="product-shoe-eole.html">View Shoes</a>
+                    </div>
+                </div>
+                <div class="story-media">
+                    <img class="story-product" src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                    <div class="story-badge">
+                        <img src="images/logo/EOLE 1.png" alt="GALLERY logo mark">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured" class="product-stage">
+            <div class="product-inner">
+                <div class="section-head">
+                    <h2 class="section-title">Selected Essentials</h2>
+                    <p class="section-text">流行ではなく、個性で選ばれたアイテム。</p>
+                </div>
+
+                <div class="product-row">
+                    <a class="product-card" href="product-tshirt-marble.html">
+                        <div class="product-image">
+                            <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
+                        </div>
+                        <div class="product-brand">EOLE</div>
+                        <h3 class="product-title">Marble T-Shirt</h3>
+                        <div class="product-price">¥12,000 (税込)</div>
+                    </a>
+
+                    <a class="product-card" href="product-hoodie-heart.html">
+                        <div class="product-image">
+                            <img src="images/product/hoodie/hoodie-Heart.webp" alt="Heart Hoodie">
+                        </div>
+                        <div class="product-brand">OKURIH</div>
+                        <h3 class="product-title">Heart Hoodie</h3>
+                        <div class="product-price">¥6,800 (税込)</div>
+                    </a>
+
+                    <a class="product-card" href="product-shoe-eole.html">
+                        <div class="product-image">
+                            <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                        </div>
+                        <div class="product-brand">EOLE</div>
+                        <h3 class="product-title">EOLE Shoe</h3>
+                        <div class="product-price">¥26,500 (税込)</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>GALLERY EC</span>
+        <span>Curated by EOLE / OKURIH</span>
+    </footer>
+
+    <script>
+        const header = document.querySelector('header');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const heroCards = document.querySelectorAll('[data-hero-speed]');
+        const brandOrbit = document.querySelector('.brand-orbit');
+        const stories = document.querySelectorAll('[data-story]');
+        const progressLinks = document.querySelectorAll('.page-progress a');
+        const productCards = document.querySelectorAll('.product-card');
+        let ticking = false;
+        let lastScrollY = window.scrollY;
+
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function smoothstep(value) {
+            const x = clamp(value, 0, 1);
+            return x * x * (3 - 2 * x);
+        }
+
+        function setHeaderState() {
+            const mobileHeader = window.matchMedia('(max-width: 768px)').matches;
+            const compactPadding = mobileHeader ? '0.65rem 4%' : '0.55rem 5%';
+            const normalPadding = mobileHeader ? '0.85rem 4%' : '1rem 5%';
+
+            if (window.scrollY > lastScrollY && window.scrollY > 90) {
+                header.classList.add('header-hidden');
+            } else {
+                header.classList.remove('header-hidden');
+            }
+
+            if (window.scrollY > 50) {
+                header.style.padding = compactPadding;
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
+            } else {
+                header.style.padding = normalPadding;
+                header.style.boxShadow = 'none';
+            }
+
+            lastScrollY = window.scrollY;
+        }
+
+        function updateHero() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+
+            const rect = hero.getBoundingClientRect();
+            const progress = clamp(-rect.top / rect.height, 0, 1);
+
+            heroCards.forEach((card) => {
+                const speed = Number(card.dataset.heroSpeed) || 0;
+                card.style.setProperty('--hero-y', `${progress * speed * 520}px`);
+                card.style.setProperty('--hero-scale', `${1 + progress * 0.08}`);
+            });
+
+            if (brandOrbit) {
+                brandOrbit.style.setProperty('--hero-logo-y', `${progress * -120}px`);
+            }
+        }
+
+        function updateStories() {
+            stories.forEach((story, index) => {
+                const rect = story.getBoundingClientRect();
+                const travel = Math.max(rect.height - window.innerHeight, 1);
+                const progress = clamp(-rect.top / travel, 0, 1);
+                const mediaProgress = smoothstep(progress * 0.86 + 0.07);
+
+                const copy = story.querySelector('.story-copy');
+                const product = story.querySelector('.story-product');
+                const badge = story.querySelector('.story-badge');
+                const direction = index % 2 === 0 ? 1 : -1;
+                const imageIn = smoothstep((progress + 0.03) / 0.24);
+                const imageOut = 1 - smoothstep((progress - 0.72) / 0.24);
+                const imageVisible = clamp(imageIn * imageOut, 0, 1);
+                const titleIn = smoothstep((progress + 0.03) / 0.24);
+                const titleOut = 1 - smoothstep((progress - 0.66) / 0.28);
+                const bodyIn = smoothstep((progress - 0.04) / 0.26);
+                const bodyOut = 1 - smoothstep((progress - 0.72) / 0.24);
+                const buttonIn = smoothstep((progress - 0.14) / 0.26);
+                const buttonOut = 1 - smoothstep((progress - 0.74) / 0.22);
+
+                if (copy) {
+                    copy.style.setProperty('--copy-opacity', clamp(titleIn * titleOut, 0, 1));
+                    copy.style.setProperty('--copy-x', `${direction * (1 - mediaProgress) * -24}px`);
+                    copy.style.setProperty('--copy-y', `${(1 - titleIn) * 82 - (1 - titleOut) * 72}px`);
+                    copy.style.setProperty('--copy-scale', `${0.92 + titleIn * 0.08}`);
+                    copy.style.setProperty('--kicker-opacity', clamp(smoothstep(progress / 0.2) * titleOut, 0, 1));
+                    copy.style.setProperty('--kicker-y', `${(1 - smoothstep(progress / 0.2)) * 48 - (1 - titleOut) * 46}px`);
+                    copy.style.setProperty('--title-opacity', clamp(titleIn * titleOut, 0, 1));
+                    copy.style.setProperty('--title-y', `${(1 - titleIn) * 104 - (1 - titleOut) * 116}px`);
+                    copy.style.setProperty('--text-opacity', clamp(bodyIn * bodyOut, 0, 1));
+                    copy.style.setProperty('--text-y', `${(1 - bodyIn) * 74 - (1 - bodyOut) * 82}px`);
+                    copy.style.setProperty('--button-opacity', clamp(buttonIn * buttonOut, 0, 1));
+                    copy.style.setProperty('--button-y', `${(1 - buttonIn) * 58 - (1 - buttonOut) * 62}px`);
+                }
+
+                if (product) {
+                    product.style.setProperty('--product-opacity', imageVisible);
+                    product.style.setProperty('--product-x', `${direction * (110 - mediaProgress * 170)}px`);
+                    product.style.setProperty('--product-y', `${94 - mediaProgress * 154}px`);
+                    product.style.setProperty('--product-scale', `${0.74 + mediaProgress * 0.4}`);
+                    product.style.setProperty('--product-rotate', `${direction * (5 - mediaProgress * 8)}deg`);
+                }
+
+                if (badge) {
+                    const badgeIn = smoothstep((progress - 0.14) / 0.18);
+                    const badgeOut = 1 - smoothstep((progress - 0.76) / 0.18);
+                    badge.style.setProperty('--badge-opacity', clamp(badgeIn * badgeOut, 0, 1));
+                    badge.style.setProperty('--badge-y', `${(1 - badgeIn) * 58}px`);
+                    badge.style.setProperty('--badge-scale', `${0.82 + badgeIn * 0.18}`);
+                }
+            });
+        }
+
+        function updatePageProgress() {
+            if (!progressLinks.length || !stories.length) return;
+
+            const viewportCenter = window.innerHeight / 2;
+            let activeIndex = 0;
+            let closestDistance = Infinity;
+
+            stories.forEach((story, index) => {
+                const rect = story.getBoundingClientRect();
+                const sectionCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(sectionCenter - viewportCenter);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    activeIndex = index;
+                }
+            });
+
+            progressLinks.forEach((link, index) => {
+                link.classList.toggle('active', index === activeIndex);
+            });
+        }
+
+        function updatePage() {
+            setHeaderState();
+            if (!reduceMotion) {
+                updateHero();
+                updateStories();
+            }
+            updatePageProgress();
+        }
+
+        function requestUpdate() {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                updatePage();
+                ticking = false;
+            });
+        }
+
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate);
+        updatePage();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.16 });
+
+        productCards.forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.08}s`;
+            observer.observe(card);
+        });
+    </script>
+    <script src="site-common.js"></script>
+</body>
+</html>
