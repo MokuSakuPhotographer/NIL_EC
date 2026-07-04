@@ -167,10 +167,15 @@ footer:not(.site-footer) {
 @media (max-width: 768px) {
     header {
         padding: 0.85rem 4%;
+        background: transparent;
+        border-bottom-color: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
     }
 
     header.header-compact {
         padding: 0.65rem 4%;
+        box-shadow: none;
     }
 
     .nav-list,
@@ -181,6 +186,18 @@ footer:not(.site-footer) {
         justify-content: flex-start;
         gap: 1.3rem;
         scrollbar-width: none;
+    }
+
+    .nav-list > li > a {
+        min-height: auto;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .nav-list > li > a::after {
+        display: block;
     }
 
     .site-dropdown {
