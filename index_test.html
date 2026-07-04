@@ -213,20 +213,48 @@
         .hero {
             position: relative;
             isolation: isolate;
-            min-height: 92vh;
-            padding: 104px 5% 34px;
+            min-height: 100vh;
+            padding: 112px 5% 56px;
             display: grid;
             grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1fr);
             align-items: center;
-            gap: 5vw;
+            gap: 7vw;
             background: #ffffff;
             overflow: hidden;
+            --hero-bg-video-y: 0px;
+            --hero-bg-video-scale: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.52) 46%, rgba(255, 255, 255, 0.7) 100%),
+                radial-gradient(circle at 76% 24%, rgba(255, 255, 255, 0.36), transparent 36%);
+        }
+
+        .hero-bg-video {
+            position: absolute;
+            inset: -5%;
+            z-index: 0;
+            width: 110%;
+            height: 110%;
+            object-fit: cover;
+            opacity: 0.48;
+            filter: grayscale(1) contrast(1.02) brightness(1.04);
+            pointer-events: none;
+            transform: translate3d(0, var(--hero-bg-video-y), 0) scale(var(--hero-bg-video-scale));
+            transform-origin: center;
+            will-change: transform;
         }
 
         .color-bends-canvas {
             position: absolute;
             inset: 0;
-            z-index: 0;
+            z-index: 2;
             width: 100%;
             height: 100%;
             pointer-events: none;
@@ -234,7 +262,17 @@
 
         .hero-copy {
             position: relative;
-            z-index: 2;
+            z-index: 3;
+            max-width: 780px;
+        }
+
+        .fade-section {
+            --section-opacity: 1;
+            --section-shift: 0px;
+            opacity: var(--section-opacity);
+            transform: translate3d(0, var(--section-shift), 0);
+            transition: opacity 0.12s linear, transform 0.12s linear;
+            will-change: opacity, transform;
         }
 
         .eyebrow {
@@ -309,11 +347,12 @@
 
         .hero-stage {
             position: relative;
-            z-index: 2;
-            min-height: 590px;
+            z-index: 3;
+            height: clamp(640px, 76vh, 820px);
+            min-height: 0;
             display: grid;
             grid-template-columns: repeat(6, minmax(0, 1fr));
-            grid-template-rows: repeat(6, minmax(76px, 1fr));
+            grid-template-rows: repeat(6, minmax(0, 1fr));
             gap: 1rem;
         }
 
@@ -323,6 +362,7 @@
             background: var(--image-bg);
             border-radius: 4px;
             box-shadow: 0 24px 70px rgba(15, 23, 42, 0.09);
+            transform-origin: center;
         }
 
         .hero-card img {
@@ -373,54 +413,193 @@
             object-fit: contain;
         }
 
-        .gradual-blur {
-            --blur-strength: 1.5;
-            opacity: 0;
-            filter: blur(calc(var(--blur-strength) * 10px));
-            transform: translateY(28px);
-            clip-path: inset(0 0 18% 0);
-            transition:
-                opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
-                filter 0.82s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.82s cubic-bezier(0.22, 1, 0.36, 1),
-                clip-path 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+        .parallax-layer {
+            position: relative;
+            isolation: isolate;
+            --parallax-x: 0px;
+            --parallax-y: 0px;
+            --parallax-scale: 1;
+            --parallax-opacity: 1;
+            --reveal-y: 0px;
+            opacity: var(--parallax-opacity);
+            transform: translate3d(var(--parallax-x), calc(var(--parallax-y) + var(--reveal-y)), 0) scale(var(--parallax-scale));
+            transition: transform 0.12s linear;
+            transform-origin: center;
         }
 
-        .gradual-blur.is-visible,
-        .gradual-blur.visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0);
-            clip-path: inset(0 0 0 0);
+        [data-parallax-speed] {
+            will-change: transform, opacity;
+        }
+
+        .brand-orbit.parallax-layer,
+        .story-badge.parallax-layer {
+            position: absolute;
         }
 
         .story {
             position: relative;
-            padding: 6.2rem 5%;
-            min-height: 0;
+            min-height: 185vh;
+            padding: 0;
             background: var(--bg);
+            overflow: visible;
+            --scene-progress: 0;
+            --scene-bg-y: 0px;
+            --scene-bg-scale: 1;
+            --scene-bg-opacity: 1;
+            --scene-deco-x: 0px;
+            --scene-deco-y: 0px;
+            --scene-deco-opacity: 0.08;
+            --scene-copy-x: 0px;
+            --scene-copy-y: 0px;
+            --scene-copy-opacity: 1;
+            --scene-media-x: 0px;
+            --scene-media-y: 0px;
+            --scene-visual-y: 0px;
+            --scene-visual-scale: 1;
+            --scene-product-y: 0px;
+            --scene-product-scale: 1;
+            --scene-badge-x: 0px;
+            --scene-badge-y: 0px;
+            --scene-badge-scale: 1;
+            --scene-photo: none;
+            --scene-photo-position: center;
+            --scene-photo-opacity: 0.22;
+        }
+
+        #about {
+            --scene-photo: url('images/index/EC_index_bgmodel1-1.webp');
+            --scene-photo-position: 60% 48%;
+            --scene-photo-opacity: 0.36;
+        }
+
+        #okurih {
+            --scene-photo: url('images/index/EC_index_bgmodel4-4.webp');
+            --scene-photo-position: 48% 42%;
+            --scene-photo-opacity: 0.38;
+        }
+
+        #gallery-pick {
+            --scene-photo: url('images/index/EC_index_bgmodel2-2.webp');
+            --scene-photo-position: 58% 50%;
+            --scene-photo-opacity: 0.36;
+        }
+
+        .story.fade-section {
+            opacity: 1;
+            transform: none;
         }
 
         .story.alt {
             background: var(--bg);
         }
 
+        .scene-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            min-height: 720px;
+            display: grid;
+            align-items: center;
+            overflow: hidden;
+            background: var(--bg);
+            isolation: isolate;
+        }
+
+        .scene-bg,
+        .scene-deco {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+
+        .scene-bg {
+            inset: 8vh 4vw;
+            z-index: 0;
+            border-radius: 6px;
+            background:
+                radial-gradient(circle at 22% 24%, rgba(37, 99, 235, 0.08), transparent 34%),
+                radial-gradient(circle at 78% 68%, rgba(26, 26, 26, 0.08), transparent 38%),
+                linear-gradient(135deg, rgba(244, 247, 251, 0.82), rgba(255, 255, 255, 0.44));
+            overflow: hidden;
+            opacity: var(--scene-bg-opacity);
+            transform: translate3d(0, var(--scene-bg-y), 0) scale(var(--scene-bg-scale));
+        }
+
+        .scene-bg::before,
+        .scene-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .scene-bg::before {
+            inset: -6%;
+            background-image: var(--scene-photo);
+            background-size: cover;
+            background-position: var(--scene-photo-position);
+            opacity: var(--scene-photo-opacity);
+            filter: grayscale(1) contrast(0.96) brightness(1.08);
+            transform: scale(1.06);
+        }
+
+        .scene-bg::after {
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.54)),
+                radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.48), transparent 38%);
+        }
+
+        .story.alt .scene-bg {
+            background:
+                radial-gradient(circle at 78% 24%, rgba(37, 99, 235, 0.1), transparent 32%),
+                radial-gradient(circle at 20% 76%, rgba(26, 26, 26, 0.08), transparent 42%),
+                linear-gradient(145deg, rgba(246, 247, 249, 0.92), rgba(255, 255, 255, 0.5));
+        }
+
+        .scene-deco {
+            z-index: 1;
+            left: -2vw;
+            top: 12vh;
+            color: rgba(26, 26, 26, 0.06);
+            font-size: clamp(7rem, 17vw, 18rem);
+            font-weight: 600;
+            line-height: 0.82;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: var(--scene-deco-opacity);
+            transform: translate3d(var(--scene-deco-x), var(--scene-deco-y), 0);
+        }
+
+        .story.alt .scene-deco {
+            left: auto;
+            right: -4vw;
+            color: rgba(37, 99, 235, 0.08);
+        }
+
         .story-frame {
             position: relative;
+            z-index: 2;
+            width: min(90vw, 1400px);
             max-width: 1400px;
-            min-height: 70vh;
+            min-height: 100vh;
             margin: 0 auto;
-            padding: 0;
+            padding: 88px 0 44px;
             display: grid;
             grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
             align-items: center;
-            gap: 5vw;
+            gap: 7vw;
             overflow: visible;
         }
 
         .story-copy {
             position: relative;
             z-index: 3;
+            max-width: 680px;
+            opacity: var(--scene-copy-opacity);
+            transform: translate3d(var(--scene-copy-x), var(--scene-copy-y), 0);
+            will-change: transform, opacity;
         }
 
         .story-kicker {
@@ -434,9 +613,9 @@
 
         .story-title {
             max-width: 680px;
-            font-size: clamp(2.4rem, 5.6vw, 6.2rem);
+            font-size: clamp(2.4rem, 5.2vw, 5.7rem);
             font-weight: 300;
-            line-height: 1;
+            line-height: 1.04;
             letter-spacing: 0;
         }
 
@@ -451,24 +630,68 @@
 
         .story-media {
             position: relative;
-            min-height: 520px;
+            min-height: 70vh;
             display: grid;
             place-items: center;
+            perspective: 1200px;
+            transform: translate3d(var(--scene-media-x), var(--scene-media-y), 0);
+            will-change: transform;
+        }
+
+        .product-visual {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: min(78vw, 840px);
+            transform: translate3d(0, var(--scene-visual-y), 0) scale(var(--scene-visual-scale));
+            transform-origin: center;
+            will-change: transform;
         }
 
         .story-product {
-            width: min(82vw, 760px);
-            max-height: 72vh;
+            width: min(78vw, 820px);
+            max-height: 84vh;
             object-fit: contain;
             filter: drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
+            transform-origin: center;
+            transform: translate3d(0, var(--scene-product-y), 0) scale(var(--scene-product-scale));
+            will-change: transform;
+        }
+
+        .product-visual--duo {
+            width: min(82vw, 900px);
+            min-height: min(72vh, 760px);
+        }
+
+        .product-visual--duo .story-product--primary {
+            position: relative;
+            z-index: 2;
+            width: min(72vw, 760px);
+        }
+
+        .product-visual--duo .story-product--secondary {
+            position: absolute;
+            z-index: 1;
+            right: 22%;
+            bottom: 8%;
+            width: min(44vw, 430px);
+            max-height: 54vh;
+            opacity: 0.88;
+            filter: drop-shadow(0 28px 58px rgba(15, 23, 42, 0.16));
+            transform: translate3d(0, 6%, 0) scale(0.78);
+        }
+
+        #okurih .story-badge {
+            right: 1%;
+            bottom: 7%;
         }
 
         .story-badge {
             position: absolute;
             right: 6%;
             bottom: 12%;
-            width: clamp(108px, 13vw, 168px);
-            height: clamp(108px, 13vw, 168px);
+            width: clamp(116px, 13vw, 178px);
+            height: clamp(116px, 13vw, 178px);
             display: grid;
             place-items: center;
             background: rgba(255,255,255,0.82);
@@ -476,6 +699,8 @@
             border-radius: 50%;
             box-shadow: 0 18px 54px rgba(15, 23, 42, 0.08);
             backdrop-filter: blur(12px);
+            transform: translate3d(var(--scene-badge-x), var(--scene-badge-y), 0) scale(var(--scene-badge-scale));
+            will-change: transform;
         }
 
         .story-badge img {
@@ -485,13 +710,93 @@
         }
 
         .product-stage {
-            padding: 4.8rem 5%;
+            position: relative;
+            isolation: isolate;
+            min-height: 100vh;
+            padding: 13vh 5% 10vh;
             background: var(--bg);
+            overflow: hidden;
+            --product-scene-progress: 0;
+            --product-bg-y: 0px;
+            --product-line-x: 0px;
+            --product-deco-y: 0px;
+            --product-photo: url('images/index/EC_index_bgmodel3-3.webp');
+            --product-photo-position: 50% 42%;
         }
 
         .product-inner {
+            position: relative;
+            z-index: 2;
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .product-scene-bg,
+        .product-scene-deco,
+        .product-scene-line {
+            position: absolute;
+            pointer-events: none;
+            user-select: none;
+            will-change: transform;
+        }
+
+        .product-scene-bg {
+            inset: 12vh 5vw 8vh;
+            z-index: 0;
+            border-radius: 6px;
+            background:
+                radial-gradient(circle at 20% 22%, rgba(37, 99, 235, 0.07), transparent 34%),
+                linear-gradient(145deg, rgba(244, 247, 251, 0.88), rgba(255, 255, 255, 0.36));
+            overflow: hidden;
+            transform: translate3d(0, var(--product-bg-y), 0);
+        }
+
+        .product-scene-bg::before,
+        .product-scene-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .product-scene-bg::before {
+            inset: -6%;
+            background-image: var(--product-photo);
+            background-size: cover;
+            background-position: var(--product-photo-position);
+            opacity: 0.32;
+            filter: grayscale(1) contrast(0.95) brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        .product-scene-bg::after {
+            background:
+                linear-gradient(90deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.34) 44%, rgba(255, 255, 255, 0.62)),
+                radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.48), transparent 34%);
+        }
+
+        .product-scene-deco {
+            z-index: 1;
+            left: 2vw;
+            top: 8vh;
+            color: rgba(26, 26, 26, 0.14);
+            font-size: clamp(5rem, 13vw, 15rem);
+            font-weight: 600;
+            line-height: 0.82;
+            letter-spacing: 0;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transform: translate3d(0, var(--product-deco-y), 0);
+        }
+
+        .product-scene-line {
+            z-index: 1;
+            left: -12vw;
+            right: -12vw;
+            top: 43%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(26, 26, 26, 0.18), transparent);
+            transform: translate3d(var(--product-line-x), 0, 0);
         }
 
         .section-head {
@@ -519,9 +824,13 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 2rem;
+            align-items: start;
         }
 
         .product-card {
+            --card-opacity: 1;
+            --reveal-y: 0px;
+            opacity: var(--card-opacity);
             transition-delay: var(--reveal-delay, 0s);
         }
 
@@ -614,26 +923,35 @@
             .hero {
                 min-height: auto;
                 padding-top: 96px;
+                padding-bottom: 3.5rem;
             }
 
             .hero-stage {
-                min-height: 460px;
+                height: clamp(430px, 62vh, 560px);
             }
 
             .story {
-                padding: 4.8rem 5%;
-                min-height: 0;
+                min-height: 150vh;
+                padding: 0;
+            }
+
+            .scene-sticky {
+                min-height: 760px;
             }
 
             .story-frame {
                 min-height: auto;
-                padding: 0;
+                padding: 96px 0 58px;
                 align-content: center;
-                gap: 2rem;
+                gap: 2.8rem;
             }
 
             .story-media {
-                min-height: 44vh;
+                min-height: 440px;
+            }
+
+            .product-visual {
+                width: min(94vw, 620px);
             }
 
             .story-product {
@@ -685,7 +1003,7 @@
             }
 
             .hero-stage {
-                min-height: 360px;
+                height: clamp(340px, 56vh, 420px);
                 grid-template-rows: repeat(6, minmax(46px, 1fr));
             }
 
@@ -713,19 +1031,62 @@
 
             .story {
                 min-height: auto;
-                padding: 3.8rem 4%;
+                padding: 0;
+            }
+
+            .scene-sticky {
+                position: relative;
+                height: auto;
+                min-height: auto;
+                overflow: hidden;
             }
 
             .story-frame {
                 position: relative;
                 min-height: auto;
-                padding: 0;
+                width: 92vw;
+                padding: 4rem 0;
                 display: grid;
+                gap: 2rem;
             }
 
             .story-media {
-                min-height: auto;
+                min-height: 320px;
                 width: 100%;
+            }
+
+            .scene-bg {
+                inset: 2rem -8vw;
+            }
+
+            .scene-deco {
+                top: 2.6rem;
+                left: -4vw;
+                font-size: clamp(4.2rem, 24vw, 7.2rem);
+            }
+
+            .story.alt .scene-deco {
+                right: -8vw;
+            }
+
+            .product-visual {
+                width: min(92vw, 420px);
+            }
+
+            .product-visual--duo {
+                min-height: 430px;
+            }
+
+            .product-visual--duo .story-product--primary {
+                width: min(88vw, 390px);
+            }
+
+            .product-visual--duo .story-product--secondary {
+                right: 2%;
+                bottom: 4%;
+                width: min(54vw, 230px);
+                max-height: 260px;
+                transform: translate3d(0, 6%, 0) scale(0.76);
             }
 
             .story-product {
@@ -749,7 +1110,18 @@
             }
 
             .product-stage {
-                padding: 3.2rem 4%;
+                min-height: auto;
+                padding: 4.2rem 4% 3.6rem;
+            }
+
+            .product-scene-bg {
+                inset: 2.2rem -8vw 2rem;
+            }
+
+            .product-scene-deco {
+                left: -4vw;
+                top: 2rem;
+                font-size: clamp(4rem, 22vw, 7rem);
             }
 
             .product-row {
@@ -771,11 +1143,32 @@
                 transition-duration: 0.01ms !important;
             }
 
-            .gradual-blur {
+            .parallax-layer {
                 opacity: 1 !important;
-                filter: none !important;
                 transform: none !important;
-                clip-path: inset(0 0 0 0) !important;
+            }
+
+            .fade-section {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .scene-bg,
+            .scene-deco,
+            .story-copy,
+            .story-media,
+            .product-visual,
+            .story-product,
+            .story-badge,
+            .product-scene-bg,
+            .product-scene-deco,
+            .product-scene-line {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            .hero-bg-video {
+                transform: none !important;
             }
         }
         .cart-link {
@@ -888,100 +1281,124 @@
     </nav>
 
     <main>
-        <section class="hero">
+        <section class="hero fade-section" data-fade-section>
+            <video class="hero-bg-video" data-hero-bg-video autoplay muted loop playsinline preload="metadata" poster="images/index/EC_index_bgmodel1-1.webp" aria-hidden="true">
+                <source src="images/index/EC_index_bgmodel_movie.mp4" type="video/mp4">
+            </video>
             <canvas id="color-bends-canvas" class="color-bends-canvas" aria-hidden="true"></canvas>
-            <div class="hero-copy">
-                <div class="eyebrow gradual-blur">Curated Fashion Store</div>
-                <h1 class="gradual-blur">Curated for the few, not the many.</h1>
-                <p class="hero-lead gradual-blur">すべての人ではなく、選ぶ人のために。</p>
-                <div class="hero-actions gradual-blur">
+            <div class="hero-copy parallax-layer" data-hero-copy data-parallax-speed="-0.22">
+                <div class="eyebrow">Curated Fashion Store</div>
+                <h1>Curated for the few, not the many.</h1>
+                <p class="hero-lead">&#12377;&#12409;&#12390;&#12398;&#20154;&#12391;&#12399;&#12394;&#12367;&#12289;&#36984;&#12406;&#20154;&#12398;&#12383;&#12417;&#12395;&#12290;</p>
+                <div class="hero-actions">
                     <a class="btn btn-primary" href="gallery.html">Enter Gallery</a>
                     <a class="btn" href="#featured">View Picks</a>
                 </div>
             </div>
 
             <div class="hero-stage" aria-label="Featured collection images">
-                <div class="brand-orbit gradual-blur">
+                <div class="brand-orbit parallax-layer" data-hero-orbit data-parallax-speed="0.54" data-parallax-x-speed="-0.06" data-parallax-scale-start="0.94" data-parallax-scale-end="1.02">
                     <img src="images/logo/EOLE 1.png" alt="EOLE logo">
                 </div>
-                <a class="hero-card hero-main gradual-blur" href="product-tshirt-marble.html">
-                    <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
+                <a class="hero-card hero-main parallax-layer" href="product-utility-overshirt.html" data-hero-main data-parallax-speed="-0.34" data-parallax-scale-start="1" data-parallax-scale-end="1.13">
+                    <img src="images/product/shirt/Utility Overshirt.webp" alt="Utility Overshirt">
                 </a>
-                <a class="hero-card hero-side gradual-blur" href="product-tshirt-logo-collage.html">
-                    <img src="images/product/shirt/tshirt-logo-collage.webp" alt="Logo Collage T-Shirt">
+                <a class="hero-card hero-side parallax-layer" href="product-noir-envelope-long-wallet.html" data-hero-side data-parallax-speed="0.48" data-parallax-x-speed="-0.08" data-parallax-scale-start="0.98" data-parallax-scale-end="1.06">
+                    <img src="images/product/wallet/saifu1-1-10.webp" alt="Noir Envelope Long Wallet">
                 </a>
-                <a class="hero-card hero-shoe gradual-blur" href="product-shoe-eole.html">
-                    <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                <a class="hero-card hero-shoe parallax-layer" href="product-bag-tote.html" data-hero-shoe data-parallax-speed="0.64" data-parallax-x-speed="0.05" data-parallax-scale-start="0.98" data-parallax-scale-end="1.04">
+                    <img src="images/product/bag/Tote Bag.webp" alt="Tote Bag">
                 </a>
             </div>
         </section>
 
-        <section id="about" class="story" data-story>
-            <div class="story-frame">
-                <div class="story-copy">
-                    <div class="story-kicker gradual-blur">EOLE</div>
-                    <h2 class="story-title gradual-blur">Silence becomes a statement.</h2>
-                    <p class="story-text gradual-blur">余計なものを削ぎ落とし、本質だけを残す。<br>洗練された素材と普遍的なシルエット。</p>
-                    <div class="hero-actions gradual-blur">
-                        <a class="btn btn-primary" href="product-tshirt-geometry-marble.html">Explore EOLE</a>
+        <section id="about" class="story fade-section" data-story data-fade-section data-depth-profile="rise">
+            <div class="scene-sticky">
+                <div class="scene-bg" aria-hidden="true"></div>
+                <div class="scene-deco" aria-hidden="true">EOLE</div>
+                <div class="story-frame">
+                    <div class="story-copy parallax-layer" data-reveal-copy data-parallax-speed="-0.18" data-parallax-x-speed="-0.02">
+                        <div class="story-kicker">EOLE</div>
+                        <h2 class="story-title">Silence becomes a statement.</h2>
+                        <p class="story-text">&#20313;&#35336;&#12394;&#12418;&#12398;&#12434;&#21066;&#12366;&#33853;&#12392;&#12375;&#12289;&#26412;&#36074;&#12384;&#12369;&#12434;&#27531;&#12377;&#12290;<br>&#27927;&#32244;&#12373;&#12428;&#12383;&#32032;&#26448;&#12392;&#26222;&#36941;&#30340;&#12394;&#12471;&#12523;&#12456;&#12483;&#12488;&#12290;</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="product-nocturne-wool-blazer.html">Explore EOLE</a>
+                        </div>
                     </div>
-                </div>
-                <div class="story-media">
-                    <img class="story-product gradual-blur" src="images/product/shirt/tshirt-geometry-marble.webp" alt="Geometry Marble T-Shirt">
-                    <div class="story-badge gradual-blur">
-                        <img src="images/logo/EOLE 1.png" alt="EOLE logo">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="okurih" class="story alt" data-story>
-            <div class="story-frame">
-                <div class="story-copy">
-                    <div class="story-kicker gradual-blur">OKURIH</div>
-                    <h2 class="story-title gradual-blur">Built for the city after dark.</h2>
-                    <p class="story-text gradual-blur">音楽とストリートカルチャーから生まれた。<br>力を抜きながらも存在感のあるデザイン。</p>
-                    <div class="hero-actions gradual-blur">
-                        <a class="btn btn-primary" href="gallery.html">Explore OKURIH</a>
-                    </div>
-                </div>
-                <div class="story-media">
-                    <img class="story-product gradual-blur" src="images/product/bag/bag-geometry.webp" alt="Geometry Bag">
-                    <div class="story-badge gradual-blur">
-                        <img src="images/logo/Okurih.png" alt="OKURIH logo">
+                    <div class="story-media parallax-layer" data-parallax-speed="0.34" data-parallax-x-speed="0.03">
+                        <div class="product-visual">
+                            <img class="story-product parallax-layer" src="images/product/tops/outer&amp;pants2-2-10.webp" alt="Nocturne Wool Blazer" data-parallax-speed="0.58" data-parallax-scale-start="0.96" data-parallax-scale-end="1.06">
+                        </div>
+                        <div class="story-badge parallax-layer" data-parallax-speed="-0.48" data-parallax-x-speed="-0.04" data-parallax-scale-start="0.92" data-parallax-scale-end="1.02">
+                            <img src="images/logo/EOLE 1.png" alt="EOLE logo">
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="gallery-pick" class="story" data-story>
-            <div class="story-frame">
-                <div class="story-copy">
-                    <div class="story-kicker gradual-blur">GALLERY PICK</div>
-                    <h2 class="story-title gradual-blur">The final detail defines everything.</h2>
-                    <p class="story-text gradual-blur">足元はスタイルの完成形。<br>快適性とクラフトマンシップを両立する。</p>
-                    <div class="hero-actions gradual-blur">
-                        <a class="btn btn-primary" href="product-shoe-eole.html">View Shoes</a>
+        <section id="okurih" class="story alt fade-section" data-story data-fade-section data-depth-profile="sink">
+            <div class="scene-sticky">
+                <div class="scene-bg" aria-hidden="true"></div>
+                <div class="scene-deco" aria-hidden="true">OKURIH</div>
+                <div class="story-frame">
+                    <div class="story-copy parallax-layer" data-reveal-copy data-parallax-speed="0.16" data-parallax-x-speed="0.02">
+                        <div class="story-kicker">OKURIH</div>
+                        <h2 class="story-title">Built for the city after dark.</h2>
+                        <p class="story-text">&#38899;&#27005;&#12392;&#12473;&#12488;&#12522;&#12540;&#12488;&#12459;&#12523;&#12481;&#12515;&#12540;&#12363;&#12425;&#29983;&#12414;&#12428;&#12383;&#12290;<br>&#21147;&#12434;&#25244;&#12365;&#12394;&#12364;&#12425;&#12418;&#23384;&#22312;&#24863;&#12398;&#12354;&#12427;&#12487;&#12470;&#12452;&#12531;&#12290;</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="product-hoodie-heart.html">Explore OKURIH</a>
+                        </div>
                     </div>
-                </div>
-                <div class="story-media">
-                    <img class="story-product gradual-blur" src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
-                    <div class="story-badge gradual-blur">
-                        <img src="images/logo/EOLE 1.png" alt="GALLERY logo mark">
+                    <div class="story-media parallax-layer" data-parallax-speed="-0.42" data-parallax-x-speed="-0.03">
+                        <div class="product-visual product-visual--duo">
+                            <img class="story-product story-product--primary parallax-layer" src="images/product/hoodie/hoodie-Heart-B-Model3.webp" alt="Black Heart Hoodie model" data-parallax-speed="-0.52" data-parallax-scale-start="1.04" data-parallax-scale-end="0.98">
+                            <img class="story-product story-product--secondary" src="images/product/hoodie/hoodie-Heart-Model3.webp" alt="Heart Hoodie model">
+                        </div>
+                        <div class="story-badge parallax-layer" data-parallax-speed="0.52" data-parallax-x-speed="0.05" data-parallax-scale-start="0.96" data-parallax-scale-end="1.04">
+                            <img src="images/logo/Okurih.png" alt="OKURIH logo">
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="featured" class="product-stage">
+        <section id="gallery-pick" class="story fade-section" data-story data-fade-section data-depth-profile="zoom">
+            <div class="scene-sticky">
+                <div class="scene-bg" aria-hidden="true"></div>
+                <div class="scene-deco" aria-hidden="true">PICK</div>
+                <div class="story-frame">
+                    <div class="story-copy parallax-layer" data-reveal-copy data-parallax-speed="-0.14" data-parallax-x-speed="-0.015">
+                        <div class="story-kicker">GALLERY PICK</div>
+                        <h2 class="story-title">The final detail defines everything.</h2>
+                        <p class="story-text">&#36275;&#20803;&#12399;&#12473;&#12479;&#12452;&#12523;&#12398;&#23436;&#25104;&#24418;&#12290;<br>&#24555;&#36969;&#24615;&#12392;&#12463;&#12521;&#12501;&#12488;&#12510;&#12531;&#12471;&#12483;&#12503;&#12434;&#20001;&#31435;&#12377;&#12427;&#12290;</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="product-oversized-shirt.html">View Shirt</a>
+                        </div>
+                    </div>
+                    <div class="story-media parallax-layer" data-parallax-speed="0.28" data-parallax-x-speed="0.02">
+                        <div class="product-visual">
+                            <img class="story-product parallax-layer" src="images/product/shirt/Oversized Shirt-model1.webp" alt="Oversized Shirt model" data-parallax-speed="0.2" data-parallax-scale-start="0.9" data-parallax-scale-end="1.12">
+                        </div>
+                        <div class="story-badge parallax-layer" data-parallax-speed="-0.56" data-parallax-x-speed="-0.05" data-parallax-scale-start="1.04" data-parallax-scale-end="0.96">
+                            <img src="images/logo/EOLE 1.png" alt="GALLERY logo mark">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="featured" class="product-stage fade-section" data-fade-section>
+            <div class="product-scene-bg" aria-hidden="true"></div>
+            <div class="product-scene-deco" aria-hidden="true">SELECTED</div>
+            <div class="product-scene-line" aria-hidden="true"></div>
             <div class="product-inner">
-                <div class="section-head">
-                    <h2 class="section-title gradual-blur">Selected Essentials</h2>
-                    <p class="section-text gradual-blur">流行ではなく、個性で選ばれたアイテム。</p>
+                <div class="section-head parallax-layer" data-parallax-speed="-0.12">
+                    <p class="section-text">&#27969;&#34892;&#12391;&#12399;&#12394;&#12367;&#12289;&#20491;&#24615;&#12391;&#36984;&#12400;&#12428;&#12383;&#12450;&#12452;&#12486;&#12512;&#12290;</p>
                 </div>
 
                 <div class="product-row">
-                    <a class="product-card gradual-blur" href="product-tshirt-marble.html">
+                    <a class="product-card parallax-layer" href="product-tshirt-marble.html" data-card-reveal data-card-index="0" data-parallax-speed="0.08">
                         <div class="product-image">
                             <img src="images/product/shirt/tshirt-marble.webp" alt="Marble T-Shirt">
                         </div>
@@ -990,7 +1407,7 @@
                         <div class="product-price">¥12,000 (税込)</div>
                     </a>
 
-                    <a class="product-card gradual-blur" href="product-hoodie-heart.html">
+                    <a class="product-card parallax-layer" href="product-hoodie-heart.html" data-card-reveal data-card-index="1" data-parallax-speed="-0.06">
                         <div class="product-image">
                             <img src="images/product/hoodie/hoodie-Heart.webp" alt="Heart Hoodie">
                         </div>
@@ -999,13 +1416,13 @@
                         <div class="product-price">¥6,800 (税込)</div>
                     </a>
 
-                    <a class="product-card gradual-blur" href="product-shoe-eole.html">
+                    <a class="product-card parallax-layer" href="product-modern-oxford.html" data-card-reveal data-card-index="2" data-parallax-speed="0.1">
                         <div class="product-image">
-                            <img src="images/product/shoe/shoe-eole.webp" alt="EOLE Shoe">
+                            <img src="images/product/shoe/Modern Oxford.webp" alt="Modern Oxford">
                         </div>
                         <div class="product-brand">EOLE</div>
-                        <h3 class="product-title">EOLE Shoe</h3>
-                        <div class="product-price">¥26,500 (税込)</div>
+                        <h3 class="product-title">Modern Oxford</h3>
+                        <div class="product-price">&#165;28,200 (&#31246;&#36796;)</div>
                     </a>
                 </div>
             </div>
@@ -1022,12 +1439,49 @@
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const stories = document.querySelectorAll('[data-story]');
         const progressLinks = document.querySelectorAll('.page-progress a');
-        const revealItems = document.querySelectorAll('.gradual-blur');
+        const parallaxItems = document.querySelectorAll('[data-parallax-speed]');
+        const fadeSections = document.querySelectorAll('[data-fade-section]');
+        const hero = document.querySelector('.hero');
+        const heroVideo = document.querySelector('[data-hero-bg-video]');
+        const heroCopy = document.querySelector('[data-hero-copy]');
+        const heroMain = document.querySelector('[data-hero-main]');
+        const heroSide = document.querySelector('[data-hero-side]');
+        const heroShoe = document.querySelector('[data-hero-shoe]');
+        const heroOrbit = document.querySelector('[data-hero-orbit]');
+        const revealCopies = document.querySelectorAll('[data-reveal-copy]');
+        const revealCards = document.querySelectorAll('[data-card-reveal]');
+        const sceneStories = document.querySelectorAll('.story[data-story]');
+        const productStage = document.querySelector('#featured');
+        const mobileMotionQuery = window.matchMedia('(max-width: 768px)');
         let ticking = false;
         let lastScrollY = window.scrollY;
+        let heroScrollProgress = 0;
+
+        if (heroVideo && reduceMotion) {
+            heroVideo.pause();
+            heroVideo.removeAttribute('autoplay');
+        }
 
         function clamp(value, min, max) {
             return Math.min(Math.max(value, min), max);
+        }
+
+        function lerp(start, end, progress) {
+            return start + (end - start) * progress;
+        }
+
+        function readNumber(value, fallback) {
+            const parsed = Number(value);
+            return Number.isFinite(parsed) ? parsed : fallback;
+        }
+
+        function easeOutCubic(value) {
+            return 1 - Math.pow(1 - value, 3);
+        }
+
+        function smoothstep(edge0, edge1, value) {
+            const x = clamp((value - edge0) / (edge1 - edge0), 0, 1);
+            return x * x * (3 - 2 * x);
         }
 
         function setHeaderState() {
@@ -1074,8 +1528,255 @@
             });
         }
 
+        function updateEditorialParallax() {
+            if (!parallaxItems.length) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const viewportWidth = window.innerWidth || 1;
+            const isMobile = mobileMotionQuery.matches;
+            const travelBase = viewportHeight * (isMobile ? 0.34 : 0.92);
+            const xBase = viewportWidth * (isMobile ? 0.1 : 0.28);
+            const maxTravel = isMobile ? 96 : 420;
+            const maxX = isMobile ? 28 : 120;
+
+            parallaxItems.forEach((item) => {
+                const rect = item.getBoundingClientRect();
+                if (rect.bottom < -viewportHeight * 0.65 || rect.top > viewportHeight * 1.65) return;
+
+                const context = item.closest('[data-fade-section]');
+                const contextRect = context ? context.getBoundingClientRect() : rect;
+                const progress = clamp((viewportHeight - contextRect.top) / (viewportHeight + contextRect.height), 0, 1);
+                const speed = Number(item.dataset.parallaxSpeed) || 0;
+                const xSpeed = Number(item.dataset.parallaxXSpeed) || 0;
+                const scaleStart = readNumber(item.dataset.parallaxScaleStart, 1);
+                const scaleEnd = readNumber(item.dataset.parallaxScaleEnd, scaleStart);
+                const opacityStart = readNumber(item.dataset.parallaxOpacityStart, 1);
+                const opacityEnd = readNumber(item.dataset.parallaxOpacityEnd, opacityStart);
+                const y = clamp((0.5 - progress) * travelBase * speed, -maxTravel, maxTravel);
+                const x = clamp((0.5 - progress) * xBase * xSpeed, -maxX, maxX);
+                const scale = lerp(scaleStart, scaleEnd, progress);
+                const opacity = lerp(opacityStart, opacityEnd, progress);
+
+                item.style.setProperty('--parallax-x', `${x.toFixed(2)}px`);
+                item.style.setProperty('--parallax-y', `${y.toFixed(2)}px`);
+                item.style.setProperty('--parallax-scale', scale.toFixed(4));
+                item.style.setProperty('--parallax-opacity', clamp(opacity, 0, 1).toFixed(3));
+            });
+        }
+
+        function setLayerMotion(element, x, y, scale, opacity) {
+            if (!element) return;
+
+            element.style.setProperty('--parallax-x', `${x.toFixed(2)}px`);
+            element.style.setProperty('--parallax-y', `${y.toFixed(2)}px`);
+            element.style.setProperty('--parallax-scale', scale.toFixed(4));
+            element.style.setProperty('--parallax-opacity', clamp(opacity, 0, 1).toFixed(3));
+        }
+
+        function getSceneProgress(section, viewportHeight, isMobile = false) {
+            const rect = section.getBoundingClientRect();
+
+            if (isMobile) {
+                return clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+            }
+
+            const travel = Math.max(rect.height - viewportHeight, 1);
+            return clamp(-rect.top / travel, 0, 1);
+        }
+
+        function setStorySceneVars(section, values) {
+            Object.entries(values).forEach(([name, value]) => {
+                section.style.setProperty(name, typeof value === 'number' ? value.toFixed(3) : value);
+            });
+        }
+
+        function updateStoryScenes() {
+            if (!sceneStories.length) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const isMobile = mobileMotionQuery.matches;
+            const motion = isMobile ? 0.38 : 1;
+
+            sceneStories.forEach((section) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.bottom < -viewportHeight * 0.5 || rect.top > viewportHeight * 1.5) return;
+
+                const progress = getSceneProgress(section, viewportHeight, isMobile);
+                const profile = section.dataset.depthProfile || 'rise';
+                const center = progress - 0.5;
+                const copyIn = smoothstep(0.12, 0.34, progress);
+                const copyOut = 1 - smoothstep(0.82, 1, progress);
+                const copyVisibility = copyIn * copyOut;
+
+                let visualY = (0.5 - progress) * 420 * motion;
+                let visualScale = lerp(0.96, 1.08, progress);
+                let productY = -visualY * 0.22;
+                let productScale = lerp(0.99, 1.025, progress);
+                let badgeY = -visualY * 0.66;
+                let badgeX = -center * 90 * motion;
+                let badgeScale = lerp(0.94, 1.04, copyIn);
+                let mediaX = center * 44 * motion;
+
+                if (profile === 'sink') {
+                    visualY = center * 420 * motion;
+                    visualScale = lerp(1.06, 0.98, progress);
+                    productY = -visualY * 0.2;
+                    productScale = lerp(1.015, 0.995, progress);
+                    badgeY = -visualY * 0.64;
+                    badgeX = center * 100 * motion;
+                    mediaX = -center * 44 * motion;
+                }
+
+                if (profile === 'zoom') {
+                    visualY = (0.5 - progress) * 240 * motion;
+                    visualScale = lerp(0.9, 1.13, smoothstep(0.08, 0.86, progress));
+                    productY = center * 92 * motion;
+                    productScale = lerp(1.02, 0.985, progress);
+                    badgeY = -center * 250 * motion;
+                    badgeX = -center * 120 * motion;
+                    badgeScale = lerp(1.05, 0.96, progress);
+                    mediaX = center * 34 * motion;
+                }
+
+                setStorySceneVars(section, {
+                    '--scene-progress': progress.toFixed(4),
+                    '--scene-bg-y': `${center * 120 * motion}px`,
+                    '--scene-bg-scale': `${1 + copyIn * 0.035}`,
+                    '--scene-bg-opacity': `${0.72 + copyVisibility * 0.24}`,
+                    '--scene-deco-x': `${-center * 120 * motion}px`,
+                    '--scene-deco-y': `${center * 320 * motion}px`,
+                    '--scene-deco-opacity': `${0.035 + copyVisibility * 0.055}`,
+                    '--scene-copy-x': `${profile === 'sink' ? center * 42 * motion : -center * 36 * motion}px`,
+                    '--scene-copy-y': `${lerp(72, -46, copyIn) * motion}px`,
+                    '--scene-copy-opacity': `${Math.max(0.04, copyVisibility)}`,
+                    '--scene-media-x': `${mediaX}px`,
+                    '--scene-media-y': `${-center * 92 * motion}px`,
+                    '--scene-visual-y': `${visualY}px`,
+                    '--scene-visual-scale': `${visualScale}`,
+                    '--scene-product-y': `${productY}px`,
+                    '--scene-product-scale': `${productScale}`,
+                    '--scene-badge-x': `${badgeX}px`,
+                    '--scene-badge-y': `${badgeY}px`,
+                    '--scene-badge-scale': `${badgeScale}`
+                });
+            });
+        }
+
+        function updateProductScene() {
+            if (!productStage) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const rect = productStage.getBoundingClientRect();
+            if (rect.bottom < -viewportHeight * 0.5 || rect.top > viewportHeight * 1.5) return;
+
+            const progress = clamp((viewportHeight - rect.top) / (viewportHeight + rect.height), 0, 1);
+            const isMobile = mobileMotionQuery.matches;
+            const motion = isMobile ? 0.38 : 1;
+            const center = progress - 0.5;
+
+            productStage.style.setProperty('--product-scene-progress', progress.toFixed(4));
+            productStage.style.setProperty('--product-bg-y', `${center * 92 * motion}px`);
+            productStage.style.setProperty('--product-deco-y', `${-center * 180 * motion}px`);
+            productStage.style.setProperty('--product-line-x', `${center * 240 * motion}px`);
+        }
+
+        function updateHeroDepth() {
+            if (!hero) return;
+
+            const rect = hero.getBoundingClientRect();
+            const isMobile = mobileMotionQuery.matches;
+            const motion = isMobile ? 0.38 : 1;
+            const progress = clamp(-rect.top / (rect.height * 0.72), 0, 1);
+            heroScrollProgress = progress;
+            hero.style.setProperty('--hero-bg-video-y', `${progress * 82 * motion}px`);
+            hero.style.setProperty('--hero-bg-video-scale', `${1.04 + progress * (isMobile ? 0.025 : 0.06)}`);
+
+            setLayerMotion(heroCopy, 0, -progress * 155 * motion, 1 - progress * 0.025, 1 - progress * 1.08);
+            setLayerMotion(heroMain, 0, -progress * 96 * motion, 1 + progress * (isMobile ? 0.05 : 0.13), 1);
+            setLayerMotion(heroSide, -progress * 34 * motion, progress * 132 * motion, 1 + progress * (isMobile ? 0.03 : 0.07), 1);
+            setLayerMotion(heroShoe, progress * 32 * motion, progress * 172 * motion, 1 + progress * (isMobile ? 0.025 : 0.055), 1);
+            setLayerMotion(heroOrbit, -progress * 48 * motion, progress * 126 * motion, 0.94 + progress * 0.08, 1);
+        }
+
+        function updateSectionFade() {
+            if (!fadeSections.length) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const isMobile = mobileMotionQuery.matches;
+            const fadeDistance = viewportHeight * (isMobile ? 0.44 : 0.62);
+
+            fadeSections.forEach((section) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.bottom < -fadeDistance || rect.top > viewportHeight + fadeDistance) return;
+
+                const enter = clamp((viewportHeight - rect.top) / fadeDistance, 0, 1);
+                const exit = clamp(rect.bottom / fadeDistance, 0, 1);
+                const visibility = easeOutCubic(Math.min(enter, exit));
+                const opacity = 0.12 + visibility * 0.88;
+                const sectionCenter = rect.top + rect.height / 2;
+                const direction = sectionCenter < viewportHeight / 2 ? -1 : 1;
+                const shift = (1 - visibility) * (isMobile ? 18 : 42) * direction;
+
+                section.style.setProperty('--section-opacity', opacity.toFixed(3));
+                section.style.setProperty('--section-shift', `${shift.toFixed(2)}px`);
+            });
+        }
+
+        function updateStoryReveal() {
+            if (!revealCopies.length) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const isMobile = mobileMotionQuery.matches;
+
+            revealCopies.forEach((copy) => {
+                const section = copy.closest('[data-story]');
+                if (!section) return;
+
+                const rect = section.getBoundingClientRect();
+                if (rect.bottom < -viewportHeight * 0.5 || rect.top > viewportHeight * 1.45) return;
+
+                const enter = clamp((viewportHeight - rect.top) / (viewportHeight * 0.72), 0, 1);
+                const exit = clamp(rect.bottom / (viewportHeight * 0.58), 0, 1);
+                const visibility = easeOutCubic(Math.min(enter, exit));
+                const lift = (1 - visibility) * (isMobile ? 22 : 58);
+
+                copy.style.setProperty('--reveal-y', `${lift.toFixed(2)}px`);
+                copy.style.setProperty('--parallax-opacity', Math.max(0.08, visibility).toFixed(3));
+            });
+        }
+
+        function updateProductReveal() {
+            if (!revealCards.length) return;
+
+            const viewportHeight = window.innerHeight || 1;
+            const isMobile = mobileMotionQuery.matches;
+
+            revealCards.forEach((card) => {
+                const rect = card.getBoundingClientRect();
+                if (rect.bottom < -viewportHeight * 0.5 || rect.top > viewportHeight * 1.4) return;
+
+                const index = readNumber(card.dataset.cardIndex, 0);
+                const entrance = clamp((viewportHeight - rect.top) / (viewportHeight * 0.7), 0, 1);
+                const delayed = clamp((entrance - index * 0.12) / 0.76, 0, 1);
+                const exit = clamp(rect.bottom / (viewportHeight * 0.42), 0, 1);
+                const visibility = easeOutCubic(Math.min(delayed, exit));
+                const lift = (1 - visibility) * (isMobile ? 22 : 62);
+
+                card.style.setProperty('--card-opacity', Math.max(0, visibility).toFixed(3));
+                card.style.setProperty('--reveal-y', `${lift.toFixed(2)}px`);
+            });
+        }
+
         function updatePage() {
             setHeaderState();
+            if (!reduceMotion) {
+                updateStoryScenes();
+                updateProductScene();
+                updateEditorialParallax();
+                updateHeroDepth();
+                updateProductReveal();
+                updateSectionFade();
+            }
             updatePageProgress();
         }
 
@@ -1092,36 +1793,10 @@
         window.addEventListener('resize', requestUpdate);
         updatePage();
 
-        function initGradualBlur() {
-            if (reduceMotion || !('IntersectionObserver' in window)) {
-                revealItems.forEach((item) => item.classList.add('is-visible'));
-                return;
-            }
-
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add('is-visible');
-                    revealObserver.unobserve(entry.target);
-                });
-            }, {
-                rootMargin: '0px 0px -8% 0px',
-                threshold: 0.18
-            });
-
-            revealItems.forEach((item, index) => {
-                item.style.transitionDelay = `${(index % 4) * 0.08}s`;
-                revealObserver.observe(item);
-            });
-        }
-
         function initColorBends() {
             const canvas = document.getElementById('color-bends-canvas');
             const hero = document.querySelector('.hero');
             if (!canvas || !hero) return;
-
-            const context = canvas.getContext('2d');
-            if (!context) return;
 
             const settings = {
                 color: '#000000',
@@ -1138,46 +1813,203 @@
                 bandWidth: 5
             };
 
+            const gl = canvas.getContext('webgl', {
+                alpha: true,
+                antialias: false,
+                depth: false,
+                stencil: false,
+                premultipliedAlpha: true,
+                powerPreference: 'high-performance'
+            });
+
+            if (!gl) return;
+
+            const vertexShaderSource = `
+                attribute vec2 aPosition;
+                varying vec2 vUv;
+
+                void main() {
+                    vUv = aPosition * 0.5 + 0.5;
+                    gl_Position = vec4(aPosition, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+
+                #define MAX_COLORS 8
+
+                uniform vec2 uCanvas;
+                uniform float uTime;
+                uniform float uSpeed;
+                uniform vec2 uRot;
+                uniform int uColorCount;
+                uniform vec3 uColors[MAX_COLORS];
+                uniform int uTransparent;
+                uniform float uScale;
+                uniform float uFrequency;
+                uniform float uWarpStrength;
+                uniform vec2 uPointer;
+                uniform float uMouseInfluence;
+                uniform float uParallax;
+                uniform float uNoise;
+                uniform int uIterations;
+                uniform float uIntensity;
+                uniform float uBandWidth;
+                varying vec2 vUv;
+
+                void main() {
+                    float t = uTime * uSpeed;
+                    vec2 p = vUv * 2.0 - 1.0;
+                    p += uPointer * uParallax * 0.08 + vec2(uParallax * 0.075, -uParallax * 0.045);
+                    vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
+                    vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
+                    q /= max(uScale, 0.0001);
+                    q /= 0.5 + 0.2 * dot(q, q);
+                    q += 0.2 * cos(t) - 7.56;
+                    vec2 toward = uPointer - rp;
+                    q += toward * uMouseInfluence * 0.2;
+
+                    for (int j = 0; j < 5; j++) {
+                        if (j >= uIterations - 1) break;
+                        vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
+                        q += (rr - q) * 0.15;
+                    }
+
+                    vec3 col = vec3(0.0);
+                    float a = 1.0;
+
+                    if (uColorCount > 0) {
+                        vec2 s = q;
+                        vec3 sumCol = vec3(0.0);
+                        float cover = 0.0;
+
+                        for (int i = 0; i < MAX_COLORS; ++i) {
+                            if (i >= uColorCount) break;
+                            s -= 0.01;
+                            vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+                            float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+                            float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+                            float kMix = pow(kBelow, 0.3);
+                            float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+                            vec2 disp = (r - s) * kBelow;
+                            vec2 warped = s + disp * gain;
+                            float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+                            float m = mix(m0, m1, kMix);
+                            float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+                            sumCol += uColors[i] * w;
+                            cover = max(cover, w);
+                        }
+
+                        col = clamp(sumCol, 0.0, 1.0);
+                        a = uTransparent > 0 ? cover : 1.0;
+                    }
+
+                    col *= uIntensity;
+
+                    if (uNoise > 0.0001) {
+                        float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+                        col += (n - 0.5) * uNoise;
+                        col = clamp(col, 0.0, 1.0);
+                    }
+
+                    vec3 rgb = uTransparent > 0 ? col * a : col;
+                    gl_FragColor = vec4(rgb, a);
+                }
+            `;
+
+            function compileShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error(gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+
+                return shader;
+            }
+
+            const vertexShader = compileShader(gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+            if (!vertexShader || !fragmentShader) return;
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error(gl.getProgramInfoLog(program));
+                return;
+            }
+
+            gl.useProgram(program);
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+                gl.STATIC_DRAW
+            );
+
+            const positionLocation = gl.getAttribLocation(program, 'aPosition');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const uniforms = {
+                canvas: gl.getUniformLocation(program, 'uCanvas'),
+                time: gl.getUniformLocation(program, 'uTime'),
+                speed: gl.getUniformLocation(program, 'uSpeed'),
+                rot: gl.getUniformLocation(program, 'uRot'),
+                colorCount: gl.getUniformLocation(program, 'uColorCount'),
+                colors: gl.getUniformLocation(program, 'uColors[0]'),
+                transparent: gl.getUniformLocation(program, 'uTransparent'),
+                scale: gl.getUniformLocation(program, 'uScale'),
+                frequency: gl.getUniformLocation(program, 'uFrequency'),
+                warpStrength: gl.getUniformLocation(program, 'uWarpStrength'),
+                pointer: gl.getUniformLocation(program, 'uPointer'),
+                mouseInfluence: gl.getUniformLocation(program, 'uMouseInfluence'),
+                parallax: gl.getUniformLocation(program, 'uParallax'),
+                noise: gl.getUniformLocation(program, 'uNoise'),
+                iterations: gl.getUniformLocation(program, 'uIterations'),
+                intensity: gl.getUniformLocation(program, 'uIntensity'),
+                bandWidth: gl.getUniformLocation(program, 'uBandWidth')
+            };
+
             const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+            const blackColors = new Float32Array([
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ]);
             let width = 0;
             let height = 0;
-            let renderScale = 0.5;
             let isHeroVisible = true;
             let frameId = 0;
-            let lastFrameTime = 0;
-            let noiseCanvas = document.createElement('canvas');
-            let noiseContext = noiseCanvas.getContext('2d');
+            let startTime = performance.now();
 
             function resizeCanvas() {
                 const rect = hero.getBoundingClientRect();
                 width = Math.max(rect.width, 1);
                 height = Math.max(rect.height, 1);
-                renderScale = Math.min(0.42, 760 / width);
-                canvas.width = Math.floor(width * renderScale);
-                canvas.height = Math.floor(height * renderScale);
+                const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
                 canvas.style.width = `${width}px`;
                 canvas.style.height = `${height}px`;
-                buildNoise();
-            }
-
-            function buildNoise() {
-                if (!noiseContext) return;
-
-                noiseCanvas.width = canvas.width;
-                noiseCanvas.height = canvas.height;
-
-                const image = noiseContext.createImageData(noiseCanvas.width, noiseCanvas.height);
-                const data = image.data;
-
-                for (let index = 0; index < data.length; index += 4) {
-                    const shade = 8 + Math.random() * 26;
-                    data[index] = shade;
-                    data[index + 1] = shade;
-                    data[index + 2] = shade;
-                    data[index + 3] = Math.random() * settings.noise * 18;
-                }
-
-                noiseContext.putImageData(image, 0, 0);
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform2f(uniforms.canvas, width, height);
             }
 
             function updatePointer(event) {
@@ -1194,67 +2026,7 @@
                 }
 
                 pointer.targetX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-                pointer.targetY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
-            }
-
-            function traceBend(offset, time) {
-                const canvasWidth = canvas.width;
-                const canvasHeight = canvas.height;
-                const extent = Math.max(canvasWidth, canvasHeight) * 1.65;
-                const amplitude = canvasHeight * 0.32 * settings.warpStrength;
-                const phase = time * settings.speed + offset * 0.018;
-
-                context.beginPath();
-                for (let x = -extent; x <= extent; x += 18) {
-                    const xNorm = x / extent;
-                    const primary = Math.sin(xNorm * Math.PI * settings.frequency + phase);
-                    const secondary = Math.sin(xNorm * Math.PI * 3.1 - phase * 0.7) * settings.noise * 2.4;
-                    const mouseWarp =
-                        pointer.x * settings.mouseInfluence * 24 +
-                        pointer.y * settings.mouseInfluence * 16 * Math.sin(xNorm * Math.PI * 2 + phase);
-                    const y = offset + (primary + secondary) * amplitude + mouseWarp;
-
-                    if (x === -extent) {
-                        context.moveTo(x, y);
-                    } else {
-                        context.lineTo(x, y);
-                    }
-                }
-            }
-
-            function strokeBend(offset, time) {
-                const softWidth = settings.bandWidth * 28 * settings.scale;
-                const midWidth = settings.bandWidth * 9 * settings.scale;
-                const coreWidth = Math.max(1.6, settings.bandWidth * 0.5);
-
-                context.save();
-                context.filter = `blur(${18 * renderScale}px)`;
-                traceBend(offset, time);
-                context.lineWidth = softWidth;
-                context.strokeStyle = `rgba(0, 0, 0, ${0.026 * settings.intensity})`;
-                context.stroke();
-                context.restore();
-
-                context.save();
-                context.filter = `blur(${5 * renderScale}px)`;
-                traceBend(offset, time + 0.08);
-                context.lineWidth = midWidth;
-                context.strokeStyle = `rgba(0, 0, 0, ${0.058 * settings.intensity})`;
-                context.stroke();
-                context.restore();
-
-                context.save();
-                context.filter = 'none';
-                traceBend(offset, time + 0.12);
-                context.lineWidth = coreWidth;
-                context.strokeStyle = `rgba(0, 0, 0, ${0.2 * settings.intensity})`;
-                context.stroke();
-                context.restore();
-            }
-
-            function drawNoise() {
-                if (!noiseCanvas.width) return;
-                context.drawImage(noiseCanvas, 0, 0);
+                pointer.targetY = -(((event.clientY - rect.top) / rect.height - 0.5) * 2);
             }
 
             function render(timeStamp) {
@@ -1263,39 +2035,32 @@
                     return;
                 }
 
-                if (!reduceMotion && timeStamp - lastFrameTime < 66) {
-                    frameId = window.requestAnimationFrame(render);
-                    return;
-                }
-
-                lastFrameTime = timeStamp;
-                const time = reduceMotion ? 0 : timeStamp * 0.001;
+                const elapsed = reduceMotion ? 0 : (timeStamp - startTime) * 0.001;
                 pointer.x += (pointer.targetX - pointer.x) * 0.08;
                 pointer.y += (pointer.targetY - pointer.y) * 0.08;
 
-                context.setTransform(1, 0, 0, 1, 0, 0);
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.fillStyle = '#ffffff';
-                context.fillRect(0, 0, canvas.width, canvas.height);
+                const degrees = (settings.rotation % 360) + settings.autoRotate * elapsed;
+                const radians = (degrees * Math.PI) / 180;
 
-                context.save();
-                context.translate(canvas.width / 2, canvas.height / 2);
-                context.rotate(((settings.rotation + settings.autoRotate * time) * Math.PI) / 180);
-                context.scale(settings.scale, settings.scale);
-                context.lineCap = 'round';
-                context.lineJoin = 'round';
-
-                const spacing = canvas.height / 1.65;
-                const passes = Math.max(1, Math.round(settings.iterations));
-                for (let pass = 0; pass < passes; pass += 1) {
-                    strokeBend(-spacing * 0.42 + pass * 26, time);
-                    strokeBend(spacing * 0.48 + pass * 18, time + 1.55);
-                }
-
-                context.restore();
-                context.globalCompositeOperation = 'multiply';
-                drawNoise();
-                context.globalCompositeOperation = 'source-over';
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.uniform1f(uniforms.time, elapsed);
+                gl.uniform1f(uniforms.speed, settings.speed);
+                gl.uniform2f(uniforms.rot, Math.cos(radians), Math.sin(radians));
+                gl.uniform1i(uniforms.colorCount, 1);
+                gl.uniform3fv(uniforms.colors, blackColors);
+                gl.uniform1i(uniforms.transparent, 1);
+                gl.uniform1f(uniforms.scale, settings.scale);
+                gl.uniform1f(uniforms.frequency, settings.frequency);
+                gl.uniform1f(uniforms.warpStrength, settings.warpStrength);
+                gl.uniform2f(uniforms.pointer, pointer.x, pointer.y);
+                gl.uniform1f(uniforms.mouseInfluence, settings.mouseInfluence);
+                gl.uniform1f(uniforms.parallax, heroScrollProgress * 0.85);
+                gl.uniform1f(uniforms.noise, settings.noise);
+                gl.uniform1i(uniforms.iterations, settings.iterations);
+                gl.uniform1f(uniforms.intensity, settings.intensity);
+                gl.uniform1f(uniforms.bandWidth, settings.bandWidth);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
 
                 if (!reduceMotion) {
                     frameId = window.requestAnimationFrame(render);
@@ -1325,8 +2090,6 @@
                 window.cancelAnimationFrame(frameId);
             }
         }
-
-        initGradualBlur();
         initColorBends();
     </script>
     <script src="site-common.js"></script>
