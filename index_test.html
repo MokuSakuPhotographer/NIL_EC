@@ -1013,26 +1013,90 @@
 
         @media (max-width: 768px) {
             header {
+                display: flex;
+                justify-content: center;
                 padding: 0.85rem 4%;
-                background: transparent;
-                border-bottom-color: transparent;
+                background: rgba(255, 255, 255, 0.95);
+                border-bottom-color: var(--line);
+                backdrop-filter: blur(10px);
+            }
+
+            header nav {
+                width: min(100%, calc(100vw - 92px));
+                margin-right: 48px;
+                overflow: hidden;
             }
 
             .logo {
+                display: none;
                 font-size: 1.25rem;
             }
 
             .nav-list {
                 display: flex;
-                gap: 1rem;
+                justify-content: flex-start;
+                gap: 0.65rem;
+                max-width: 100%;
+                overflow-x: auto;
+                padding-bottom: 0.15rem;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-list::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-list > li {
+                flex: 0 0 auto;
+                padding: 0;
             }
 
             .nav-list a {
+                display: inline-flex;
+                align-items: center;
+                min-height: 34px;
+                padding: 0 0.85rem;
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                background: #fff;
                 font-size: 0.74rem;
             }
 
+            .nav-list a::after {
+                display: none;
+            }
+
+            .nav-list a.active {
+                border-color: var(--blue);
+            }
+
             .dropdown {
-                min-width: 120px;
+                position: static;
+                display: none;
+                gap: 0.5rem;
+                min-width: 0;
+                margin-top: 0.5rem;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                background: transparent;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .has-dropdown:focus-within .dropdown {
+                display: flex;
+                transform: none;
+            }
+
+            .dropdown a {
+                padding: 0.45rem 0.75rem;
+                border: 1px solid var(--line);
+                border-radius: 999px;
+                background: #fff;
+                font-size: 0.74rem;
             }
 
             .mobile-gallery {
@@ -1279,6 +1343,7 @@
                 min-width: 38px;
                 height: 38px;
                 padding: 0;
+                background: #fff;
             }
 
             .cart-link span {
