@@ -52,9 +52,8 @@
             align-items: center;
             justify-content: center;
             padding: 1rem 5%;
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid var(--line);
-            backdrop-filter: blur(14px);
+            background: transparent;
+            border-bottom: 1px solid transparent;
             transform: translateY(0);
             transition: transform 0.35s ease, padding 0.35s ease, box-shadow 0.35s ease;
         }
@@ -223,6 +222,9 @@
             overflow: hidden;
             --hero-bg-video-y: 0px;
             --hero-bg-video-scale: 1;
+            --hero-bg-opacity: 0.56;
+            --hero-image-gray: 0;
+            --hero-image-saturate: 1;
         }
 
         .hero::after {
@@ -243,8 +245,8 @@
             width: 110%;
             height: 110%;
             object-fit: cover;
-            opacity: 0.48;
-            filter: grayscale(1) contrast(1.02) brightness(1.04);
+            opacity: var(--hero-bg-opacity);
+            filter: grayscale(var(--hero-image-gray)) saturate(var(--hero-image-saturate)) contrast(1.02) brightness(1.04);
             pointer-events: none;
             transform: translate3d(0, var(--hero-bg-video-y), 0) scale(var(--hero-bg-video-scale));
             transform-origin: center;
@@ -368,8 +370,17 @@
         .hero-card img {
             width: 100%;
             height: 100%;
+            box-sizing: border-box;
             object-fit: cover;
+            filter: grayscale(var(--hero-image-gray)) saturate(var(--hero-image-saturate));
             transition: transform 0.9s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .hero-shoe img {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .hero-card:hover img {
@@ -389,6 +400,12 @@
         .hero-shoe {
             grid-column: 4 / 7;
             grid-row: 5 / 7;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: visible;
+            background: transparent;
+            box-shadow: none;
         }
 
         .brand-orbit {
@@ -438,7 +455,7 @@
 
         .story {
             position: relative;
-            min-height: 185vh;
+            min-height: 230vh;
             padding: 0;
             background: var(--bg);
             overflow: visible;
@@ -446,6 +463,9 @@
             --scene-bg-y: 0px;
             --scene-bg-scale: 1;
             --scene-bg-opacity: 1;
+            --scene-visibility: 0;
+            --scene-image-gray: 1;
+            --scene-image-saturate: 0;
             --scene-deco-x: 0px;
             --scene-deco-y: 0px;
             --scene-deco-opacity: 0.08;
@@ -464,24 +484,25 @@
             --scene-photo: none;
             --scene-photo-position: center;
             --scene-photo-opacity: 0.22;
+            --scene-photo-current-opacity: 0;
         }
 
         #about {
             --scene-photo: url('images/index/EC_index_bgmodel1-1.webp');
             --scene-photo-position: 60% 48%;
-            --scene-photo-opacity: 0.36;
+            --scene-photo-opacity: 0.42;
         }
 
         #okurih {
             --scene-photo: url('images/index/EC_index_bgmodel4-4.webp');
             --scene-photo-position: 48% 42%;
-            --scene-photo-opacity: 0.38;
+            --scene-photo-opacity: 0.45;
         }
 
         #gallery-pick {
             --scene-photo: url('images/index/EC_index_bgmodel2-2.webp');
             --scene-photo-position: 58% 50%;
-            --scene-photo-opacity: 0.36;
+            --scene-photo-opacity: 0.42;
         }
 
         .story.fade-section {
@@ -539,12 +560,13 @@
             background-image: var(--scene-photo);
             background-size: cover;
             background-position: var(--scene-photo-position);
-            opacity: var(--scene-photo-opacity);
-            filter: grayscale(1) contrast(0.96) brightness(1.08);
+            opacity: var(--scene-photo-current-opacity);
+            filter: grayscale(var(--scene-image-gray)) saturate(var(--scene-image-saturate)) contrast(0.96) brightness(1.08);
             transform: scale(1.06);
         }
 
         .scene-bg::after {
+            opacity: var(--scene-visibility);
             background:
                 linear-gradient(90deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.22) 48%, rgba(255, 255, 255, 0.54)),
                 radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.48), transparent 38%);
@@ -634,8 +656,9 @@
             display: grid;
             place-items: center;
             perspective: 1200px;
+            opacity: var(--scene-visibility);
             transform: translate3d(var(--scene-media-x), var(--scene-media-y), 0);
-            will-change: transform;
+            will-change: transform, opacity;
         }
 
         .product-visual {
@@ -652,7 +675,7 @@
             width: min(78vw, 820px);
             max-height: 84vh;
             object-fit: contain;
-            filter: drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
+            filter: grayscale(var(--scene-image-gray)) saturate(var(--scene-image-saturate)) drop-shadow(0 42px 72px rgba(15, 23, 42, 0.18));
             transform-origin: center;
             transform: translate3d(0, var(--scene-product-y), 0) scale(var(--scene-product-scale));
             will-change: transform;
@@ -676,8 +699,8 @@
             bottom: 8%;
             width: min(44vw, 430px);
             max-height: 54vh;
-            opacity: 0.88;
-            filter: drop-shadow(0 28px 58px rgba(15, 23, 42, 0.16));
+            opacity: 0.9;
+            filter: grayscale(var(--scene-image-gray)) saturate(var(--scene-image-saturate)) drop-shadow(0 28px 58px rgba(15, 23, 42, 0.16));
             transform: translate3d(0, 6%, 0) scale(0.78);
         }
 
@@ -720,8 +743,16 @@
             --product-bg-y: 0px;
             --product-line-x: 0px;
             --product-deco-y: 0px;
+            --product-stage-visibility: 0;
+            --product-image-gray: 1;
+            --product-image-saturate: 0;
             --product-photo: url('images/index/EC_index_bgmodel3-3.webp');
             --product-photo-position: 50% 42%;
+            --product-photo-current-opacity: 0;
+        }
+
+        .product-stage.fade-section {
+            transition: transform 0.12s linear;
         }
 
         .product-inner {
@@ -748,6 +779,7 @@
                 radial-gradient(circle at 20% 22%, rgba(37, 99, 235, 0.07), transparent 34%),
                 linear-gradient(145deg, rgba(244, 247, 251, 0.88), rgba(255, 255, 255, 0.36));
             overflow: hidden;
+            opacity: var(--product-stage-visibility);
             transform: translate3d(0, var(--product-bg-y), 0);
         }
 
@@ -764,12 +796,13 @@
             background-image: var(--product-photo);
             background-size: cover;
             background-position: var(--product-photo-position);
-            opacity: 0.32;
-            filter: grayscale(1) contrast(0.95) brightness(1.1);
+            opacity: var(--product-photo-current-opacity);
+            filter: grayscale(var(--product-image-gray)) saturate(var(--product-image-saturate)) contrast(0.95) brightness(1.1);
             transform: scale(1.05);
         }
 
         .product-scene-bg::after {
+            opacity: var(--product-stage-visibility);
             background:
                 linear-gradient(90deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.34) 44%, rgba(255, 255, 255, 0.62)),
                 radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.48), transparent 34%);
@@ -786,6 +819,7 @@
             letter-spacing: 0;
             text-transform: uppercase;
             white-space: nowrap;
+            opacity: var(--product-stage-visibility);
             transform: translate3d(0, var(--product-deco-y), 0);
         }
 
@@ -796,6 +830,7 @@
             top: 43%;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(26, 26, 26, 0.18), transparent);
+            opacity: var(--product-stage-visibility);
             transform: translate3d(var(--product-line-x), 0, 0);
         }
 
@@ -805,6 +840,7 @@
             align-items: end;
             gap: 2rem;
             margin-bottom: 2.6rem;
+            opacity: var(--product-stage-visibility);
         }
 
         .section-title {
@@ -828,7 +864,9 @@
         }
 
         .product-card {
-            --card-opacity: 1;
+            --card-opacity: 0;
+            --card-image-gray: 1;
+            --card-image-saturate: 0;
             --reveal-y: 0px;
             opacity: var(--card-opacity);
             transition-delay: var(--reveal-delay, 0s);
@@ -847,6 +885,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            filter: grayscale(var(--card-image-gray)) saturate(var(--card-image-saturate));
             transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
@@ -931,7 +970,7 @@
             }
 
             .story {
-                min-height: 150vh;
+                min-height: 175vh;
                 padding: 0;
             }
 
@@ -1169,6 +1208,23 @@
 
             .hero-bg-video {
                 transform: none !important;
+            }
+
+            .hero-bg-video,
+            .hero-card img,
+            .story-product,
+            .product-image img {
+                filter: none !important;
+            }
+
+            .scene-bg::before {
+                opacity: var(--scene-photo-opacity) !important;
+                filter: none !important;
+            }
+
+            .product-scene-bg::before {
+                opacity: 0.38 !important;
+                filter: none !important;
             }
         }
         .cart-link {
@@ -1475,6 +1531,13 @@
             return Number.isFinite(parsed) ? parsed : fallback;
         }
 
+        function readCssNumber(element, property, fallback) {
+            if (!element) return fallback;
+
+            const parsed = Number.parseFloat(getComputedStyle(element).getPropertyValue(property));
+            return Number.isFinite(parsed) ? parsed : fallback;
+        }
+
         function easeOutCubic(value) {
             return 1 - Math.pow(1 - value, 3);
         }
@@ -1497,7 +1560,7 @@
 
             if (window.scrollY > 50) {
                 header.style.padding = compactPadding;
-                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
+                header.style.boxShadow = 'none';
             } else {
                 header.style.padding = normalPadding;
                 header.style.boxShadow = 'none';
@@ -1604,9 +1667,15 @@
                 const progress = getSceneProgress(section, viewportHeight, isMobile);
                 const profile = section.dataset.depthProfile || 'rise';
                 const center = progress - 0.5;
-                const copyIn = smoothstep(0.12, 0.34, progress);
-                const copyOut = 1 - smoothstep(0.82, 1, progress);
+                const copyIn = smoothstep(0.04, 0.46, progress);
+                const copyOut = 1 - smoothstep(0.58, 0.98, progress);
                 const copyVisibility = copyIn * copyOut;
+                const sceneIn = smoothstep(0, 0.42, progress);
+                const sceneOut = 1 - smoothstep(0.58, 1, progress);
+                const sceneVisibility = sceneIn * sceneOut;
+                const sceneGray = 1 - sceneVisibility;
+                const sceneSaturate = 0.12 + sceneVisibility * 0.88;
+                const photoOpacity = readCssNumber(section, '--scene-photo-opacity', 0.42) * sceneVisibility;
 
                 let visualY = (0.5 - progress) * 420 * motion;
                 let visualScale = lerp(0.96, 1.08, progress);
@@ -1642,13 +1711,17 @@
                     '--scene-progress': progress.toFixed(4),
                     '--scene-bg-y': `${center * 120 * motion}px`,
                     '--scene-bg-scale': `${1 + copyIn * 0.035}`,
-                    '--scene-bg-opacity': `${0.72 + copyVisibility * 0.24}`,
+                    '--scene-bg-opacity': `${sceneVisibility}`,
+                    '--scene-visibility': `${sceneVisibility}`,
+                    '--scene-image-gray': `${sceneGray}`,
+                    '--scene-image-saturate': `${sceneSaturate}`,
+                    '--scene-photo-current-opacity': `${photoOpacity}`,
                     '--scene-deco-x': `${-center * 120 * motion}px`,
                     '--scene-deco-y': `${center * 320 * motion}px`,
-                    '--scene-deco-opacity': `${0.035 + copyVisibility * 0.055}`,
+                    '--scene-deco-opacity': `${sceneVisibility * (profile === 'sink' ? 0.12 : 0.1)}`,
                     '--scene-copy-x': `${profile === 'sink' ? center * 42 * motion : -center * 36 * motion}px`,
                     '--scene-copy-y': `${lerp(72, -46, copyIn) * motion}px`,
-                    '--scene-copy-opacity': `${Math.max(0.04, copyVisibility)}`,
+                    '--scene-copy-opacity': `${copyVisibility}`,
                     '--scene-media-x': `${mediaX}px`,
                     '--scene-media-y': `${-center * 92 * motion}px`,
                     '--scene-visual-y': `${visualY}px`,
@@ -1673,8 +1746,17 @@
             const isMobile = mobileMotionQuery.matches;
             const motion = isMobile ? 0.38 : 1;
             const center = progress - 0.5;
+            const reachDistance = viewportHeight * (isMobile ? 0.56 : 0.68);
+            const enter = clamp((viewportHeight - rect.top) / reachDistance, 0, 1);
+            const visibility = smoothstep(0, 1, enter);
+            const imageGray = 1 - visibility;
+            const imageSaturate = 0.12 + visibility * 0.88;
 
             productStage.style.setProperty('--product-scene-progress', progress.toFixed(4));
+            productStage.style.setProperty('--product-stage-visibility', visibility.toFixed(4));
+            productStage.style.setProperty('--product-image-gray', imageGray.toFixed(4));
+            productStage.style.setProperty('--product-image-saturate', imageSaturate.toFixed(4));
+            productStage.style.setProperty('--product-photo-current-opacity', (0.38 * visibility).toFixed(4));
             productStage.style.setProperty('--product-bg-y', `${center * 92 * motion}px`);
             productStage.style.setProperty('--product-deco-y', `${-center * 180 * motion}px`);
             productStage.style.setProperty('--product-line-x', `${center * 240 * motion}px`);
@@ -1687,9 +1769,15 @@
             const isMobile = mobileMotionQuery.matches;
             const motion = isMobile ? 0.38 : 1;
             const progress = clamp(-rect.top / (rect.height * 0.72), 0, 1);
+            const visibility = 1 - smoothstep(0.28, 1, progress);
+            const imageGray = 1 - visibility;
+            const imageSaturate = 0.12 + visibility * 0.88;
             heroScrollProgress = progress;
             hero.style.setProperty('--hero-bg-video-y', `${progress * 82 * motion}px`);
             hero.style.setProperty('--hero-bg-video-scale', `${1.04 + progress * (isMobile ? 0.025 : 0.06)}`);
+            hero.style.setProperty('--hero-bg-opacity', `${0.56 * visibility}`);
+            hero.style.setProperty('--hero-image-gray', imageGray.toFixed(4));
+            hero.style.setProperty('--hero-image-saturate', imageSaturate.toFixed(4));
 
             setLayerMotion(heroCopy, 0, -progress * 155 * motion, 1 - progress * 0.025, 1 - progress * 1.08);
             setLayerMotion(heroMain, 0, -progress * 96 * motion, 1 + progress * (isMobile ? 0.05 : 0.13), 1);
@@ -1703,7 +1791,7 @@
 
             const viewportHeight = window.innerHeight || 1;
             const isMobile = mobileMotionQuery.matches;
-            const fadeDistance = viewportHeight * (isMobile ? 0.44 : 0.62);
+            const fadeDistance = viewportHeight * (isMobile ? 0.82 : 1.18);
 
             fadeSections.forEach((section) => {
                 const rect = section.getBoundingClientRect();
@@ -1711,8 +1799,14 @@
 
                 const enter = clamp((viewportHeight - rect.top) / fadeDistance, 0, 1);
                 const exit = clamp(rect.bottom / fadeDistance, 0, 1);
-                const visibility = easeOutCubic(Math.min(enter, exit));
-                const opacity = 0.12 + visibility * 0.88;
+                const productReachDistance = viewportHeight * (isMobile ? 0.56 : 0.68);
+                const productEnter = section === productStage
+                    ? clamp((viewportHeight - rect.top) / productReachDistance, 0, 1)
+                    : enter;
+                const visibility = section === productStage
+                    ? smoothstep(0, 1, productEnter)
+                    : smoothstep(0, 1, Math.min(enter, exit));
+                const opacity = visibility;
                 const sectionCenter = rect.top + rect.height / 2;
                 const direction = sectionCenter < viewportHeight / 2 ? -1 : 1;
                 const shift = (1 - visibility) * (isMobile ? 18 : 42) * direction;
@@ -1756,13 +1850,21 @@
                 if (rect.bottom < -viewportHeight * 0.5 || rect.top > viewportHeight * 1.4) return;
 
                 const index = readNumber(card.dataset.cardIndex, 0);
-                const entrance = clamp((viewportHeight - rect.top) / (viewportHeight * 0.7), 0, 1);
-                const delayed = clamp((entrance - index * 0.12) / 0.76, 0, 1);
-                const exit = clamp(rect.bottom / (viewportHeight * 0.42), 0, 1);
-                const visibility = easeOutCubic(Math.min(delayed, exit));
+                const entrance = clamp((viewportHeight - rect.top) / (viewportHeight * 1.05), 0, 1);
+                const delayed = clamp((entrance - index * 0.08) / 0.98, 0, 1);
+                const exit = clamp(rect.bottom / (viewportHeight * 0.82), 0, 1);
+                const cardStage = card.closest('#featured');
+                const stageVisibility = cardStage ? readCssNumber(cardStage, '--product-stage-visibility', 0) : 0;
+                const visibility = cardStage && stageVisibility >= 0.995
+                    ? 1
+                    : smoothstep(0, 1, cardStage ? delayed : Math.min(delayed, exit));
                 const lift = (1 - visibility) * (isMobile ? 22 : 62);
+                const imageGray = 1 - visibility;
+                const imageSaturate = 0.12 + visibility * 0.88;
 
                 card.style.setProperty('--card-opacity', Math.max(0, visibility).toFixed(3));
+                card.style.setProperty('--card-image-gray', imageGray.toFixed(4));
+                card.style.setProperty('--card-image-saturate', imageSaturate.toFixed(4));
                 card.style.setProperty('--reveal-y', `${lift.toFixed(2)}px`);
             });
         }
