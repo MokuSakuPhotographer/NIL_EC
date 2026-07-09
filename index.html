@@ -1358,7 +1358,7 @@
 
     <main>
         <section class="hero fade-section" data-fade-section>
-            <video class="hero-bg-video" data-hero-bg-video autoplay muted loop playsinline preload="metadata" poster="images/index/EC_index_bgmodel1-1.webp" aria-hidden="true">
+            <video class="hero-bg-video" data-hero-bg-video autoplay muted playsinline preload="auto" poster="images/index/EC_index_bgmodel1-1.webp" aria-hidden="true">
                 <source src="images/index/EC_index_bgmodel_movie.mp4" type="video/mp4">
             </video>
             <canvas id="color-bends-canvas" class="color-bends-canvas" aria-hidden="true"></canvas>
@@ -1529,13 +1529,31 @@
         const sceneStories = document.querySelectorAll('.story[data-story]');
         const productStage = document.querySelector('#featured');
         const mobileMotionQuery = window.matchMedia('(max-width: 768px)');
+        const heroVideoPlaylist = [
+            'images/index/EC_index_bgmodel_movie.mp4',
+            'images/index/EC_index_bgmodel_movie2.mp4'
+        ];
         let ticking = false;
         let lastScrollY = window.scrollY;
         let heroScrollProgress = 0;
+        let heroVideoIndex = 0;
 
         if (heroVideo && reduceMotion) {
             heroVideo.pause();
             heroVideo.removeAttribute('autoplay');
+        }
+
+        if (heroVideo && !reduceMotion && heroVideoPlaylist.length > 1) {
+            heroVideo.addEventListener('ended', () => {
+                heroVideoIndex = (heroVideoIndex + 1) % heroVideoPlaylist.length;
+                heroVideo.src = heroVideoPlaylist[heroVideoIndex];
+                heroVideo.load();
+
+                const playPromise = heroVideo.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {});
+                }
+            });
         }
 
         function clamp(value, min, max) {
