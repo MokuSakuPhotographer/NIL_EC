@@ -392,7 +392,8 @@ a,button{
     overflow:hidden;
     background:#b6ae9e
 }
-.hero-media>img{
+.hero-media>img,
+.hero-media>video{
     height:100%;
     width:100%;
     object-fit:cover;
@@ -540,7 +541,8 @@ a,button{
     overflow:hidden;
     background:var(--soft)
 }
-.editorial-image>img{
+.editorial-image>img,
+.editorial-image>video{
     width:100%;
     height:100%;
     object-fit:cover
