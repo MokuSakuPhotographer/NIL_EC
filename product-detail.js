@@ -943,7 +943,7 @@ const DEFAULT_TSHIRT_CARE = [
     '乾燥機は使用せず、形を整えて陰干ししてください。',
     '濃色品は色移りを避けるため、単独での洗濯を推奨します。'
 ];
- 
+
 const SIZE_TABLES = {
     'T-Shirt': [
         ['XS', '62', '46', '41', '19'],
@@ -1082,12 +1082,17 @@ function updateGalleryDots() {
     const dots = document.querySelector('.gallery-dots');
     if (!dots) return;
 
-    dots.innerHTML = activeGalleryImages.map((_, index) => `
-        <button class="gallery-dot${index === activeGalleryIndex ? ' active' : ''}" type="button" aria-label="画像${index + 1}を表示" aria-current="${index === activeGalleryIndex ? 'true' : 'false'}"></button>
-    `).join('');
-
+    if (dots.children.length !== activeGalleryImages.length) {
+        dots.innerHTML = activeGalleryImages.map((_, index) => `
+            <button class="gallery-dot" type="button" aria-label="画像${index + 1}を表示"></button>
+        `).join('');
+        dots.querySelectorAll('.gallery-dot').forEach((dot, index) => {
+            dot.addEventListener('click', () => showGalleryImage(index));
+        });
+    }
     dots.querySelectorAll('.gallery-dot').forEach((dot, index) => {
-        dot.addEventListener('click', () => showGalleryImage(index));
+        dot.classList.toggle('active', index === activeGalleryIndex);
+        dot.setAttribute('aria-current', String(index === activeGalleryIndex));
     });
 }
 
@@ -1113,6 +1118,8 @@ function showGalleryImage(index, animate = true) {
         image.src = activeGalleryImages[activeGalleryIndex];
         image.alt = `${getProduct().name} ${activeGalleryColor} ${activeGalleryIndex + 1}`;
         image.style.opacity = '1';
+        const count = document.getElementById('image-count');
+        if (count) count.textContent = `${String(activeGalleryIndex + 1).padStart(2, '0')} / ${String(activeGalleryImages.length).padStart(2, '0')}`;
         updateGalleryDots();
         updateGalleryControls();
     };
@@ -1144,14 +1151,16 @@ function moveGallery(direction) {
 }
 
 function selectColor(button) {
-    document.querySelectorAll('.color-btn').forEach((btn) => btn.classList.remove('active'));
+    document.querySelectorAll('.color-btn').forEach((btn) => { btn.classList.remove('active'); btn.setAttribute('aria-pressed', 'false'); });
     button.classList.add('active');
+    button.setAttribute('aria-pressed', 'true');
     setGalleryImages(imagesForColor(getProduct(), button.dataset.color), button.dataset.color);
 }
 
 function selectSize(button) {
-    document.querySelectorAll('.size-btn').forEach((btn) => btn.classList.remove('active'));
+    document.querySelectorAll('.size-btn').forEach((btn) => { btn.classList.remove('active'); btn.setAttribute('aria-pressed', 'false'); });
     button.classList.add('active');
+    button.setAttribute('aria-pressed', 'true');
     document.getElementById('selected-size').textContent = button.textContent;
 }
 
@@ -1241,7 +1250,7 @@ function renderRecommendations(product) {
             ${recommendations.map(([, item]) => `
                 <a class="recommend-card" href="${item.link}">
                     <div class="recommend-image">
-                        <img src="${item.white}" alt="${item.name}">
+                        <img src="${item.white}" alt="${item.name}" loading="lazy" decoding="async" width="600" height="800">
                         <span class="recommend-badge">SOLD OUT</span>
                     </div>
                     <div class="recommend-brand">${item.brand}</div>
@@ -1251,7 +1260,7 @@ function renderRecommendations(product) {
             `).join('')}
         </div>
     `;
-    document.body.appendChild(section);
+    document.getElementById('main').appendChild(section);
 }
 
 function renderProduct() {
@@ -1266,7 +1275,7 @@ function renderProduct() {
 
     const caption = document.querySelector('.soldout-caption');
     if (caption) {
-        caption.textContent = 'この商品は現在売り切れです。再入荷までお待ちください。';
+        caption.textContent = 'この商品は現在売り切れです。';
     }
 
     ensureGalleryControls();
@@ -1292,6 +1301,7 @@ function renderProduct() {
         button.dataset.color = variant.color;
         button.dataset.image = variant.image;
         button.setAttribute('aria-label', variant.color);
+        button.setAttribute('aria-pressed', String(index === 0));
         button.addEventListener('click', () => selectColor(button));
         colorOptions.appendChild(button);
     });
@@ -1305,6 +1315,7 @@ function renderProduct() {
         button.className = `size-btn${size === product.activeSize ? ' active' : ''}`;
         button.type = 'button';
         button.textContent = size;
+        button.setAttribute('aria-pressed', String(size === product.activeSize));
         button.addEventListener('click', () => selectSize(button));
         sizeOptions.appendChild(button);
     });
@@ -1313,5 +1324,11 @@ function renderProduct() {
     renderRecommendations(product);
 }
 
-renderProduct();
+if (document.body.dataset.product) renderProduct();
+
+window.addEventListener('resize', () => {
+    document.querySelectorAll('.acc-item.is-open .acc-content-wrapper').forEach(wrapper => {
+        wrapper.style.maxHeight = `${wrapper.scrollHeight}px`;
+    });
+});
 
